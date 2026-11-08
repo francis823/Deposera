@@ -361,7 +361,7 @@
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) ? "" : "Enter an email address like name@example.com.";
       },
       role: function (v) {
-        return v ? "" : "Choose whether you are a tenant, landlord, letting agent or someone else.";
+        return v ? "" : "Choose whether you are a tenant, a landlord or someone else.";
       },
       message: function (v) {
         return v.trim().length >= 10 ? "" : "Enter a message of at least 10 characters.";
