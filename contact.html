@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact | Deposera</title>
+  <meta name="description" content="Contact form demo for the fictional company Deposera. Nothing is sent.">
+  <meta name="theme-color" content="#0b1d15">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&amp;family=Inter:wght@400;500;600&amp;display=swap">
+  <link rel="stylesheet" href="style.css">
+  <script>document.documentElement.classList.add("js");</script>
+  <script src="main.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="index.html" aria-label="Deposera home">
+        <svg class="brand__mark" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+          <path d="M6 18.5 20 7l14 11.5V32a2.5 2.5 0 0 1-2.5 2.5h-23A2.5 2.5 0 0 1 6 32Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          <circle cx="20" cy="24" r="6.2" fill="currentColor"/>
+          <circle cx="20" cy="24" r="3.7" fill="none" stroke="#0b1d15" stroke-width="1.1" opacity=".5"/>
+        </svg>
+        <span class="brand__name" aria-hidden="true">Deposera</span>
+      </a>
+      <button class="menu-button" type="button" aria-expanded="false" aria-controls="site-nav"><span class="menu-button__bars" aria-hidden="true"></span>Menu</button>
+      <nav class="site-nav" id="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="how-it-works.html">How it works</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="disputes.html">Disputes</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html" aria-current="page">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-hero">
+      <div class="container split">
+        <div class="stack">
+          <p class="eyebrow">Contact</p>
+          <h1>Contact <em>us</em></h1>
+          <p class="lead">Tell us whether you are a tenant or a landlord and what you need help with.</p>
+          <p class="notice"><span><strong>This form is a demo.</strong> It doesn't send your message anywhere, so please don't enter real personal details.</span></p>
+        </div>
+        <form class="card form" data-contact-form novalidate>
+          <div class="field">
+            <label for="name">Your name</label>
+            <input id="name" name="name" type="text" autocomplete="off" required>
+            <p class="field__error" id="name-error" hidden></p>
+          </div>
+          <div class="field">
+            <label for="email">Email address</label>
+            <input id="email" name="email" type="email" autocomplete="off" required>
+            <p class="field__error" id="email-error" hidden></p>
+          </div>
+          <div class="field">
+            <label for="role">I am a</label>
+            <select id="role" name="role" required>
+              <option value="">Choose one</option>
+              <option>Tenant</option>
+              <option>Landlord</option>
+              <option>Letting agent</option>
+              <option>Someone else</option>
+            </select>
+            <p class="field__error" id="role-error" hidden></p>
+          </div>
+          <div class="field">
+            <label for="message">Your message</label>
+            <textarea id="message" name="message" required></textarea>
+            <p class="field__error" id="message-error" hidden></p>
+          </div>
+          <div class="actions">
+            <button class="button" type="submit">Check message</button>
+          </div>
+          <p class="form-status" data-form-status tabindex="-1" role="status" hidden></p>
+        </form>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="topics-title">
+      <div class="container split">
+        <div class="stack reveal">
+          <p class="eyebrow">Who can help</p>
+          <h2 id="topics-title">Which team you'll hear from</h2>
+        </div>
+        <ul class="contact-topics reveal">
+          <li><strong>Tenant Support</strong><span>Questions about your deposit, your record or a deadline.</span></li>
+          <li><strong>Landlord Accounts</strong><span>Setting up a tenancy, inventories and payouts.</span></li>
+          <li><strong>Disputes Team</strong><span>Challenges, evidence and independent reviews.</span></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <div class="site-footer__brand">
+        <a class="brand" href="index.html" aria-label="Deposera home">
+        <svg class="brand__mark" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+          <path d="M6 18.5 20 7l14 11.5V32a2.5 2.5 0 0 1-2.5 2.5h-23A2.5 2.5 0 0 1 6 32Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          <circle cx="20" cy="24" r="6.2" fill="currentColor"/>
+          <circle cx="20" cy="24" r="3.7" fill="none" stroke="#0b1d15" stroke-width="1.1" opacity=".5"/>
+        </svg>
+        <span class="brand__name" aria-hidden="true">Deposera</span>
+        </a>
+        <p>Deposits held safely, returned on time and split fairly.</p>
+      </div>
+      <nav aria-label="Footer">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="how-it-works.html">How it works</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="disputes.html">Disputes</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="site-footer__legal">
+        <p>Deposera is a fictional company created for a school project.</p>
+        <p>It holds no money and offers no real service.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
