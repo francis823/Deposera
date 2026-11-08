@@ -6,6 +6,10 @@
   <title>Damage and disputes | Deposera</title>
   <meta name="description" content="How Deposera handles damage, repairs and disagreements about a deposit, step by step.">
   <meta name="theme-color" content="#0b1d15">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Deposera">
+  <meta property="og:title" content="Damage and disputes | Deposera">
+  <meta property="og:description" content="How Deposera handles damage, repairs and disagreements about a deposit, step by step.">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -55,7 +59,7 @@
         <div class="stack reveal">
           <p class="eyebrow">Damage and repairs</p>
           <h2 id="process-title">From pre-inspection to payout</h2>
-          <p class="muted">Checking for damage and reviewing a dispute are part of the service. Tenants and landlords pay nothing extra.</p>
+          <p class="muted">Checking for damage and reviewing a dispute are part of the service. Nobody pays extra for them.</p>
         </div>
         <ol class="steps">
           <li class="reveal">
@@ -134,29 +138,40 @@
     <section class="section" aria-labelledby="dispute-example-title">
       <div class="container split">
         <div class="stack reveal">
-          <p class="eyebrow">Worked example</p>
-          <h2 id="dispute-example-title">How the money moves</h2>
-          <p class="muted">All figures are an example. The pre-inspection finds a damaged wall and an oven that needs cleaning. The tenant repairs the wall before moving out but leaves the oven. The landlord's cleaning company charges €150.</p>
+          <p class="eyebrow">Try it</p>
+          <h2 id="dispute-example-title">Fix it yourself, <em>keep more</em></h2>
+          <p class="muted">All figures are an example. The pre-inspection finds three items. Tick the ones the tenant fixes before handing back the keys. Anything left is repaired by a company the landlord chooses, and only that cost comes out of the deposit.</p>
         </div>
-        <div class="table-wrap reveal">
-          <table>
-            <caption>Example: a €1,500 deposit with one repair</caption>
-            <thead>
-              <tr>
-                <th scope="col">Pre-inspection item</th>
-                <th scope="col">What happened</th>
-                <th scope="col" class="number">Deducted</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><th scope="row">Damaged wall</th><td>Tenant repaired it</td><td class="number">€0</td></tr>
-              <tr><th scope="row">Dirty oven</th><td>Landlord's company cleaned it</td><td class="number">€150</td></tr>
-            </tbody>
-            <tfoot>
-              <tr><th scope="row" colspan="2">Back to the tenant within 30 days</th><td class="number">€1,350</td></tr>
-            </tfoot>
-          </table>
-        </div>
+        <form class="card repair-sim reveal" data-repair-sim data-deposit="1500" novalidate>
+          <fieldset class="repair-sim__items">
+            <legend>Which items did the tenant fix?</legend>
+            <label class="repair-item">
+              <input type="checkbox" data-cost="250" checked>
+              <span class="repair-item__switch" aria-hidden="true"></span>
+              <span class="repair-item__text"><span class="repair-item__name">Damaged hallway wall</span><span class="repair-item__state" data-state>Fixed by the tenant</span></span>
+              <span class="repair-item__cost">€250</span>
+            </label>
+            <label class="repair-item">
+              <input type="checkbox" data-cost="150">
+              <span class="repair-item__switch" aria-hidden="true"></span>
+              <span class="repair-item__text"><span class="repair-item__name">Greasy oven</span><span class="repair-item__state" data-state>Landlord's company repairs it</span></span>
+              <span class="repair-item__cost">€150</span>
+            </label>
+            <label class="repair-item">
+              <input type="checkbox" data-cost="60">
+              <span class="repair-item__switch" aria-hidden="true"></span>
+              <span class="repair-item__text"><span class="repair-item__name">Broken bedroom blind</span><span class="repair-item__state" data-state>Landlord's company repairs it</span></span>
+              <span class="repair-item__cost">€60</span>
+            </label>
+          </fieldset>
+          <div class="repair-sim__bar" aria-hidden="true"><span data-sim-bar style="width: 86%"></span></div>
+          <dl class="repair-sim__summary">
+            <div><dt>Deducted</dt><dd data-sim-deducted>€210</dd></div>
+            <div class="is-key"><dt>Back to the tenant</dt><dd data-sim-back>€1,290</dd></div>
+            <div><dt>Paid within</dt><dd data-sim-days>30 days</dd></div>
+          </dl>
+          <p class="visually-hidden" role="status" data-sim-live></p>
+        </form>
       </div>
     </section>
   </main>

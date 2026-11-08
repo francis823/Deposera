@@ -1,4 +1,4 @@
-/* Deposera site scripts: menu, scroll effects, coin game, contact form. */
+/* Deposera site scripts: menu, scroll effects, coin game, repair checklist, contact form. */
 (function () {
   "use strict";
 
@@ -348,6 +348,58 @@
 
   document.querySelectorAll("[data-coin-game]").forEach(initCoinGame);
 
+  /* ---------- Repair checklist: fix it yourself, keep more ---------- */
+
+  function initRepairSim(form) {
+    var deposit = Number(form.dataset.deposit) || 1500;
+    var boxes = form.querySelectorAll("input[type=checkbox]");
+    var deductedEl = form.querySelector("[data-sim-deducted]");
+    var backEl = form.querySelector("[data-sim-back]");
+    var daysEl = form.querySelector("[data-sim-days]");
+    var bar = form.querySelector("[data-sim-bar]");
+    var live = form.querySelector("[data-sim-live]");
+    var shown = { deducted: 0, back: 0 };
+    var cancel = { deducted: function () {}, back: function () {} };
+    var first = true;
+
+    function show(key, el, value) {
+      cancel[key]();
+      cancel[key] = first ? (el.textContent = formatEUR(value), function () {}) : animateNumber(el, shown[key], value, 500);
+      shown[key] = value;
+    }
+
+    function update() {
+      var deducted = 0;
+      boxes.forEach(function (box) {
+        var fixed = box.checked;
+        if (!fixed) deducted += Number(box.dataset.cost);
+        box.closest(".repair-item").querySelector("[data-state]").textContent = fixed
+          ? "Fixed by the tenant"
+          : "Landlord's company repairs it";
+      });
+      var back = deposit - deducted;
+      var days = deducted === 0 ? 14 : 30;
+      show("deducted", deductedEl, deducted);
+      show("back", backEl, back);
+      daysEl.textContent = days + " days";
+      bar.style.width = (back / deposit) * 100 + "%";
+      if (!first) {
+        live.textContent = formatEUR(back) + " goes back to the tenant within " + days + " days.";
+      }
+      first = false;
+    }
+
+    boxes.forEach(function (box) {
+      box.addEventListener("change", update);
+    });
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+    });
+    update();
+  }
+
+  document.querySelectorAll("[data-repair-sim]").forEach(initRepairSim);
+
   /* ---------- Contact form (demo only: nothing is sent) ---------- */
 
   function initContactForm(form) {
@@ -361,7 +413,7 @@
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) ? "" : "Enter an email address like name@example.com.";
       },
       role: function (v) {
-        return v ? "" : "Choose whether you are a tenant, a landlord or someone else.";
+        return v ? "" : "Choose whether you are a tenant, landlord, letting agency or someone else.";
       },
       message: function (v) {
         return v.trim().length >= 10 ? "" : "Enter a message of at least 10 characters.";

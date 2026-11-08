@@ -6,8 +6,8 @@ A website for Deposera, a fictional deposit-holding company in the Netherlands, 
 
 - `index.html`: home page, with the drag-the-coin game in the hero
 - `how-it-works.html`: steps for tenants and landlords, plus a timeline
-- `pricing.html`: what's included, and who pays (tenants, one-off 5% fee)
-- `disputes.html`: damage, repairs, disputes and a worked example
+- `pricing.html`: what's included, and who pays (letting agencies or independent landlords; free for tenants)
+- `disputes.html`: damage, repairs and disputes, with an interactive repair checklist
 - `faq.html`: frequently asked questions
 - `about.html`: the problem, the mission and the team
 - `contact.html`: a demo contact form (nothing is sent)
@@ -19,7 +19,7 @@ No build step is needed. Open `index.html` in a browser, or host the folder on G
 ## Files
 
 - `style.css`: all styling (forest green, cream and brass theme)
-- `main.js`: the menu, scroll effects, coin game and form checks
+- `main.js`: the menu, scroll effects, coin game, repair checklist and form checks
 - `assets/`: logo and favicon
 
 Fonts (Cormorant Garamond and Inter) load from Google Fonts. Without an internet connection, the site falls back to Georgia and the system font.
