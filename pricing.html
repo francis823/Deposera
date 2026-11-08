@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en-GB">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Pricing | Deposera</title>
-  <meta name="description" content="One fee of 3% of the deposit, paid once by the landlord. Tenants pay nothing. Try the fee calculator.">
+  <meta name="description" content="Everything Deposera includes, for one small fee paid by the tenant. Free for landlords and letting agencies.">
   <meta name="theme-color" content="#0b1d15">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -32,7 +32,7 @@
         <ul>
           <li><a href="how-it-works.html">How it works</a></li>
           <li><a href="pricing.html" aria-current="page">Pricing</a></li>
-          <li><a href="disputes.html">Disputes</a></li>
+          <li><a href="disputes.html">Damage &amp; disputes</a></li>
           <li><a href="faq.html">FAQ</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="contact.html">Contact</a></li>
@@ -45,137 +45,103 @@
     <section class="page-hero">
       <div class="container stack reading">
         <p class="eyebrow">Pricing</p>
-        <h1>One fee. Paid once. <em>Never by the tenant.</em></h1>
-        <p class="lead">Landlords pay a one-off fee of 3% of the deposit. Tenants pay nothing, and the fee never comes out of the deposit.</p>
+        <h1>One small fee. <em>Everything protected.</em></h1>
+        <p class="lead">Tenants pay a single fee when the tenancy starts. It's paid separately, so the full deposit is held for them. Landlords and letting agencies pay nothing.</p>
       </div>
     </section>
 
-    <section class="section" aria-labelledby="calc-title">
-      <div class="container split">
-        <div class="stack reveal">
-          <p class="eyebrow">Fee calculator</p>
-          <h2 id="calc-title">Work out your fee</h2>
-          <p class="muted">Type the deposit amount, move the slider or pick a common amount. The fee updates as you go.</p>
-          <ul class="list">
-            <li>The fee stays the same whatever happens at move-out.</li>
-            <li>Dispute review is included. Neither side pays extra.</li>
-            <li>The full deposit is held for the tenant.</li>
-          </ul>
-        </div>
-
-        <form class="card calc reveal" data-fee-calc novalidate>
-          <div class="field">
-            <label for="deposit-amount" id="deposit-label">Deposit amount</label>
-            <div class="calc__amount">
-              <span aria-hidden="true">£</span>
-              <input id="deposit-amount" name="deposit" type="number" inputmode="decimal" min="0" max="50000" step="any" value="1500" data-calc-input>
-            </div>
-          </div>
-          <input class="calc__range" type="range" min="100" max="10000" step="50" value="1500" aria-labelledby="deposit-label" data-calc-range>
-          <div class="chips" role="group" aria-label="Common deposit amounts">
-            <button class="chip" type="button" data-value="800">£800</button>
-            <button class="chip" type="button" data-value="1200">£1,200</button>
-            <button class="chip" type="button" data-value="1500">£1,500</button>
-            <button class="chip" type="button" data-value="2500">£2,500</button>
-            <button class="chip" type="button" data-value="5000">£5,000</button>
-          </div>
-          <div class="calc__visual" aria-hidden="true">
-            <div class="coin-stacks" data-calc-stacks></div>
-            <p class="calc__visual-note">Each coin stands for up to £500, all held for the tenant.</p>
-          </div>
-          <dl class="calc__results">
-            <div class="is-key"><dt>Landlord pays once</dt><dd data-calc-fee>£45</dd></div>
-            <div><dt>Tenant pays</dt><dd>£0</dd></div>
-            <div><dt>Held for the tenant</dt><dd data-calc-held>£1,500</dd></div>
-          </dl>
-          <p class="visually-hidden" role="status" data-calc-live></p>
-          <p class="small calc__note">An example only. Deposera is fictional and takes no payments.</p>
-        </form>
-      </div>
-    </section>
-
-    <section class="section section--tint" aria-labelledby="included-title">
+    <section class="section" aria-labelledby="included-title">
       <div class="container">
         <div class="section-head stack reveal">
           <p class="eyebrow">What's included</p>
-          <h2 id="included-title">Everything, for one fee</h2>
+          <h2 id="included-title">Everything a deposit needs, <em>in one service</em></h2>
+          <p class="lead">From the first photo to the final payout, we do the work that usually causes arguments.</p>
         </div>
         <div class="grid-3">
           <article class="card feature reveal">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8a2 2 0 0 1 2-2h2l1.5-2h7L17 6h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><circle cx="12" cy="13" r="3.5"/></svg></div>
+            <h3>Move-in and move-out photos</h3>
+            <p>We photograph every room ourselves, so the record is neutral. Both sides can add notes within 7 days of the keys being handed over.</p>
+          </article>
+          <article class="card feature reveal">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5M8.5 11l2 2 3.5-3.5"/></svg></div>
+            <h3>A pre-inspection before move-out</h3>
+            <p>We walk through the home with the landlord and list any damage, so the tenant knows exactly what to expect.</p>
+          </article>
+          <article class="card feature reveal">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 6.5a4 4 0 0 0 5 5L13 18a2.1 2.1 0 0 1-3-3Z"/><path d="M14.5 6.5 17 4l3 3-2.5 2.5M10 15l-6 6"/></svg></div>
+            <h3>The chance to fix it first</h3>
+            <p>Tenants can repair damage themselves before key return. Anything left is repaired by a company the landlord chooses.</p>
+          </article>
+          <article class="card feature reveal">
             <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="15" rx="2"/><circle cx="12" cy="11.5" r="3.5"/><path d="M12 8v1M12 14v1M8.5 11.5h1M14.5 11.5h1M6 19v2M18 19v2"/></svg></div>
             <h3>A separate holding account</h3>
-            <p>The deposit is kept apart from our own money for the whole tenancy.</p>
+            <p>The deposit is kept apart from our own money for the whole tenancy. Neither side can take it out alone.</p>
           </article>
           <article class="card feature reveal">
-            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l5 5v13H7Z"/><path d="M14 3v5h5M10 13h6M10 17h4"/></svg></div>
-            <h3>One shared record</h3>
-            <p>Inventories, photos, invoices and messages, all visible to both sides.</p>
-          </article>
-          <article class="card feature reveal">
-            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 1 1 12 0v5l2 2H4Z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg></div>
-            <h3>Deadline reminders</h3>
-            <p>We remind each side before every deadline, so nothing slips.</p>
-          </article>
-          <article class="card feature reveal">
-            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7Z"/></svg></div>
-            <h3>Fast payouts</h3>
-            <p>Agreed amounts are paid to the right person within 3 working days.</p>
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+            <h3>Money back on time</h3>
+            <p>Within 14 days of key return when nothing needs repairing, or within 30 days when something does.</p>
           </article>
           <article class="card feature reveal">
             <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M7 21h10M5 7h14M12 5l-7 2M12 5l7 2"/><path d="M5 7l-3 6a3 3 0 0 0 6 0Z M19 7l-3 6a3 3 0 0 0 6 0Z"/></svg></div>
-            <h3>Independent dispute review</h3>
-            <p>A reviewer with no contact with either side decides, with written reasons.</p>
-          </article>
-          <article class="card feature reveal">
-            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14a6.5 6.5 0 0 1 3.5 6"/></svg></div>
-            <h3>Help for both sides</h3>
-            <p>Our tenant support and landlord accounts teams help with records and deadlines.</p>
+            <h3>Fair decisions</h3>
+            <p>We check every damage claim against our photos. If either side still disagrees, an independent reviewer decides.</p>
           </article>
         </div>
       </div>
     </section>
 
-    <section class="section" aria-labelledby="example-title">
-      <div class="container split">
-        <div class="stack reveal">
-          <p class="eyebrow">Worked example</p>
-          <h2 id="example-title">A £1,500 deposit</h2>
-          <p class="muted">The landlord pays the fee separately. The tenant's £1,500 is held in full, and any amount that isn't deducted goes back to them.</p>
+    <section class="section section--tint" aria-labelledby="who-title">
+      <div class="container">
+        <div class="section-head stack reveal">
+          <p class="eyebrow">Who gets what</p>
+          <h2 id="who-title">Good for every side of the tenancy</h2>
         </div>
-        <div class="table-wrap reveal">
-          <table>
-            <caption>Who pays what on a £1,500 deposit</caption>
-            <thead>
-              <tr>
-                <th scope="col">Item</th>
-                <th scope="col" class="number">Tenant</th>
-                <th scope="col" class="number">Landlord</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><th scope="row">Deposit, held by Deposera</th><td class="number">£1,500</td><td class="number">£0</td></tr>
-              <tr><th scope="row">Deposera fee (3%)</th><td class="number">£0</td><td class="number">£45</td></tr>
-              <tr><th scope="row">Dispute review, if needed</th><td class="number">£0</td><td class="number">£0</td></tr>
-            </tbody>
-            <tfoot>
-              <tr><th scope="row">Total fees</th><td class="number">£0</td><td class="number">£45</td></tr>
-            </tfoot>
-          </table>
+        <div class="grid-3">
+          <article class="card card--dark audience reveal">
+            <p class="eyebrow">Tenants</p>
+            <h3>Protection from day one</h3>
+            <ul class="list">
+              <li>Your deposit is safe and visible at all times</li>
+              <li>You see the damage list before you leave</li>
+              <li>Fix things yourself and keep more of your money</li>
+            </ul>
+            <p class="small fine-print">One-off fee of 5% of the deposit, paid by the tenant when the tenancy starts.</p>
+          </article>
+          <article class="card audience reveal">
+            <p class="eyebrow">Landlords</p>
+            <h3>Pay nothing</h3>
+            <ul class="list">
+              <li>Professional inspections at both ends of the tenancy</li>
+              <li>Choose your own repair company for anything left unfixed</li>
+              <li>14 days after key return to report anything we missed</li>
+            </ul>
+          </article>
+          <article class="card audience reveal">
+            <p class="eyebrow">Letting agencies</p>
+            <h3 id="agencies-title">Pay nothing</h3>
+            <ul class="list">
+              <li>We handle inspections, photos and payouts for you</li>
+              <li>Fewer disputes landing on your desk</li>
+              <li>A premium service to offer every client</li>
+            </ul>
+          </article>
         </div>
       </div>
     </section>
 
-    <section class="section section--tint" aria-labelledby="cta-title">
+    <section class="section" aria-labelledby="cta-title">
       <div class="container">
         <div class="cta reveal">
           <div class="stack">
-            <p class="eyebrow">Questions</p>
-            <h2 id="cta-title">Still wondering about the fee?</h2>
-            <p>Our FAQ covers costs, deadlines and what happens if you disagree.</p>
+            <p class="eyebrow">Letting agencies</p>
+            <h2 id="cta-title">Offer Deposera to your clients</h2>
+            <p>Tell us about your agency and we'll show you how it works with your tenancies.</p>
           </div>
           <div class="actions">
-            <a class="button" href="faq.html">Read the FAQ</a>
-            <a class="button button--ghost" href="contact.html">Contact us</a>
+            <a class="button" href="contact.html">Contact us</a>
+            <a class="button button--ghost" href="faq.html">Read the FAQ</a>
           </div>
         </div>
       </div>
@@ -200,7 +166,7 @@
           <li><a href="index.html">Home</a></li>
           <li><a href="how-it-works.html">How it works</a></li>
           <li><a href="pricing.html">Pricing</a></li>
-          <li><a href="disputes.html">Disputes</a></li>
+          <li><a href="disputes.html">Damage &amp; disputes</a></li>
           <li><a href="faq.html">FAQ</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="contact.html">Contact</a></li>

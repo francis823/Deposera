@@ -1,4 +1,4 @@
-/* Deposera site scripts: menu, scroll effects, coin game, fee calculator, contact form. */
+/* Deposera site scripts: menu, scroll effects, coin game, contact form. */
 (function () {
   "use strict";
 
@@ -6,11 +6,11 @@
 
   /* ---------- Helpers ---------- */
 
-  function formatGBP(value) {
+  function formatEUR(value) {
     var whole = Math.abs(value - Math.round(value)) < 0.005;
     return new Intl.NumberFormat("en-GB", {
       style: "currency",
-      currency: "GBP",
+      currency: "EUR",
       minimumFractionDigits: whole ? 0 : 2,
       maximumFractionDigits: whole ? 0 : 2
     }).format(whole ? Math.round(value) : value);
@@ -24,7 +24,7 @@
 
   // Count a number up or down inside an element. Returns a cancel function.
   function animateNumber(el, from, to, duration, format) {
-    format = format || formatGBP;
+    format = format || formatEUR;
     if (reduceMotion || from === to) {
       el.textContent = format(to);
       return function () {};
@@ -258,7 +258,7 @@
       badge.classList.add("is-returned");
       animateNumber(heldEl, amount, 0, 900);
       animateNumber(returnedEl, 0, amount, 900);
-      status.textContent = "Deposit returned. " + formatGBP(amount) + " is back with the tenant, paid within 3 working days.";
+      status.textContent = "Deposit returned. " + formatEUR(amount) + " goes back to the tenant within 14 days of key return.";
       resetButton.hidden = false;
       if (document.activeElement === coin || document.activeElement === document.body) resetButton.focus();
     }
@@ -283,8 +283,8 @@
       }, 600);
       badge.textContent = "Held safely";
       badge.classList.remove("is-returned");
-      heldEl.textContent = formatGBP(amount);
-      returnedEl.textContent = formatGBP(0);
+      heldEl.textContent = formatEUR(amount);
+      returnedEl.textContent = formatEUR(0);
       status.textContent = initialMessage;
       resetButton.hidden = true;
       if (hadFocus) coin.focus();
@@ -347,107 +347,6 @@
   }
 
   document.querySelectorAll("[data-coin-game]").forEach(initCoinGame);
-
-  /* ---------- Fee calculator ---------- */
-
-  function initFeeCalc(form) {
-    var RATE = 0.03;
-    var COIN_VALUE = 500;
-    var MAX_COINS = 20;
-    var PER_STACK = 5;
-    var input = form.querySelector("[data-calc-input]");
-    var range = form.querySelector("[data-calc-range]");
-    var feeEl = form.querySelector("[data-calc-fee]");
-    var heldEl = form.querySelector("[data-calc-held]");
-    var stacks = form.querySelector("[data-calc-stacks]");
-    var live = form.querySelector("[data-calc-live]");
-    var chips = form.querySelectorAll("[data-value]");
-    var min = Number(range.min);
-    var max = Number(range.max);
-
-    var shown = { fee: 0, held: 0 };
-    var cancel = { fee: function () {}, held: function () {} };
-    var announceTimer;
-
-    function showValue(key, el, value) {
-      cancel[key]();
-      var from = shown[key];
-      shown[key] = value;
-      // Count whole pounds, then land on the exact amount (which may include pence).
-      cancel[key] = animateNumber(el, from, value, 450);
-    }
-
-    function drawCoins(deposit) {
-      var count = deposit > 0 ? Math.min(MAX_COINS, Math.ceil(deposit / COIN_VALUE)) : 0;
-      var discs = stacks.querySelectorAll(".disc:not(.is-leaving)");
-      var current = discs.length;
-      var i;
-      for (i = current; i < count; i++) {
-        var disc = document.createElement("span");
-        var stack = Math.floor(i / PER_STACK);
-        var level = i % PER_STACK;
-        disc.className = "disc";
-        disc.style.left = stack * 23 + 2 + "%";
-        disc.style.bottom = level * 13 + 4 + "px";
-        disc.style.zIndex = String(level + 1);
-        disc.style.animationDelay = (i - current) * 35 + "ms";
-        stacks.appendChild(disc);
-      }
-      for (i = current - 1; i >= count; i--) {
-        var leaving = discs[i];
-        leaving.classList.add("is-leaving");
-        setTimeout(leaving.remove.bind(leaving), 260);
-      }
-    }
-
-    function update(rawValue, source) {
-      var deposit = Math.max(0, Math.min(50000, rawValue));
-      var fee = Math.round(deposit * RATE * 100) / 100;
-
-      if (source !== "range") range.value = String(Math.max(min, Math.min(max, deposit)));
-      if (source !== "input") input.value = String(deposit);
-      var fill = ((Number(range.value) - min) / (max - min)) * 100;
-      range.style.setProperty("--fill", fill + "%");
-
-      chips.forEach(function (chip) {
-        chip.setAttribute("aria-pressed", String(Number(chip.dataset.value) === deposit));
-      });
-
-      showValue("fee", feeEl, fee);
-      showValue("held", heldEl, deposit);
-      drawCoins(deposit);
-
-      clearTimeout(announceTimer);
-      announceTimer = setTimeout(function () {
-        live.textContent =
-          "On a " + formatGBP(deposit) + " deposit, the landlord pays " + formatGBP(fee) + ". The tenant pays nothing.";
-      }, 600);
-    }
-
-    input.addEventListener("input", function () {
-      var value = parseFloat(input.value);
-      if (!isNaN(value)) update(value, "input");
-    });
-    input.addEventListener("blur", function () {
-      var value = parseFloat(input.value);
-      update(isNaN(value) ? 0 : Math.round(value * 100) / 100);
-    });
-    range.addEventListener("input", function () {
-      update(Number(range.value), "range");
-    });
-    chips.forEach(function (chip) {
-      chip.addEventListener("click", function () {
-        update(Number(chip.dataset.value));
-      });
-    });
-    form.addEventListener("submit", function (event) {
-      event.preventDefault();
-    });
-
-    update(parseFloat(input.value) || 0);
-  }
-
-  document.querySelectorAll("[data-fee-calc]").forEach(initFeeCalc);
 
   /* ---------- Contact form (demo only: nothing is sent) ---------- */
 
