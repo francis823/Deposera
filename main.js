@@ -571,6 +571,12 @@
       } else {
         status.textContent = "Details look right. The Deposera app is coming soon, so you can't log in yet. This is a demo, so nothing was sent.";
       }
+      // Offer the app prototype after a successful demo log in or sign-up.
+      var appLink = document.createElement("a");
+      appLink.href = "app/index.html";
+      appLink.textContent = "Open the app prototype";
+      status.appendChild(document.createTextNode(" "));
+      status.appendChild(appLink);
       status.classList.remove("is-error");
       status.hidden = false;
       status.focus();
