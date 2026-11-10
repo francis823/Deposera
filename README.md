@@ -11,6 +11,7 @@ A website for Deposera, a fictional deposit-holding company in the Netherlands, 
 - `faq.html`: frequently asked questions
 - `about.html`: the problem, the mission and the team
 - `contact.html`: a demo contact form (nothing is sent)
+- `login.html` and `register.html`: demo log in and sign-up for the future Deposera app (nothing is saved or sent)
 
 ## How to open it
 
@@ -19,7 +20,7 @@ No build step is needed. Open `index.html` in a browser, or host the folder on G
 ## Files
 
 - `style.css`: all styling (forest green, cream and brass theme)
-- `main.js`: the menu, scroll effects, coin game, repair checklist and form checks
+- `main.js`: the menu, scroll effects, coin game, tenant/landlord tabs, FAQ filter, repair checklist and form checks
 - `assets/`: logo and favicon
 
 Fonts (Cormorant Garamond and Inter) load from Google Fonts. Without an internet connection, the site falls back to Georgia and the system font.

@@ -36,102 +36,71 @@
         <ul>
           <li><a href="how-it-works.html">How it works</a></li>
           <li><a href="pricing.html" aria-current="page">Pricing</a></li>
-          <li><a href="disputes.html">Damage &amp; disputes</a></li>
+          <li><a href="disputes.html">Disputes</a></li>
           <li><a href="faq.html">FAQ</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="contact.html">Contact</a></li>
         </ul>
+        <div class="site-nav__account">
+          <a class="nav-login" href="login.html">Log in</a>
+          <a class="button button--small" href="register.html">Register</a>
+        </div>
       </nav>
     </div>
   </header>
 
   <main id="main">
-    <section class="page-hero">
+    <section class="page-hero page-hero--compact">
       <div class="container stack reading">
         <p class="eyebrow">Pricing</p>
         <h1>Free for tenants. <em>Simple for landlords.</em></h1>
-        <p class="lead">Tenants never pay for Deposera. The letting agency working for the landlord pays one simple fee, or the landlord pays it when renting without an agency.</p>
+        <p class="lead">Tenants never pay. The letting agency, or the landlord without one, pays one simple fee.</p>
       </div>
     </section>
 
-    <section class="section" aria-labelledby="included-title">
+    <section class="section" aria-labelledby="flow-title">
       <div class="container">
-        <div class="section-head stack reveal">
+        <div class="section-head section-head--center stack reveal">
+          <p class="eyebrow">Who pays what</p>
+          <h2 id="flow-title">Where the money goes</h2>
+        </div>
+        <div class="flow reveal">
+          <div class="flow__party">
+            <span class="flow__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>
+            <h3>Tenant</h3>
+            <p>Pays the deposit only.<br><strong>€0</strong> for our service</p>
+          </div>
+          <div class="flow__arrow" aria-hidden="true"><span>Deposit</span></div>
+          <div class="flow__party flow__party--hub">
+            <span class="flow__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="15" rx="2"/><circle cx="12" cy="11.5" r="3.5"/><path d="M12 8v1M12 14v1M8.5 11.5h1M14.5 11.5h1M6 19v2M18 19v2"/></svg></span>
+            <h3>Deposera</h3>
+            <p>Holds the deposit in a separate account</p>
+          </div>
+          <div class="flow__arrow flow__arrow--in" aria-hidden="true"><span>Fee</span></div>
+          <div class="flow__party">
+            <span class="flow__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21V5l8-2v18M12 8h8v13M2 21h20M7 8h2M7 12h2M7 16h2M15 12h2M15 16h2"/></svg></span>
+            <h3>Agency or landlord</h3>
+            <p>Pays one simple fee per tenancy</p>
+          </div>
+        </div>
+        <p class="pricing-note center reveal">The fee is 5% of the deposit. It's never taken from the deposit or passed on to the tenant.</p>
+      </div>
+    </section>
+
+    <section class="section section--tint" aria-labelledby="included-title">
+      <div class="container">
+        <div class="section-head section-head--center stack reveal">
           <p class="eyebrow">What's included</p>
-          <h2 id="included-title">Everything a deposit needs, <em>in one service</em></h2>
-          <p class="lead">From the first photo to the final payout, we do the work that usually causes arguments.</p>
+          <h2 id="included-title">Everything, <em>in one service</em></h2>
         </div>
-        <div class="grid-3">
-          <article class="card feature reveal">
-            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8a2 2 0 0 1 2-2h2l1.5-2h7L17 6h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><circle cx="12" cy="13" r="3.5"/></svg></div>
-            <h3>Move-in and move-out photos</h3>
-            <p>We photograph every room ourselves, so the record is neutral. Both sides can add notes within 7 days of the keys being handed over.</p>
-          </article>
-          <article class="card feature reveal">
-            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5M8.5 11l2 2 3.5-3.5"/></svg></div>
-            <h3>A pre-inspection before move-out</h3>
-            <p>We walk through the home with the landlord and list any damage, so the tenant knows exactly what to expect.</p>
-          </article>
-          <article class="card feature reveal">
-            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 6.5a4 4 0 0 0 5 5L13 18a2.1 2.1 0 0 1-3-3Z"/><path d="M14.5 6.5 17 4l3 3-2.5 2.5M10 15l-6 6"/></svg></div>
-            <h3>The chance to fix it first</h3>
-            <p>Tenants can repair damage themselves before key return. Anything left is repaired by a company the landlord chooses.</p>
-          </article>
-          <article class="card feature reveal">
-            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="15" rx="2"/><circle cx="12" cy="11.5" r="3.5"/><path d="M12 8v1M12 14v1M8.5 11.5h1M14.5 11.5h1M6 19v2M18 19v2"/></svg></div>
-            <h3>A separate holding account</h3>
-            <p>The deposit is kept apart from our own money for the whole tenancy. Neither side can take it out alone.</p>
-          </article>
-          <article class="card feature reveal">
-            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
-            <h3>Money back on time</h3>
-            <p>Within 14 days of key return when nothing needs repairing, or within 30 days when something does.</p>
-          </article>
-          <article class="card feature reveal">
-            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M7 21h10M5 7h14M12 5l-7 2M12 5l7 2"/><path d="M5 7l-3 6a3 3 0 0 0 6 0Z M19 7l-3 6a3 3 0 0 0 6 0Z"/></svg></div>
-            <h3>Fair decisions</h3>
-            <p>We check every damage claim against our photos. If either side still disagrees, an independent reviewer decides.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section section--tint" aria-labelledby="who-title">
-      <div class="container">
-        <div class="section-head stack reveal">
-          <p class="eyebrow">Who gets what</p>
-          <h2 id="who-title">Good for everyone in the tenancy</h2>
-        </div>
-        <div class="grid-3">
-          <article class="card card--dark audience reveal">
-            <p class="eyebrow">Tenants</p>
-            <h3>Pay nothing</h3>
-            <ul class="list">
-              <li>Money is only kept for real, proven damage</li>
-              <li>You see the damage list before you leave</li>
-              <li>Fix things yourself and keep more of your money</li>
-            </ul>
-          </article>
-          <article class="card audience reveal">
-            <p class="eyebrow">Letting agencies</p>
-            <h3 id="agencies-title">Less admin, fewer arguments</h3>
-            <ul class="list">
-              <li>We handle inspections, photos and payouts</li>
-              <li>Fewer disputes landing on your desk</li>
-              <li>A service your landlords will thank you for</li>
-            </ul>
-          </article>
-          <article class="card audience reveal">
-            <p class="eyebrow">Independent landlords</p>
-            <h3>Your property, properly checked</h3>
-            <ul class="list">
-              <li>Professional inspections at both ends of the tenancy</li>
-              <li>Choose your own repair company for anything left unfixed</li>
-              <li>14 days after key return to report anything we missed</li>
-            </ul>
-          </article>
-        </div>
-        <p class="pricing-note reveal">Letting agencies, or landlords renting without one, pay a one-off fee of 5% of the deposit per tenancy. It's never taken from the deposit or passed on to the tenant.</p>
+        <ul class="icon-grid reveal">
+          <li><span class="icon-grid__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8a2 2 0 0 1 2-2h2l1.5-2h7L17 6h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><circle cx="12" cy="13" r="3.5"/></svg></span><h3>Neutral photos</h3><p>Taken by us at move-in and move-out.</p></li>
+          <li><span class="icon-grid__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5M8.5 11l2 2 3.5-3.5"/></svg></span><h3>Pre-inspection</h3><p>The damage list arrives before move-out.</p></li>
+          <li><span class="icon-grid__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 6.5a4 4 0 0 0 5 5L13 18a2.1 2.1 0 0 1-3-3Z"/><path d="M14.5 6.5 17 4l3 3-2.5 2.5M10 15l-6 6"/></svg></span><h3>Fix it first</h3><p>Tenants can repair damage themselves.</p></li>
+          <li><span class="icon-grid__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="15" rx="2"/><circle cx="12" cy="11.5" r="3.5"/><path d="M12 8v1M12 14v1M8.5 11.5h1M14.5 11.5h1M6 19v2M18 19v2"/></svg></span><h3>Separate account</h3><p>Kept apart from our own money.</p></li>
+          <li><span class="icon-grid__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><h3>On-time payout</h3><p>14 days, or 30 if repairs are needed.</p></li>
+          <li><span class="icon-grid__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M7 21h10M5 7h14M12 5l-7 2M12 5l7 2"/><path d="M5 7l-3 6a3 3 0 0 0 6 0Z M19 7l-3 6a3 3 0 0 0 6 0Z"/></svg></span><h3>Fair decisions</h3><p>An independent reviewer has the final say.</p></li>
+        </ul>
       </div>
     </section>
 
@@ -141,11 +110,10 @@
           <div class="stack">
             <p class="eyebrow">Agencies and landlords</p>
             <h2 id="cta-title">Use Deposera on your next tenancy</h2>
-            <p>Tell us about your properties and we'll show you how it works.</p>
           </div>
           <div class="actions">
-            <a class="button" href="contact.html">Contact us</a>
-            <a class="button button--ghost" href="faq.html">Read the FAQ</a>
+            <a class="button" href="register.html">Register</a>
+            <a class="button button--ghost" href="contact.html">Contact us</a>
           </div>
         </div>
       </div>
@@ -170,10 +138,12 @@
           <li><a href="index.html">Home</a></li>
           <li><a href="how-it-works.html">How it works</a></li>
           <li><a href="pricing.html">Pricing</a></li>
-          <li><a href="disputes.html">Damage &amp; disputes</a></li>
+          <li><a href="disputes.html">Disputes</a></li>
           <li><a href="faq.html">FAQ</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="contact.html">Contact</a></li>
+          <li><a href="login.html">Log in</a></li>
+          <li><a href="register.html">Register</a></li>
         </ul>
       </nav>
       <div class="site-footer__legal">

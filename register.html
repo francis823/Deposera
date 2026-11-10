@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Register | Deposera</title>
+  <meta name="description" content="Create a Deposera account as a tenant, landlord or letting agency. A demo for a fictional company: nothing is saved.">
+  <meta name="theme-color" content="#0b1d15">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Deposera">
+  <meta property="og:title" content="Register | Deposera">
+  <meta property="og:description" content="Create a Deposera account as a tenant, landlord or letting agency. A demo for a fictional company: nothing is saved.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&amp;family=Inter:wght@400;500;600&amp;display=swap">
+  <link rel="stylesheet" href="style.css">
+  <script>document.documentElement.classList.add("js");</script>
+  <script src="main.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="index.html" aria-label="Deposera home">
+        <svg class="brand__mark" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+          <path d="M6 18.5 20 7l14 11.5V32a2.5 2.5 0 0 1-2.5 2.5h-23A2.5 2.5 0 0 1 6 32Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          <circle cx="20" cy="24" r="6.2" fill="currentColor"/>
+          <circle cx="20" cy="24" r="3.7" fill="none" stroke="#0b1d15" stroke-width="1.1" opacity=".5"/>
+        </svg>
+        <span class="brand__name" aria-hidden="true">Deposera</span>
+      </a>
+      <button class="menu-button" type="button" aria-expanded="false" aria-controls="site-nav"><span class="menu-button__bars" aria-hidden="true"></span>Menu</button>
+      <nav class="site-nav" id="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="how-it-works.html">How it works</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="disputes.html">Disputes</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="site-nav__account">
+          <a class="nav-login" href="login.html">Log in</a>
+          <a class="button button--small" href="register.html" aria-current="page">Register</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="auth">
+      <div class="container auth__inner">
+        <div class="auth__card card">
+          <div class="stack">
+            <p class="eyebrow">Register</p>
+            <h1 class="auth__title">Create your account</h1>
+            <p class="muted">Free for tenants. Takes a minute.</p>
+          </div>
+          <form class="form" data-auth-form="register" novalidate>
+            <fieldset class="roles" data-check="role" id="reg-role">
+              <legend>I am a</legend>
+              <div class="roles__options">
+                <label class="role-option">
+                  <input type="radio" name="role" value="tenant">
+                  <span class="role-option__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>
+                  <span class="role-option__name">Tenant</span>
+                </label>
+                <label class="role-option">
+                  <input type="radio" name="role" value="landlord">
+                  <span class="role-option__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11 12 4l9 7"/><path d="M5 9.5V20h14V9.5M10 20v-5h4v5"/></svg></span>
+                  <span class="role-option__name">Landlord</span>
+                </label>
+                <label class="role-option">
+                  <input type="radio" name="role" value="letting agency">
+                  <span class="role-option__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21V5l8-2v18M12 8h8v13M2 21h20M7 8h2M7 12h2M7 16h2M15 12h2M15 16h2"/></svg></span>
+                  <span class="role-option__name">Agency</span>
+                </label>
+              </div>
+              <p class="field__error" id="reg-role-error" hidden></p>
+            </fieldset>
+            <div class="field">
+              <label for="reg-name">Full name</label>
+              <input id="reg-name" name="name" type="text" autocomplete="off" data-check="required">
+              <p class="field__error" id="reg-name-error" hidden></p>
+            </div>
+            <div class="field">
+              <label for="reg-email">Email address</label>
+              <input id="reg-email" name="email" type="email" autocomplete="off" data-check="email">
+              <p class="field__error" id="reg-email-error" hidden></p>
+            </div>
+            <div class="field">
+              <label for="reg-password">Password</label>
+              <div class="password">
+                <input id="reg-password" name="password" type="password" autocomplete="off" data-check="new-password" aria-describedby="reg-password-hint">
+                <button class="password__toggle" type="button" aria-pressed="false" aria-controls="reg-password" data-password-toggle>Show</button>
+              </div>
+              <div class="strength" data-strength aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+              <p class="field__hint" id="reg-password-hint">At least 8 characters. <span data-strength-label></span></p>
+              <p class="field__error" id="reg-password-error" hidden></p>
+            </div>
+            <div class="field">
+              <label class="check">
+                <input type="checkbox" id="reg-terms" name="terms" data-check="checked">
+                <span>I agree to the terms and privacy policy</span>
+              </label>
+              <p class="field__error" id="reg-terms-error" hidden></p>
+            </div>
+            <button class="button button--block" type="submit">Create account</button>
+            <p class="form-status" data-form-status tabindex="-1" role="status" hidden></p>
+          </form>
+          <p class="auth__switch">Already have an account? <a href="login.html">Log in</a></p>
+          <p class="auth__demo">Demo only. The app is coming soon, so nothing is saved.</p>
+        </div>
+
+        <div class="auth__visual">
+          <div class="auth__visual-copy">
+            <p class="eyebrow">Why register</p>
+            <ul class="auth__perks">
+              <li><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 6v6c0 4.5 3.4 8 8 9 4.6-1 8-4.5 8-9V6Z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg></span>See your deposit at any time</li>
+              <li><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8a2 2 0 0 1 2-2h2l1.5-2h7L17 6h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><circle cx="12" cy="13" r="3.5"/></svg></span>All photos in one place</li>
+              <li><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 1 1 12 0v5l2 2H4Z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg></span>Reminders before every deadline</li>
+            </ul>
+          </div>
+          <div class="app-mock reveal" aria-hidden="true">
+          <div class="app-mock__notch"></div>
+          <p class="app-mock__hello">Hi Sam</p>
+          <div class="app-mock__balance">
+            <span class="app-mock__label">Your deposit</span>
+            <span class="app-mock__amount">€1,500</span>
+            <span class="app-mock__pill">Held safely</span>
+          </div>
+          <ol class="app-mock__steps">
+            <li class="is-done"><span></span>Move-in</li>
+            <li class="is-done"><span></span>Notes</li>
+            <li class="is-current"><span></span>Pre-check</li>
+            <li><span></span>Payout</li>
+          </ol>
+          <div class="app-mock__row"><span class="app-mock__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8a2 2 0 0 1 2-2h2l1.5-2h7L17 6h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><circle cx="12" cy="13" r="3.5"/></svg></span><span>Move-in report</span><strong>48 photos</strong></div>
+          <div class="app-mock__row"><span class="app-mock__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span><span>Pre-inspection</span><strong>12 June</strong></div>
+          <div class="app-mock__row"><span class="app-mock__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 6v6c0 4.5 3.4 8 8 9 4.6-1 8-4.5 8-9V6Z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg></span><span>Damage list</span><strong>Nothing yet</strong></div>
+        </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <div class="site-footer__brand">
+        <a class="brand" href="index.html" aria-label="Deposera home">
+        <svg class="brand__mark" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+          <path d="M6 18.5 20 7l14 11.5V32a2.5 2.5 0 0 1-2.5 2.5h-23A2.5 2.5 0 0 1 6 32Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          <circle cx="20" cy="24" r="6.2" fill="currentColor"/>
+          <circle cx="20" cy="24" r="3.7" fill="none" stroke="#0b1d15" stroke-width="1.1" opacity=".5"/>
+        </svg>
+        <span class="brand__name" aria-hidden="true">Deposera</span>
+        </a>
+        <p>Deposits held safely, returned on time and split fairly.</p>
+      </div>
+      <nav aria-label="Footer">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="how-it-works.html">How it works</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="disputes.html">Disputes</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="login.html">Log in</a></li>
+          <li><a href="register.html">Register</a></li>
+        </ul>
+      </nav>
+      <div class="site-footer__legal">
+        <p>Deposera is a fictional company created for a school project.</p>
+        <p>It holds no money and offers no real service.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

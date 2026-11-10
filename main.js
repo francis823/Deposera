@@ -1,4 +1,4 @@
-/* Deposera site scripts: menu, scroll effects, coin game, repair checklist, contact form. */
+/* Deposera site scripts: menu, scroll effects, coin game, tabs, FAQ filter, repair checklist and forms. */
 (function () {
   "use strict";
 
@@ -75,7 +75,7 @@
     document.addEventListener("click", function (event) {
       if (nav.classList.contains("is-open") && !header.contains(event.target)) setMenu(false);
     });
-    window.matchMedia("(min-width: 901px)").addEventListener("change", function (mq) {
+    window.matchMedia("(min-width: 1081px)").addEventListener("change", function (mq) {
       if (mq.matches) setMenu(false);
     });
   }
@@ -399,6 +399,198 @@
   }
 
   document.querySelectorAll("[data-repair-sim]").forEach(initRepairSim);
+
+  /* ---------- Tabs: tenant / landlord ---------- */
+
+  function initTabs(list) {
+    var tabs = Array.prototype.slice.call(list.querySelectorAll('[role="tab"]'));
+    function select(tab, focus) {
+      tabs.forEach(function (t) {
+        var on = t === tab;
+        t.setAttribute("aria-selected", String(on));
+        t.tabIndex = on ? 0 : -1;
+        document.getElementById(t.getAttribute("aria-controls")).hidden = !on;
+      });
+      if (focus) tab.focus();
+    }
+    tabs.forEach(function (tab, i) {
+      tab.addEventListener("click", function () {
+        select(tab);
+      });
+      tab.addEventListener("keydown", function (event) {
+        var next = null;
+        if (event.key === "ArrowRight") next = tabs[(i + 1) % tabs.length];
+        if (event.key === "ArrowLeft") next = tabs[(i - 1 + tabs.length) % tabs.length];
+        if (event.key === "Home") next = tabs[0];
+        if (event.key === "End") next = tabs[tabs.length - 1];
+        if (next) {
+          event.preventDefault();
+          select(next, true);
+        }
+      });
+    });
+    select(tabs.filter(function (t) { return t.getAttribute("aria-selected") === "true"; })[0] || tabs[0]);
+  }
+
+  document.querySelectorAll("[data-tabs]").forEach(initTabs);
+
+  /* ---------- FAQ topic filter ---------- */
+
+  function initFaqFilter(bar) {
+    var buttons = bar.querySelectorAll("[data-filter]");
+    var groups = document.querySelectorAll("[data-group]");
+    buttons.forEach(function (button) {
+      button.addEventListener("click", function () {
+        var filter = button.dataset.filter;
+        buttons.forEach(function (b) {
+          b.setAttribute("aria-pressed", String(b === button));
+        });
+        groups.forEach(function (group) {
+          group.hidden = filter !== "all" && group.dataset.group !== filter;
+        });
+      });
+    });
+  }
+
+  document.querySelectorAll("[data-faq-filter]").forEach(initFaqFilter);
+
+  /* ---------- Shared form helpers ---------- */
+
+  var EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  function showError(field, errorEl, message) {
+    field.setAttribute("aria-invalid", String(Boolean(message)));
+    var described = (field.getAttribute("aria-describedby") || "").split(" ").filter(function (id) {
+      return id && id !== errorEl.id;
+    });
+    if (message) described.push(errorEl.id);
+    if (described.length) field.setAttribute("aria-describedby", described.join(" "));
+    else field.removeAttribute("aria-describedby");
+    errorEl.textContent = message;
+    errorEl.hidden = !message;
+  }
+
+  /* ---------- Log in and register (demo only: nothing is sent) ---------- */
+
+  function passwordScore(value) {
+    var score = 0;
+    if (value.length >= 8) score++;
+    if (/[a-z]/.test(value) && /[A-Z]/.test(value)) score++;
+    if (/\d/.test(value)) score++;
+    if (/[^A-Za-z0-9]/.test(value) || value.length >= 14) score++;
+    return value ? Math.max(1, score) : 0;
+  }
+
+  function initAuthForm(form) {
+    var mode = form.dataset.authForm;
+    var status = form.querySelector("[data-form-status]");
+    var fields = form.querySelectorAll("[data-check]");
+
+    function check(field) {
+      var type = field.dataset.check;
+      var value = field.value || "";
+      if (type === "required") return value.trim() ? "" : "This field is required.";
+      if (type === "email") {
+        if (!value.trim()) return "Enter your email address.";
+        return EMAIL.test(value.trim()) ? "" : "Enter an email address like name@example.com.";
+      }
+      if (type === "new-password") return value.length >= 8 ? "" : "Use at least 8 characters.";
+      if (type === "checked") return field.checked ? "" : "Please agree to continue.";
+      if (type === "role") return field.querySelector("input:checked") ? "" : "Choose tenant, landlord or agency.";
+      return "";
+    }
+
+    function validate(field) {
+      var errorEl = document.getElementById(field.id + "-error");
+      var message = check(field);
+      showError(field, errorEl, message);
+      return !message;
+    }
+
+    fields.forEach(function (field) {
+      var events = field.dataset.check === "role" || field.dataset.check === "checked" ? ["change"] : ["input", "blur"];
+      events.forEach(function (name) {
+        field.addEventListener(name, function () {
+          if (name === "blur" && !field.value) return;
+          if (name === "input" && field.getAttribute("aria-invalid") !== "true") return;
+          validate(field);
+        });
+      });
+    });
+
+    // Show or hide the password.
+    form.querySelectorAll("[data-password-toggle]").forEach(function (button) {
+      var input = document.getElementById(button.getAttribute("aria-controls"));
+      button.addEventListener("click", function () {
+        var show = input.type === "password";
+        input.type = show ? "text" : "password";
+        button.textContent = show ? "Hide" : "Show";
+        button.setAttribute("aria-pressed", String(show));
+      });
+    });
+
+    // Password strength meter (register).
+    var meter = form.querySelector("[data-strength]");
+    if (meter) {
+      var label = form.querySelector("[data-strength-label]");
+      var words = ["", "Weak", "Okay", "Good", "Strong"];
+      form.querySelector('[data-check="new-password"]').addEventListener("input", function (event) {
+        var score = passwordScore(event.target.value);
+        meter.dataset.score = String(score);
+        label.textContent = words[score] ? "Strength: " + words[score] + "." : "";
+      });
+    }
+
+    var forgot = form.querySelector("[data-forgot]");
+    if (forgot) {
+      forgot.addEventListener("click", function () {
+        status.classList.remove("is-error");
+        status.textContent = "Password reset will be available in the Deposera app. This is a demo, so nothing was sent.";
+        status.hidden = false;
+        status.focus();
+      });
+    }
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      var firstInvalid = null;
+      fields.forEach(function (field) {
+        if (!validate(field) && !firstInvalid) firstInvalid = field;
+      });
+      if (firstInvalid) {
+        status.hidden = true;
+        (firstInvalid.querySelector("input") || firstInvalid).focus();
+        return;
+      }
+
+      if (mode === "register") {
+        var first = form.elements.name.value.trim().split(" ")[0];
+        var role = form.querySelector('input[name="role"]:checked').value;
+        status.textContent =
+          "Thanks, " + first + ". Your " + role + " account will be ready when the Deposera app launches. This is a demo, so nothing was saved.";
+      } else {
+        status.textContent = "Details look right. The Deposera app is coming soon, so you can't log in yet. This is a demo, so nothing was sent.";
+      }
+      status.classList.remove("is-error");
+      status.hidden = false;
+      status.focus();
+      form.reset();
+      if (meter) {
+        meter.dataset.score = "0";
+        form.querySelector("[data-strength-label]").textContent = "";
+      }
+      form.querySelectorAll("[data-password-toggle]").forEach(function (button) {
+        document.getElementById(button.getAttribute("aria-controls")).type = "password";
+        button.textContent = "Show";
+        button.setAttribute("aria-pressed", "false");
+      });
+      fields.forEach(function (field) {
+        field.removeAttribute("aria-invalid");
+      });
+    });
+  }
+
+  document.querySelectorAll("[data-auth-form]").forEach(initAuthForm);
 
   /* ---------- Contact form (demo only: nothing is sent) ---------- */
 

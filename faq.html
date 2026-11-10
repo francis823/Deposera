@@ -36,97 +36,108 @@
         <ul>
           <li><a href="how-it-works.html">How it works</a></li>
           <li><a href="pricing.html">Pricing</a></li>
-          <li><a href="disputes.html">Damage &amp; disputes</a></li>
+          <li><a href="disputes.html">Disputes</a></li>
           <li><a href="faq.html" aria-current="page">FAQ</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="contact.html">Contact</a></li>
         </ul>
+        <div class="site-nav__account">
+          <a class="nav-login" href="login.html">Log in</a>
+          <a class="button button--small" href="register.html">Register</a>
+        </div>
       </nav>
     </div>
   </header>
 
   <main id="main">
-    <section class="page-hero">
+    <section class="page-hero page-hero--compact">
       <div class="container stack reading">
         <p class="eyebrow">FAQ</p>
         <h1>Frequently asked <em>questions</em></h1>
-        <p class="lead">Short answers to the questions we hear most often. Select a question to open its answer.</p>
+        <p class="lead">Short answers. Pick a topic or open a question.</p>
       </div>
     </section>
 
     <section class="section" aria-label="Questions and answers">
-      <div class="container split">
-        <div class="stack reveal">
-          <p class="eyebrow">Can't find it?</p>
-          <h2>Ask us directly</h2>
-          <p class="muted">If your question isn't here, send it through our contact form.</p>
-          <p><a class="arrow-link" href="contact.html">Contact us</a></p>
+      <div class="container faq-wrap">
+        <div class="tabs tabs--pills reveal" role="group" aria-label="Filter questions by topic" data-faq-filter>
+          <button class="tabs__tab" type="button" data-filter="all" aria-pressed="true">All</button>
+          <button class="tabs__tab" type="button" data-filter="money" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5a4 4 0 1 0 0 7M7 10.5h6M7 13.5h6"/></svg>Money</button>
+          <button class="tabs__tab" type="button" data-filter="damage" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8a2 2 0 0 1 2-2h2l1.5-2h7L17 6h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><circle cx="12" cy="13" r="3.5"/></svg>Inspections</button>
+          <button class="tabs__tab" type="button" data-filter="about" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 6v6c0 4.5 3.4 8 8 9 4.6-1 8-4.5 8-9V6Z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg>About us</button>
         </div>
-        <div class="stack--large">
-          <div class="faq-group reveal">
-            <h2>Money and deadlines</h2>
-            <div class="faq">
-              <details open>
-                <summary><h3>How long will it take to get my deposit back?</h3></summary>
-                <p class="faq__answer">Within 14 days of handing back the keys if nothing needs repairing. If something does, within 30 days, minus the repair cost.</p>
-              </details>
-              <details>
-                <summary><h3>Why 14 and 30 days?</h3></summary>
-                <p class="faq__answer">They follow Dutch rules for returning a deposit: 14 days after the tenancy ends, or 30 days when costs for damage are being deducted.</p>
-              </details>
-              <details>
-                <summary><h3>How much does Deposera cost?</h3></summary>
-                <p class="faq__answer">Nothing for tenants. The letting agency working for the landlord pays a one-off fee of 5% of the deposit, or the landlord pays it when renting without an agency. See <a href="pricing.html">what's included</a>.</p>
-              </details>
-              <details>
-                <summary><h3>Can my landlord take money out of the deposit without telling me?</h3></summary>
-                <p class="faq__answer">No. Money only comes out for damage we have checked, backed by a repair invoice, or when an independent reviewer decides it should. You can check the status of your deposit at any time.</p>
-              </details>
-            </div>
-          </div>
-          <div class="faq-group reveal">
-            <h2>Inspections and damage</h2>
-            <div class="faq">
-              <details>
-                <summary><h3>Who takes the photos?</h3></summary>
-                <p class="faq__answer">We do, at move-in and at move-out, so the record is neutral. Tenants and landlords have 7 days after the keys are handed over to add their own notes and photos.</p>
-              </details>
-              <details>
-                <summary><h3>Can I fix damage myself instead of paying for it?</h3></summary>
-                <p class="faq__answer">Yes. After the pre-inspection we send you a list of any damage. Anything you repair properly before handing back the keys won't be deducted.</p>
-              </details>
-              <details>
-                <summary><h3>Who chooses the repair company?</h3></summary>
-                <p class="faq__answer">If something is still not fixed when the keys come back, the landlord chooses the company. The cost taken from the deposit is backed by their invoice.</p>
-              </details>
-              <details>
-                <summary><h3>What if the landlord finds damage after I've left?</h3></summary>
-                <p class="faq__answer">The landlord has 14 days after key return to report it. We check it against our move-out photos before anything is deducted.</p>
-              </details>
-              <details>
-                <summary><h3>What if I disagree with a deduction?</h3></summary>
-                <p class="faq__answer">Tell us which item and why. We review the evidence first, and if either side still disagrees, an independent reviewer decides. Read about <a href="disputes.html">damage and disputes</a>.</p>
-              </details>
-            </div>
-          </div>
-          <div class="faq-group reveal">
-            <h2>About Deposera</h2>
-            <div class="faq">
-              <details>
-                <summary><h3>Is Deposera a real company?</h3></summary>
-                <p class="faq__answer">No. Deposera is a fictional company based in the Netherlands, created for a school project. It holds no money and offers no real service, so please don't send it any payment or personal details.</p>
-              </details>
-              <details>
-                <summary><h3>If the landlord's side pays, is Deposera on their side?</h3></summary>
-                <p class="faq__answer">No. Our fee is the same whatever happens at move-out, so we gain nothing from deductions. We take the photos ourselves, every deduction needs proof, and an independent reviewer has the final say in any dispute.</p>
-              </details>
-              <details>
-                <summary><h3>Can the landlord pass the fee on to me?</h3></summary>
-                <p class="faq__answer">No. Dutch law stops landlords, and the letting agents working for them, from charging tenants extra fees. Our fee is also never taken from the deposit.</p>
-              </details>
-            </div>
+
+        <div class="faq-group" data-group="money">
+          <h2>Money and deadlines</h2>
+          <div class="faq">
+            <details open>
+              <summary><h3>How long until I get my deposit back?</h3></summary>
+              <p class="faq__answer">Within 14 days of handing back the keys. If something needs repairing, within 30 days, minus the repair cost.</p>
+            </details>
+            <details>
+              <summary><h3>Why 14 and 30 days?</h3></summary>
+              <p class="faq__answer">They follow Dutch rules: 14 days after the tenancy ends, or 30 days when damage costs are deducted.</p>
+            </details>
+            <details>
+              <summary><h3>How much does Deposera cost?</h3></summary>
+              <p class="faq__answer">Nothing for tenants. The landlord's letting agency pays a one-off fee of 5% of the deposit, or the landlord does when renting without an agency. See <a href="pricing.html">pricing</a>.</p>
+            </details>
+            <details>
+              <summary><h3>Can the landlord pass the fee on to me?</h3></summary>
+              <p class="faq__answer">No. Dutch law stops landlords and their letting agents from charging tenants extra fees, and our fee is never taken from the deposit.</p>
+            </details>
+            <details>
+              <summary><h3>Can my landlord take money without telling me?</h3></summary>
+              <p class="faq__answer">No. Money only comes out for damage we've checked, backed by an invoice, or when an independent reviewer decides it should.</p>
+            </details>
           </div>
         </div>
+
+        <div class="faq-group" data-group="damage">
+          <h2>Inspections and damage</h2>
+          <div class="faq">
+            <details>
+              <summary><h3>Who takes the photos?</h3></summary>
+              <p class="faq__answer">We do, at move-in and move-out. Both sides have 7 days after the keys are handed over to add their own notes and photos.</p>
+            </details>
+            <details>
+              <summary><h3>Can I fix damage myself?</h3></summary>
+              <p class="faq__answer">Yes. After the pre-inspection you get the damage list. Anything you repair properly before key return isn't deducted.</p>
+            </details>
+            <details>
+              <summary><h3>Who chooses the repair company?</h3></summary>
+              <p class="faq__answer">The landlord, for anything still not fixed at key return. The cost is backed by their invoice.</p>
+            </details>
+            <details>
+              <summary><h3>What if the landlord finds damage after I've left?</h3></summary>
+              <p class="faq__answer">They have 14 days after key return to report it. We check it against our photos before anything is deducted.</p>
+            </details>
+            <details>
+              <summary><h3>What if I disagree with a deduction?</h3></summary>
+              <p class="faq__answer">Tell us why. We review the evidence, and if you still disagree, an independent reviewer decides. See <a href="disputes.html">disputes</a>.</p>
+            </details>
+          </div>
+        </div>
+
+        <div class="faq-group" data-group="about">
+          <h2>About Deposera</h2>
+          <div class="faq">
+            <details>
+              <summary><h3>If the landlord's side pays, are you on their side?</h3></summary>
+              <p class="faq__answer">No. Our fee is the same whatever happens at move-out, we take the photos ourselves, and an independent reviewer has the final say.</p>
+            </details>
+            <details>
+              <summary><h3>When will the app be ready?</h3></summary>
+              <p class="faq__answer">It's being built. You can already <a href="register.html">register</a> to see how it will work.</p>
+            </details>
+            <details>
+              <summary><h3>Is Deposera a real company?</h3></summary>
+              <p class="faq__answer">No. It's a fictional Dutch company made for a school project. It holds no money, so please don't send payments or personal details.</p>
+            </details>
+          </div>
+        </div>
+
+        <p class="center muted reveal">Still have a question? <a href="contact.html">Contact us</a></p>
       </div>
     </section>
   </main>
@@ -149,10 +160,12 @@
           <li><a href="index.html">Home</a></li>
           <li><a href="how-it-works.html">How it works</a></li>
           <li><a href="pricing.html">Pricing</a></li>
-          <li><a href="disputes.html">Damage &amp; disputes</a></li>
+          <li><a href="disputes.html">Disputes</a></li>
           <li><a href="faq.html">FAQ</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="contact.html">Contact</a></li>
+          <li><a href="login.html">Log in</a></li>
+          <li><a href="register.html">Register</a></li>
         </ul>
       </nav>
       <div class="site-footer__legal">
