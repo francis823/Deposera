@@ -773,7 +773,9 @@ button {
 }
 
 .board__name {
-  letter-spacing: 0.15em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .board__score {
@@ -805,17 +807,17 @@ button {
 }
 
 .entry input {
-  width: 8rem;
+  flex: 1;
+  min-width: 0;
+  width: 12rem;
   padding: 0.75rem 1rem;
   border: 2px solid var(--brass-400);
   border-radius: 14px;
   background: var(--cream-50);
   color: var(--ink);
   font-family: var(--font-display);
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   font-weight: 700;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
   user-select: text;
   -webkit-user-select: text;
 }
@@ -1262,6 +1264,164 @@ button {
 .btn[disabled] {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+/* ---------- Leaderboard ---------- */
+
+.board-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 1rem;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--brass-300), var(--brass-500));
+  color: var(--green-950);
+  font-size: 0.9rem;
+  font-weight: 700;
+  box-shadow: 0 8px 18px -8px rgba(184, 146, 90, 0.7);
+}
+
+.board-btn svg {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+.lb {
+  display: grid;
+  gap: 1.25rem;
+  max-width: 56rem;
+  margin: 0 auto;
+}
+
+.lb__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.lb__head h2 {
+  margin-top: 0.3rem;
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+  font-weight: 600;
+  line-height: 1.05;
+  color: var(--cream-50);
+}
+
+.lb__head h2 em {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--brass-300);
+}
+
+.lb__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+  font-size: 0.85rem;
+  color: rgba(244, 238, 225, 0.7);
+}
+
+.lb__dot {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background: #6fd39b;
+  box-shadow: 0 0 0 0 rgba(111, 211, 155, 0.6);
+  animation: live 2s infinite;
+}
+
+.lb__status.is-off .lb__dot {
+  background: var(--brass-400);
+  animation: none;
+}
+
+@keyframes live {
+  70% {
+    box-shadow: 0 0 0 8px rgba(111, 211, 155, 0);
+  }
+}
+
+.tabs-row {
+  display: inline-flex;
+  justify-self: start;
+  gap: 0.35rem;
+  padding: 0.35rem;
+  border: 1px solid var(--line-light);
+  border-radius: 999px;
+  background: rgba(244, 238, 225, 0.05);
+}
+
+.tab {
+  padding: 0.65rem 1.3rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: rgba(244, 238, 225, 0.75);
+  font-weight: 700;
+}
+
+.tab.is-on {
+  background: var(--cream-50);
+  color: var(--green-900);
+}
+
+.lb__count {
+  font-size: 0.9rem;
+  color: rgba(244, 238, 225, 0.65);
+}
+
+.lb .board li {
+  padding: 0.8rem 1.1rem;
+  font-size: 1.05rem;
+}
+
+.lb .board li:nth-child(2) .board__rank {
+  background: #d9d4c7;
+  color: var(--green-950);
+}
+
+.lb .board li:nth-child(3) .board__rank {
+  background: #c08a5a;
+  color: var(--green-950);
+}
+
+.board--you {
+  margin-top: 0.5rem;
+}
+
+.board__name {
+  letter-spacing: 0.02em;
+}
+
+.result--fair .result__side--board {
+  padding: 1.5rem;
+  border: 1px solid var(--line-light);
+  background: rgba(244, 238, 225, 0.05);
+}
+
+@media (max-width: 640px) {
+  .board-btn span {
+    display: none;
+  }
+
+  .board-btn {
+    padding: 0.55rem;
+  }
+
+  .tabs-row {
+    justify-self: stretch;
+  }
+
+  .tab {
+    flex: 1;
+    padding: 0.6rem 0.5rem;
+    font-size: 0.85rem;
+  }
 }
 
 /* ---------- Toast and confetti ---------- */

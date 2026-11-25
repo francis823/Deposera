@@ -72,7 +72,7 @@ Our message in one line: **"A deposit should only be kept for real, proven damag
 
 Open **https://francis823.github.io/Deposera/games/** on the tablet, then tap the full-screen button (top right).
 
-- **Spot the damage:** compare a move-in and a move-out photo and find the differences before time runs out. There are 3 rooms, which rotate each game. Top-5 scores are saved on the tablet, with initials and level.
+- **Spot the damage:** compare a move-in and a move-out photo and find the differences before time runs out. There are 3 rooms, which rotate each game.
   - Level 1, Easy: 5 obvious differences in 40 seconds. A wrong tap costs 2 seconds.
   - Level 2, Medium: 6 differences in 40 seconds, some subtle. A wrong tap costs 3 seconds. Double points.
   - Level 3, Hard: 7 differences in 35 seconds, mostly subtle. A wrong tap costs 4 seconds. Triple points.
@@ -83,9 +83,11 @@ Open **https://francis823.github.io/Deposera/games/** on the tablet, then tap th
 - After a strong round, a "Try level 2" or "Try level 3" button appears. Tip: give a gold coin for finishing level 3.
 - Both games end with **"Like it? Vote Deposera"** and a QR code to the website. Hand out a gold coin.
 - If nobody touches the tablet for 1 minute, it goes back to the menu by itself.
-- At the end of every game, players can add their initials (or skip).
-- **Players list (staff only):** tap the Deposera logo 5 times quickly, or open **games/index.html#players**. It shows every game played on the tablet, with totals (games played, players, level 3 games, top score) and a "Download list (CSV)" button. Use the numbers when you talk to investors.
-- Before the doors open, clear test scores by opening **games/index.html#reset** once.
+- **Shared leaderboard:** at the end of every game, players type their first name (or skip). Their score goes to one shared list that everyone sees, on phones and the tablet. Tap **Leaderboard** in the top bar to see it, with a tab for each game. It updates live every 15 seconds.
+  - **To make it shared**, connect the Google Sheet first. Follow `LEADERBOARD-SETUP.md` (about 10 minutes). Until then, each device only shows its own scores.
+  - **Tip:** put a second screen or laptop on the booth showing **games/index.html#leaderboard**. It stays on the leaderboard and keeps updating, which draws people in.
+- **Players list for this tablet (staff only):** tap the Deposera logo 5 times quickly, or open **games/index.html#players**. It shows every game played on the tablet, with totals (games played, players, level 3 games, top score) and a "Download list (CSV)" button. Use the numbers when you talk to investors.
+- Before the doors open, clear test scores: delete the test rows in the Google Sheet's **Scores** tab, and open **games/index.html#reset** once on the tablet.
 - No Wi-Fi? Open `games/index.html` from the downloaded copy. It works offline.
 
 ## Printed "Fair or not?" cards
@@ -99,7 +101,7 @@ Open **https://francis823.github.io/Deposera/games/** on the tablet, then tap th
 - `scan-and-play-sign-A5.pdf`: a table sign showing the website and both games on a laptop and phones, with a big QR code to the games. Stand it next to the tablet, so visitors can also play on their own phone while they wait.
 - `scan-and-play-cards-A4.pdf`: 10 business-card-size cards (85 × 55 mm). Page 1 is the front (Scan & play, with a QR code to the games) and page 2 is the back (Deposera, with a QR code to the website). Print double-sided, flip on long edge, then cut along the dashed lines.
 - Both QR codes open https://francis823.github.io/Deposera/games/
-- Scores on a visitor's phone stay on their phone. The booth leaderboard only shows games played on the tablet.
+- Once the Google Sheet is connected, scores from visitors' phones appear on the same leaderboard as the tablet.
 
 ---
 

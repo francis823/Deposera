@@ -312,9 +312,10 @@
     fair: null
   };
 
-  var timers = { spot: null, countdown: null, fair: null };
+  var timers = { spot: null, countdown: null, fair: null, board: null };
 
   function clearTimers() {
+    clearInterval(timers.board);
     clearInterval(timers.spot);
     clearInterval(timers.fair);
     clearTimeout(timers.countdown);
@@ -344,14 +345,172 @@
 
   /* ---------- Hub ---------- */
 
-  function spotScores() {
-    return load("deposera-spot-scores", []);
+  /* ---------- Shared leaderboard ----------
+     With a Google Sheet connected (games/config.js), every phone and the
+     tablet send scores there and read the same list. Without it, scores
+     stay on this device. Scores that fail to send are kept and retried. */
+
+  var SCORES_URL = String(window.DEPOSERA_SCORES_URL || "").trim();
+  var board = { list: null, at: 0, error: false };
+  var GAME_NAMES = { spot: "Spot the damage", fair: "Fair or not?" };
+
+  function localBoard() {
+    return load("deposera-board", []);
+  }
+
+  function normalise(rows) {
+    return (rows || []).map(function (r) {
+      var game = r.game === "fair" || r.game === "Fair or not?" ? "fair" : "spot";
+      return { id: String(r.id || ""), name: String(r.name || "").slice(0, 16), game: game, level: Number(r.level) || 1, score: Number(r.score) || 0, result: String(r.result || ""), t: Number(r.t) || Date.parse(r.time) || 0 };
+    }).filter(function (e) { return e.name; });
+  }
+
+  function withPending(list) {
+    var ids = {};
+    list.forEach(function (e) { ids[e.id] = true; });
+    return list.concat(load("deposera-pending", []).filter(function (e) { return !ids[e.id]; }));
+  }
+
+  function fetchBoard(force) {
+    if (!SCORES_URL) {
+      board.list = localBoard();
+      board.at = Date.now();
+      return Promise.resolve(board.list);
+    }
+    if (!force && board.list && Date.now() - board.at < 10000) return Promise.resolve(board.list);
+    return fetch(SCORES_URL + (SCORES_URL.indexOf("?") === -1 ? "?" : "&") + "t=" + Date.now())
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        board.server = normalise(data.scores);
+        board.list = withPending(board.server);
+        board.at = Date.now();
+        board.error = false;
+        return board.list;
+      })
+      .catch(function () {
+        // Offline: show the last list we had, plus this device's own scores.
+        board.error = true;
+        var seen = {};
+        board.list = withPending((board.server || []).concat(localBoard()).filter(function (e) {
+          if (seen[e.id]) return false;
+          seen[e.id] = true;
+          return true;
+        }));
+        return board.list;
+      });
+  }
+
+  var flushing = false;
+  function flushPending() {
+    var pending = load("deposera-pending", []);
+    if (!SCORES_URL || !pending.length || flushing) return Promise.resolve();
+    flushing = true;
+    var item = pending[0];
+    return fetch(SCORES_URL, { method: "POST", body: JSON.stringify(item) })
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (!data || !data.ok) throw new Error("not saved");
+        save("deposera-pending", load("deposera-pending", []).filter(function (e) { return e.id !== item.id; }));
+        flushing = false;
+        board.at = 0;
+        return flushPending();
+      })
+      .catch(function () {
+        flushing = false;
+      });
+  }
+  setInterval(flushPending, 20000);
+
+  function submitScore(entry) {
+    var list = localBoard();
+    list.push(entry);
+    save("deposera-board", list.slice(-2000));
+    if (!SCORES_URL) return Promise.resolve();
+    var pending = load("deposera-pending", []);
+    pending.push(entry);
+    save("deposera-pending", pending);
+    return flushPending();
+  }
+
+  // Best score per player for one game, highest first.
+  function ranked(list, game) {
+    var best = {};
+    (list || []).forEach(function (e) {
+      if (e.game !== game || !e.name) return;
+      var key = e.name.toLowerCase();
+      var b = best[key];
+      if (!b || e.score > b.score || (e.score === b.score && e.t < b.t)) best[key] = e;
+    });
+    return Object.keys(best).map(function (k) { return best[k]; }).sort(function (a, b) {
+      return b.score - a.score || a.t - b.t;
+    });
+  }
+
+  function boardRows(rows, highlightName, limit) {
+    if (!rows.length) return '<p class="muted">No scores yet. Be the first!</p>';
+    var key = highlightName ? highlightName.toLowerCase() : "";
+    var shown = rows.slice(0, limit || rows.length);
+    var youIndex = -1;
+    rows.forEach(function (e, i) { if (key && e.name.toLowerCase() === key) youIndex = i; });
+    var html = '<ol class="board">' + shown.map(function (e, i) {
+      return '<li class="' + (i === youIndex ? "is-you" : "") + '"><span class="board__rank">' + (i + 1) + '</span><span class="board__name">' + esc(e.name) + ' <span class="board__level">L' + e.level + '</span></span><span class="board__score">' + e.score + "</span></li>";
+    }).join("") + "</ol>";
+    if (youIndex >= (limit || rows.length)) {
+      html += '<ol class="board board--you" start="' + (youIndex + 1) + '"><li class="is-you"><span class="board__rank">' + (youIndex + 1) + '</span><span class="board__name">' + esc(rows[youIndex].name) + ' <span class="board__level">L' + rows[youIndex].level + '</span></span><span class="board__score">' + rows[youIndex].score + "</span></li></ol>";
+    }
+    return html;
+  }
+
+  // Fill a small "top 5" box on a result screen once the list has loaded.
+  function fillMiniBoard(game, name) {
+    fetchBoard(true).then(function (list) {
+      var el = stage.querySelector('[data-mini-board="' + game + '"]');
+      if (el) el.innerHTML = boardRows(ranked(list, game), name, 5);
+    });
+  }
+
+  function boardStatus() {
+    if (!SCORES_URL) return "Scores saved on this device";
+    if (board.error) return "Offline right now: showing the last scores we had";
+    return "Live · everyone's scores · updated " + new Date(board.at || Date.now()).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
+  }
+
+  function renderBoard(game) {
+    clearTimers();
+    state.screen = "board";
+    state.boardGame = game || state.boardGame || "spot";
+    var g = state.boardGame;
+    function paint() {
+      if (state.screen !== "board") return;
+      var list = board.list || [];
+      var rows = ranked(list, g);
+      var games = list.filter(function (e) { return e.game === g; }).length;
+      show(
+        '<section class="lb">' +
+          '<div class="lb__head"><div><p class="eyebrow">Leaderboard</p><h2>Who protects deposits <em>best?</em></h2><p class="lb__status' + (board.error ? " is-off" : "") + '"><span class="lb__dot"></span>' + boardStatus() + "</p></div>" +
+          '<button class="btn" type="button" data-pick="' + g + '">' + icon("play", "i i--sm") + "Play " + GAME_NAMES[g] + "</button></div>" +
+          '<div class="tabs-row" role="tablist" aria-label="Choose a game">' +
+            ["spot", "fair"].map(function (k) {
+              return '<button class="tab' + (k === g ? " is-on" : "") + '" type="button" role="tab" aria-selected="' + (k === g) + '" data-board-tab="' + k + '">' + GAME_NAMES[k] + "</button>";
+            }).join("") +
+          "</div>" +
+          '<p class="lb__count">' + rows.length + (rows.length === 1 ? " player" : " players") + " · " + games + (games === 1 ? " game" : " games") + " played</p>" +
+          (board.list ? boardRows(rows, state.sessionName, 50) : '<p class="muted">Loading the leaderboard…</p>') +
+        "</section>",
+        false
+      );
+    }
+    paint();
+    fetchBoard(true).then(paint);
+    timers.board = setInterval(function () {
+      fetchBoard(true).then(paint);
+    }, 15000);
   }
 
   function renderHub() {
     clearTimers();
     state.screen = "hub";
-    var top = spotScores()[0];
+    var top = ranked(board.list || localBoard(), "spot")[0];
     show(
       '<section class="hub">' +
         '<div class="hub__intro"><p class="eyebrow">Booth games</p><h1>Can you protect <em>a deposit?</em></h1><p class="lead">Play a game and win a gold coin. Three levels each.</p></div>' +
@@ -365,6 +524,11 @@
         voteBlock("Deposera · Independent deposit holding") +
       "</section>"
     );
+    fetchBoard().then(function (list) {
+      var best = ranked(list, "spot")[0];
+      var badge = stage.querySelector('[data-pick="spot"] .game-card__badge');
+      if (best && badge && state.screen === "hub") badge.innerHTML = icon("trophy", "i i--sm") + "Top score " + best.score + " by " + esc(best.name);
+    });
   }
 
   /* ---------- Level picker ---------- */
@@ -407,11 +571,11 @@
   }
 
   function cleanName(value) {
-    return value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 3);
+    return String(value).replace(/[^\p{L}\p{N} .'-]/gu, "").replace(/\s+/g, " ").trim().slice(0, 16);
   }
 
   function entryForm(label) {
-    return '<form class="entry" data-entry><label for="initials">' + label + '</label><div class="entry__row"><input id="initials" name="initials" maxlength="3" autocomplete="off" autocapitalize="characters" required placeholder="ABC"><button class="btn" type="submit">Save</button><button class="btn btn--ghost" type="button" data-skip>Skip</button></div></form>';
+    return '<form class="entry" data-entry><label for="initials">' + label + '</label><div class="entry__row"><input id="initials" name="initials" maxlength="16" autocomplete="off" autocapitalize="words" required placeholder="Your first name" value="' + esc(state.sessionName || "") + '"><button class="btn" type="submit">Save</button><button class="btn btn--ghost" type="button" data-skip>Skip</button></div></form>';
   }
 
   function timeOf(t) {
@@ -430,7 +594,7 @@
       games[p.game] = (games[p.game] || 0) + 1;
       levels[p.level] = (levels[p.level] || 0) + 1;
     });
-    var best = spotScores()[0];
+    var best = ranked(localBoard(), "spot")[0];
     var rows = all.map(function (p) {
       return "<tr><td>" + timeOf(p.t) + "</td><td class=\"players__name\">" + (p.name ? esc(p.name) : '<span class="muted">-</span>') + "</td><td>" + esc(p.game) + "</td><td>" + stars(p.level) + "</td><td>" + esc(p.result) + '</td><td class="players__num">' + p.score + "</td></tr>";
     }).join("");
@@ -620,20 +784,10 @@
     sp.done = true;
     sp.all = sp.found.length === sp.diffs.length;
     sp.score = (sp.found.length * 100 + (sp.all ? sp.left * 20 : 0)) * sp.cfg.mult;
-    var scores = spotScores();
-    sp.qualifies = sp.score > 0 && (scores.length < 5 || sp.score > scores[scores.length - 1].score);
     sp.playId = logPlay({ game: "Spot the damage", level: sp.level, score: sp.score, result: sp.found.length + "/" + sp.diffs.length + " found (" + sp.room.name + ")" });
     if (sp.all) soundWin();
     renderSpotResult();
     if (sp.all) confetti();
-  }
-
-  function leaderboard(highlight) {
-    var scores = spotScores();
-    if (!scores.length) return '<p class="muted">No scores yet. Be the first!</p>';
-    return '<ol class="board">' + scores.map(function (s, i) {
-      return '<li class="' + (highlight === i ? "is-you" : "") + '"><span class="board__rank">' + (i + 1) + '</span><span class="board__name">' + esc(s.name) + (s.level ? ' <span class="board__level">L' + s.level + "</span>" : "") + '</span><span class="board__score">' + s.score + "</span></li>";
-    }).join("") + "</ol>";
   }
 
   function nextLevelButton(game, level, earned) {
@@ -641,11 +795,11 @@
     return '<button class="btn" type="button" data-start="' + game + '" data-level="' + (level + 1) + '">' + stars(level + 1) + " Try level " + (level + 1) + "</button>";
   }
 
-  function renderSpotResult(highlight) {
+  function renderSpotResult() {
     var sp = state.spot;
     var total = sp.diffs.length;
     var title = sp.all ? (sp.level === 3 ? "Expert inspector!" : "Every bit of damage found!") : sp.found.length >= total - 2 ? "Good eye!" : "Damage is easy to miss.";
-    var entry = sp.named ? "" : entryForm(sp.qualifies ? "You made the top 5! Your initials" : "Add your initials to today's players");
+    var entry = sp.named ? "" : entryForm("Put your name on the leaderboard");
     show(
       '<section class="result">' +
         '<div class="result__main">' +
@@ -655,15 +809,16 @@
           entry +
           spotBoard() + spotList() +
         "</div>" +
-        '<aside class="result__side"><h3>' + icon("trophy", "i i--sm") + "Top 5 today</h3>" + leaderboard(highlight) +
+        '<aside class="result__side"><h3>' + icon("trophy", "i i--sm") + 'Leaderboard</h3><div data-mini-board="spot"><p class="muted">Loading…</p></div><button class="link-btn" type="button" data-board="spot">See everyone</button>' +
           '<div class="btn-row">' + nextLevelButton("spot", sp.level, sp.all) +
           '<button class="btn' + (sp.all && sp.level < 3 ? " btn--ghost" : "") + '" type="button" data-start="spot" data-level="' + sp.level + '">' + icon("play", "i i--sm") + 'Play again</button><button class="btn btn--ghost" type="button" data-home>' + icon("home", "i i--sm") + "Menu</button></div>" +
           voteBlock() +
         "</aside>" +
       "</section>"
     );
+    fillMiniBoard("spot", sp.named ? sp.name : "");
     var input = stage.querySelector("#initials");
-    if (input) input.focus();
+    if (input && !input.value) input.focus();
   }
 
   function saveInitials(form) {
@@ -675,24 +830,25 @@
     }
     namePlay(sp.playId, name);
     sp.named = true;
-    if (!sp.qualifies) {
-      renderSpotResult();
-      toast("Saved! Thanks for playing, " + name + ".");
-      return;
-    }
-    var scores = spotScores();
-    var entry = { name: name, score: sp.score, level: sp.level, t: Date.now() };
-    scores.push(entry);
-    scores.sort(function (a, b) { return b.score - a.score || a.t - b.t; });
-    scores = scores.slice(0, 5);
-    save("deposera-spot-scores", scores);
-    sp.qualifies = false;
-    var index = -1;
-    scores.forEach(function (s, i) {
-      if (s.t === entry.t) index = i;
+    sp.name = name;
+    saveToBoard("spot", name, sp.level, sp.score, sp.found.length + "/" + sp.diffs.length + " found");
+    renderSpotResult();
+  }
+
+  // Send a named score, then tell the player where they rank.
+  function saveToBoard(game, name, level, score, result) {
+    state.sessionName = name;
+    var entry = { id: Date.now() + "-" + Math.random().toString(36).slice(2, 8), name: name, game: game, level: level, score: score, result: result, t: Date.now() };
+    submitScore(entry).then(function () {
+      return fetchBoard(true);
+    }).then(function (list) {
+      var rows = ranked(withPending(list.some(function (e) { return e.id === entry.id; }) ? list : list.concat(entry)), game);
+      var rank = 1;
+      rows.forEach(function (e, i) { if (e.name.toLowerCase() === name.toLowerCase()) rank = i + 1; });
+      toast("Saved! " + name + ", you're #" + rank + " of " + rows.length + ".");
+      var el = stage.querySelector('[data-mini-board="' + game + '"]');
+      if (el) el.innerHTML = boardRows(rows, name, 5);
     });
-    renderSpotResult(index);
-    toast("Saved! You're on the leaderboard.");
   }
 
   /* ---------- Fair or not? ---------- */
@@ -808,7 +964,8 @@
   function finishFair() {
     clearInterval(timers.fair);
     var f = state.fair;
-    f.playId = logPlay({ game: "Fair or not?", level: f.level, score: f.correct, result: f.correct + "/5 correct" });
+    f.score = f.correct * 100 * f.level;
+    f.playId = logPlay({ game: "Fair or not?", level: f.level, score: f.score, result: f.correct + "/5 correct" });
     if (f.correct >= 4) {
       soundWin();
       setTimeout(confetti, 50);
@@ -825,8 +982,9 @@
     }
     namePlay(f.playId, name);
     f.named = true;
+    f.name = name;
+    saveToBoard("fair", name, f.level, f.score, f.correct + "/5 correct");
     renderFairResult();
-    toast("Saved! Thanks for playing, " + name + ".");
   }
 
   function renderFairResult() {
@@ -836,17 +994,18 @@
     show(
       '<section class="result result--fair">' +
         '<div class="result__main">' +
-          '<p class="eyebrow">Fair or not? · Level ' + f.level + " " + stars(f.level) + '</p><h2>' + title + '</h2><p class="result__score"><span>' + c + "/5</span> correct</p>" +
+          '<p class="eyebrow">Fair or not? · Level ' + f.level + " " + stars(f.level) + '</p><h2>' + title + '</h2><p class="result__score"><span>' + c + "/5</span> correct · " + f.score + " points" + (f.level > 1 ? " (×" + f.level + ")" : "") + "</p>" +
           '<p class="lead">At Deposera, <strong>a deposit is only kept for real, proven damage</strong>. We check every deduction against our photos and an invoice, and normal wear never counts.</p>' +
-          (f.named ? "" : entryForm("Add your initials to today's players")) +
+          (f.named ? "" : entryForm("Put your name on the leaderboard")) +
           '<div class="btn-row">' + nextLevelButton("fair", f.level, c >= 4) +
           '<button class="btn' + (c >= 4 && f.level < 3 ? " btn--ghost" : "") + '" type="button" data-start="fair" data-level="' + f.level + '">' + icon("play", "i i--sm") + 'Play again</button><button class="btn btn--ghost" type="button" data-pick="spot">' + icon("search", "i i--sm") + "Try Spot the damage</button></div>" +
         "</div>" +
-        '<aside class="result__side">' + voteBlock("Thanks for playing") + "</aside>" +
+        '<aside class="result__side result__side--board"><h3>' + icon("trophy", "i i--sm") + 'Leaderboard</h3><div data-mini-board="fair"><p class="muted">Loading…</p></div><button class="link-btn" type="button" data-board="fair">See everyone</button>' + voteBlock("Thanks for playing") + "</aside>" +
       "</section>"
     );
+    fillMiniBoard("fair", f.named ? f.name : "");
     var input = stage.querySelector("#initials");
-    if (input) input.focus();
+    if (input && !input.value) input.focus();
   }
 
   /* ---------- Confetti ---------- */
@@ -880,6 +1039,11 @@
       return renderHub();
     }
     if (d.pick) return renderPicker(d.pick);
+    if (d.board !== undefined) return renderBoard(d.board || state.boardGame || "spot");
+    if (d.boardTab) {
+      state.boardGame = d.boardTab;
+      return renderBoard(d.boardTab);
+    }
     if (d.start === "spot") return startSpot(Number(d.level) || 1);
     if (d.start === "fair") return startFair(Number(d.level) || 1);
     if (d.answer) return answerFair(d.answer);
@@ -896,6 +1060,7 @@
     if (d.clearPlayers !== undefined) {
       if (window.confirm("Clear the players list, the leaderboard and the visitor votes on this device?")) {
         save("deposera-plays", []);
+        save("deposera-board", []);
         save("deposera-spot-scores", []);
         save("deposera-fair-votes", {});
         renderPlayers();
@@ -928,7 +1093,10 @@
   });
   setInterval(function () {
     var playing = state.screen === "spot" && state.spot && !state.spot.done;
-    if (state.screen !== "hub" && state.screen !== "players" && !playing && Date.now() - lastActivity > IDLE_SECONDS * 1000) renderHub();
+    if (state.screen !== "hub" && state.screen !== "players" && state.screen !== "board" && !playing && Date.now() - lastActivity > IDLE_SECONDS * 1000) {
+      state.sessionName = "";
+      renderHub();
+    }
   }, 5000);
 
   // Staff: tap the Deposera logo 5 times quickly to open the players list.
@@ -948,6 +1116,7 @@
   // games/index.html#reset clears the list, leaderboard and votes.
   if (location.hash === "#reset" && window.confirm("Clear the players list, the leaderboard and the visitor votes on this device?")) {
     save("deposera-plays", []);
+    save("deposera-board", []);
     save("deposera-spot-scores", []);
     save("deposera-fair-votes", {});
     history.replaceState(null, "", location.pathname);
@@ -955,8 +1124,11 @@
 
   window.addEventListener("hashchange", function () {
     if (location.hash === "#players") renderPlayers();
+    if (location.hash === "#leaderboard") renderBoard("spot");
   });
 
   if (location.hash === "#players") renderPlayers();
+  else if (location.hash === "#leaderboard") renderBoard("spot");
   else renderHub();
+  flushPending();
 })();
