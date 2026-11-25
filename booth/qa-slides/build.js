@@ -65,9 +65,9 @@ const OUT = process.argv[2] || "Deposera-QA-slides.pptx";
     tb(s, who, { x: x + 0.14, y: yC + 1.62, w: colW - 0.28, h: 0.26, fontSize: 7.5, bold: true, color: H.goldDark, align: "center", valign: "middle", objectName: `Step ${i + 1} who` });
   });
   const opts = [
-    [H.dark, "TENANT", "€0", "Pays only the deposit. Our fee is never taken from it."],
-    [H.white, "OPTION 1  ·  INSPECTIONS", "from €70", "Move-in and move-out reports with photos, and the damage list."],
-    [H.white, "OPTION 2  ·  + DEPOSIT HELD", "from €85", "+€15: deposit in escrow at OPP, ID checks and the payout."],
+    [H.dark, "AGENCY TENANT", "€0", "The agency pays our fee. It never comes out of the deposit."],
+    [H.white, "AGENCIES  ·  FIXED PRICE", "from €70", "€70–€150 per home: photo reports at move-in and move-out, and the damage list."],
+    [H.white, "PRIVATE LANDLORD + TENANT", "from €85", "+€15: deposit held at OPP. €85–€165, paid together."],
   ];
   opts.forEach(([fill, label, val, txt], i) => {
     const x = 0.5 + i * 3.05, y = 3.78, w = 2.9, h = 1.12, dark = fill === H.dark;
@@ -76,7 +76,7 @@ const OUT = process.argv[2] || "Deposera-QA-slides.pptx";
     tb(s, val, { x: x + 0.2, y: y + 0.36, w: w - 0.4, h: 0.4, fontFace: BODY, fontSize: 20, bold: true, color: dark ? H.goldLight : H.green, objectName: `Price value ${i + 1}` });
     tb(s, txt, { x: x + 0.2, y: y + 0.76, w: w - 0.4, h: 0.3, fontSize: 8, color: dark ? H.line : H.soft, valign: "top", objectName: `Price text ${i + 1}` });
   });
-  source(s, "OPP = Online Payment Platform, a payment institution licensed by DNB (Dutch central bank). The agency or landlord pays; prices excl. 21% BTW (VAT).");
+  source(s, "OPP = Online Payment Platform, a payment institution licensed by DNB (Dutch central bank). Agencies pay a fixed price; a private landlord and tenant who book on their own pay together. Excl. 21% BTW.");
 
   /* ---------------- 2. The app ---------------- */
   s = pres.addSlide({ masterName: "Deposera QA", sectionTitle: "Product" });
@@ -112,7 +112,7 @@ const OUT = process.argv[2] || "Deposera-QA-slides.pptx";
   const tdc = (t, o = {}) => ({ text: t, options: Object.assign({ color: H.ink, align: "center", valign: "middle" }, o) });
   const avg = { bold: true, fill: { color: H.cream } };
   s.addTable([
-    [thc("Type of home (mix)", "left"), thc("Visit"), thc("Inspections"), thc("+ deposit held"), thc("Margin")],
+    [thc("Type of home (mix)", "left"), thc("Visit"), thc("Agency"), thc("Landlord + tenant"), thc("Margin")],
     [tdc("Room (30%)", { align: "left" }), tdc("20 min"), tdc("€70"), tdc("€85"), tdc("61–62%")],
     [tdc("Studio (25%)", { align: "left" }), tdc("30 min"), tdc("€80"), tdc("€95"), tdc("62–63%")],
     [tdc("Apartment (30%)", { align: "left" }), tdc("50 min"), tdc("€100"), tdc("€115"), tdc("63%")],
@@ -122,9 +122,9 @@ const OUT = process.argv[2] || "Deposera-QA-slides.pptx";
   card(s, 0.5, 3.75, 5.1, 1.15, H.white, "Price notes card");
   tb(s, [
     { text: "Who pays: ", options: { bold: true, color: H.green } },
-    { text: "the letting agency, or the landlord without one, pays 100% upfront at booking. Tenants pay nothing.", options: { color: H.ink, breakLine: true } },
-    { text: "Option 2 ", options: { bold: true, color: H.green } },
-    { text: "adds €15 for the escrow, ID checks and payout. 75% of customers are expected to choose it.", options: { color: H.ink, breakLine: true } },
+    { text: "agencies pay a fixed price per home. A private landlord and tenant who book on their own pay together. 100% upfront.", options: { color: H.ink, breakLine: true } },
+    { text: "Landlord + tenant ", options: { bold: true, color: H.green } },
+    { text: "price adds €15 for holding the deposit (escrow, ID checks, payout). Expected for 75% of tenancies.", options: { color: H.ink, breakLine: true } },
     { text: "Same fee ", options: { bold: true, color: H.green } },
     { text: "whatever happens at move-out, so we gain nothing from deductions.", options: { color: H.ink } },
   ], { x: 0.7, y: 3.83, w: 4.7, h: 1.0, fontSize: 8.5, valign: "middle", paraSpaceAfter: 3, objectName: "Price notes" });
@@ -133,7 +133,7 @@ const OUT = process.argv[2] || "Deposera-QA-slides.pptx";
   card(s, 5.85, 1.35, 3.65, 3.55, H.dark, "Unit economics card");
   tb(s, "ONE AVERAGE TENANCY", { x: 6.05, y: 1.5, w: 3.3, h: 0.2, fontSize: 7.5, bold: true, charSpacing: 1.2, color: H.gold, objectName: "Unit label" });
   tb(s, "€104.75", { x: 6.05, y: 1.72, w: 3.3, h: 0.55, fontFace: BODY, fontSize: 28, bold: true, color: H.goldLight, objectName: "Unit price" });
-  tb(s, "average price (25% option 1, 75% option 2)", { x: 6.05, y: 2.27, w: 3.3, h: 0.2, fontSize: 8, color: H.line, objectName: "Unit price note" });
+  tb(s, "average price: 25% agency, 75% landlord + tenant", { x: 6.05, y: 2.27, w: 3.3, h: 0.2, fontSize: 8, color: H.line, objectName: "Unit price note" });
   const parts = [
     ["Scooter travel (55 min + fuel)", 20.52, H.goldDark],
     ["Inspection labour (€20/hr)", 13.25, H.gold],
