@@ -1424,6 +1424,15 @@ button {
   }
 }
 
+.board__score small {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-align: right;
+  color: rgba(244, 238, 225, 0.6);
+}
+
 /* ---------- Toast and confetti ---------- */
 
 .toast {

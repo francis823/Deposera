@@ -361,7 +361,8 @@
   function normalise(rows) {
     return (rows || []).map(function (r) {
       var game = r.game === "fair" || r.game === "Fair or not?" ? "fair" : "spot";
-      return { id: String(r.id || ""), name: String(r.name || "").slice(0, 16), game: game, level: Number(r.level) || 1, score: Number(r.score) || 0, result: String(r.result || ""), t: Number(r.t) || Date.parse(r.time) || 0 };
+      var result = String(r.result || "");
+      return { id: String(r.id || ""), name: String(r.name || "").slice(0, 16), game: game, level: Number(r.level) || 1, score: Number(r.score) || 0, result: result, ms: timeFromResult(result), t: Number(r.t) || Date.parse(r.time) || 0 };
     }).filter(function (e) { return e.name; });
   }
 
@@ -432,17 +433,31 @@
     return flushPending();
   }
 
-  // Best score per player for one game, highest first.
+  function secs(ms) {
+    return (Math.round(ms / 100) / 10).toFixed(1) + " s";
+  }
+
+  // The time is saved inside the result text, e.g. "5/5 correct in 23.4 s".
+  function timeFromResult(result) {
+    var m = /in ([\d.]+) s/.exec(result || "");
+    return m ? Math.round(parseFloat(m[1]) * 1000) : Infinity;
+  }
+
+  function better(a, b) {
+    return a.score - b.score || b.ms - a.ms || b.t - a.t;
+  }
+
+  // Best result per player for one game: most points first, then fastest time.
   function ranked(list, game) {
     var best = {};
     (list || []).forEach(function (e) {
       if (e.game !== game || !e.name) return;
       var key = e.name.toLowerCase();
       var b = best[key];
-      if (!b || e.score > b.score || (e.score === b.score && e.t < b.t)) best[key] = e;
+      if (!b || better(e, b) > 0) best[key] = e;
     });
     return Object.keys(best).map(function (k) { return best[k]; }).sort(function (a, b) {
-      return b.score - a.score || a.t - b.t;
+      return better(b, a);
     });
   }
 
@@ -453,10 +468,10 @@
     var youIndex = -1;
     rows.forEach(function (e, i) { if (key && e.name.toLowerCase() === key) youIndex = i; });
     var html = '<ol class="board">' + shown.map(function (e, i) {
-      return '<li class="' + (i === youIndex ? "is-you" : "") + '"><span class="board__rank">' + (i + 1) + '</span><span class="board__name">' + esc(e.name) + ' <span class="board__level">L' + e.level + '</span></span><span class="board__score">' + e.score + "</span></li>";
+      return '<li class="' + (i === youIndex ? "is-you" : "") + '"><span class="board__rank">' + (i + 1) + '</span><span class="board__name">' + esc(e.name) + ' <span class="board__level">L' + e.level + '</span></span><span class="board__score">' + e.score + (isFinite(e.ms) ? '<small>' + secs(e.ms) + "</small>" : "") + "</span></li>";
     }).join("") + "</ol>";
     if (youIndex >= (limit || rows.length)) {
-      html += '<ol class="board board--you" start="' + (youIndex + 1) + '"><li class="is-you"><span class="board__rank">' + (youIndex + 1) + '</span><span class="board__name">' + esc(rows[youIndex].name) + ' <span class="board__level">L' + rows[youIndex].level + '</span></span><span class="board__score">' + rows[youIndex].score + "</span></li></ol>";
+      html += '<ol class="board board--you" start="' + (youIndex + 1) + '"><li class="is-you"><span class="board__rank">' + (youIndex + 1) + '</span><span class="board__name">' + esc(rows[youIndex].name) + ' <span class="board__level">L' + rows[youIndex].level + '</span></span><span class="board__score">' + rows[youIndex].score + (isFinite(rows[youIndex].ms) ? "<small>" + secs(rows[youIndex].ms) + "</small>" : "") + "</span></li></ol>";
     }
     return html;
   }
@@ -494,7 +509,7 @@
               return '<button class="tab' + (k === g ? " is-on" : "") + '" type="button" role="tab" aria-selected="' + (k === g) + '" data-board-tab="' + k + '">' + GAME_NAMES[k] + "</button>";
             }).join("") +
           "</div>" +
-          '<p class="lb__count">' + rows.length + (rows.length === 1 ? " player" : " players") + " · " + games + (games === 1 ? " game" : " games") + " played</p>" +
+          '<p class="lb__count">Most points first. Same points? The fastest goes on top. · ' + rows.length + (rows.length === 1 ? " player" : " players") + " · " + games + (games === 1 ? " game" : " games") + " played</p>" +
           (board.list ? boardRows(rows, state.sessionName, 50) : '<p class="muted">Loading the leaderboard…</p>') +
         "</section>",
         false
@@ -728,6 +743,8 @@
   }
 
   function playSpot() {
+    state.spot.startedAt = Date.now();
+    state.spot.penaltyMs = 0;
     renderSpotPlay();
     timers.spot = setInterval(function () {
       var sp = state.spot;
@@ -771,6 +788,7 @@
     } else {
       sp.misses.push({ x: x, y: y });
       sp.left = Math.max(0, sp.left - sp.cfg.penalty);
+      sp.penaltyMs += sp.cfg.penalty * 1000;
       soundBad();
       toast("Not there: -" + sp.cfg.penalty + " seconds");
       if (sp.left === 0) return endSpot();
@@ -783,8 +801,9 @@
     var sp = state.spot;
     sp.done = true;
     sp.all = sp.found.length === sp.diffs.length;
-    sp.score = (sp.found.length * 100 + (sp.all ? sp.left * 20 : 0)) * sp.cfg.mult;
-    sp.playId = logPlay({ game: "Spot the damage", level: sp.level, score: sp.score, result: sp.found.length + "/" + sp.diffs.length + " found (" + sp.room.name + ")" });
+    sp.score = sp.found.length * 100 * sp.cfg.mult;
+    sp.ms = Math.min(sp.cfg.seconds * 1000, Date.now() - sp.startedAt + sp.penaltyMs);
+    sp.playId = logPlay({ game: "Spot the damage", level: sp.level, score: sp.score, result: sp.found.length + "/" + sp.diffs.length + " found in " + secs(sp.ms) + " (" + sp.room.name + ")" });
     if (sp.all) soundWin();
     renderSpotResult();
     if (sp.all) confetti();
@@ -804,8 +823,8 @@
       '<section class="result">' +
         '<div class="result__main">' +
           '<p class="eyebrow">' + sp.room.name + " · Level " + sp.level + " " + stars(sp.level) + '</p><h2>' + title + "</h2>" +
-          '<p class="result__score"><span>' + sp.score + "</span> points" + (sp.cfg.mult > 1 ? " (×" + sp.cfg.mult + ")" : "") + "</p>" +
-          '<p class="lead">You found ' + sp.found.length + " of " + total + (sp.all ? " with " + sp.left + " seconds to spare." : ".") + ' That\'s why <strong>we take neutral photos at move-in and move-out</strong>: so nobody has to argue about what changed.</p>' +
+          '<p class="result__score"><span>' + sp.score + "</span> points" + (sp.cfg.mult > 1 ? " (×" + sp.cfg.mult + ")" : "") + " · " + secs(sp.ms) + "</p>" +
+          '<p class="lead">You found ' + sp.found.length + " of " + total + (sp.all ? " in " + secs(sp.ms) + ". The fastest players top the leaderboard." : ".") + ' That\'s why <strong>we take neutral photos at move-in and move-out</strong>: so nobody has to argue about what changed.</p>' +
           entry +
           spotBoard() + spotList() +
         "</div>" +
@@ -831,14 +850,14 @@
     namePlay(sp.playId, name);
     sp.named = true;
     sp.name = name;
-    saveToBoard("spot", name, sp.level, sp.score, sp.found.length + "/" + sp.diffs.length + " found");
+    saveToBoard("spot", name, sp.level, sp.score, sp.found.length + "/" + sp.diffs.length + " found", sp.ms);
     renderSpotResult();
   }
 
   // Send a named score, then tell the player where they rank.
-  function saveToBoard(game, name, level, score, result) {
+  function saveToBoard(game, name, level, score, result, ms) {
     state.sessionName = name;
-    var entry = { id: Date.now() + "-" + Math.random().toString(36).slice(2, 8), name: name, game: game, level: level, score: score, result: result, t: Date.now() };
+    var entry = { id: Date.now() + "-" + Math.random().toString(36).slice(2, 8), name: name, game: game, level: level, score: score, result: result + " in " + secs(ms), ms: ms, t: Date.now() };
     submitScore(entry).then(function () {
       return fetchBoard(true);
     }).then(function (list) {
@@ -920,8 +939,12 @@
       "</section>",
       f.answer === null
     );
-    if (f.answer === null) startQuestionTimer();
-    else stage.querySelector("[data-next]").focus();
+    if (f.answer === null) {
+      f.askedAt = Date.now();
+      startQuestionTimer();
+    } else {
+      stage.querySelector("[data-next]").focus();
+    }
   }
 
   function answerFair(choice) {
@@ -929,6 +952,7 @@
     if (f.answer !== null) return;
     clearInterval(timers.fair);
     var q = f.list[f.index];
+    f.ms = (f.ms || 0) + (choice === "timeout" ? f.cfg.seconds * 1000 : Date.now() - f.askedAt);
     if (choice === "timeout") {
       f.answer = "timeout";
       soundBad();
@@ -965,7 +989,7 @@
     clearInterval(timers.fair);
     var f = state.fair;
     f.score = f.correct * 100 * f.level;
-    f.playId = logPlay({ game: "Fair or not?", level: f.level, score: f.score, result: f.correct + "/5 correct" });
+    f.playId = logPlay({ game: "Fair or not?", level: f.level, score: f.score, result: f.correct + "/5 correct in " + secs(f.ms) });
     if (f.correct >= 4) {
       soundWin();
       setTimeout(confetti, 50);
@@ -983,7 +1007,7 @@
     namePlay(f.playId, name);
     f.named = true;
     f.name = name;
-    saveToBoard("fair", name, f.level, f.score, f.correct + "/5 correct");
+    saveToBoard("fair", name, f.level, f.score, f.correct + "/5 correct", f.ms);
     renderFairResult();
   }
 
@@ -994,7 +1018,7 @@
     show(
       '<section class="result result--fair">' +
         '<div class="result__main">' +
-          '<p class="eyebrow">Fair or not? · Level ' + f.level + " " + stars(f.level) + '</p><h2>' + title + '</h2><p class="result__score"><span>' + c + "/5</span> correct · " + f.score + " points" + (f.level > 1 ? " (×" + f.level + ")" : "") + "</p>" +
+          '<p class="eyebrow">Fair or not? · Level ' + f.level + " " + stars(f.level) + '</p><h2>' + title + '</h2><p class="result__score"><span>' + c + "/5</span> correct · " + f.score + " points" + (f.level > 1 ? " (×" + f.level + ")" : "") + " · " + secs(f.ms) + "</p>" +
           '<p class="lead">At Deposera, <strong>a deposit is only kept for real, proven damage</strong>. We check every deduction against our photos and an invoice, and normal wear never counts.</p>' +
           (f.named ? "" : entryForm("Put your name on the leaderboard")) +
           '<div class="btn-row">' + nextLevelButton("fair", f.level, c >= 4) +
