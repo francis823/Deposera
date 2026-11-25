@@ -334,7 +334,7 @@
   }
 
   function voteBlock(text) {
-    return '<div class="vote"><div class="vote__qr">' + QR + '</div><div class="vote__text"><p class="vote__kicker">' + (text || "Thanks for playing") + '</p><p class="vote__title">Like it? <em>Vote Deposera</em></p><p class="vote__url">Scan to visit our website<br>francis823.github.io/Deposera</p></div></div>';
+    return '<div class="vote"><div class="vote__qr">' + QR + '</div><div class="vote__text"><p class="vote__kicker">' + (text || "Thanks for playing") + '</p><p class="vote__title"><em>Deposera</em></p><p class="vote__url">Scan to visit our website<br>francis823.github.io/Deposera</p></div></div>';
   }
 
   function stars(level) {

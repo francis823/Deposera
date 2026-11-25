@@ -126,7 +126,7 @@ const clothFront = canvasTex(1800, 750, (g, w, h) => {
   const gr = g.createLinearGradient(0, 0, 0, h); gr.addColorStop(0, "#14302a"); gr.addColorStop(1, "#0b1d15"); g.fillStyle = gr; g.fillRect(0, 0, w, h);
   for (let x = 0; x < w; x += 6) { g.fillStyle = `rgba(0,0,0,${0.04 + 0.04 * Math.sin(x / 37)})`; g.fillRect(x, 0, 3, h); }
   g.textAlign = "center"; g.fillStyle = "#e2c792"; g.font = '700 150px "Cormorant Garamond"'; g.fillText("Deposera", w / 2, 300);
-  g.fillStyle = "#f4eee1"; g.font = 'italic 600 78px "Cormorant Garamond"'; g.fillText("Like it? Vote Deposera", w / 2, 430);
+  g.fillStyle = "#f4eee1"; g.font = 'italic 600 78px "Cormorant Garamond"'; g.fillText("Thanks for visiting", w / 2, 430);
   g.fillStyle = "rgba(244,238,225,.75)"; g.font = '600 42px Inter'; g.fillText("francis823.github.io/Deposera", w / 2, 540);
 });
 const clothM = mat({ color: "#0f2a20", roughness: 0.95 });
@@ -187,7 +187,7 @@ for (const [x, label, col, tok] of [[1.17, "Fair", "#2f6a50", 14], [1.32, "Not f
 }
 
 /* ---------- 12. How to vote sign ---------- */
-const voteTex = canvasTex(500, 300, (g, w, h) => { g.fillStyle = "#e2c792"; g.fillRect(0, 0, w, h); g.fillStyle = GREEN; g.textAlign = "center"; g.font = '700 40px Inter'; g.fillText("HOW TO VOTE", w / 2, 95); g.font = '700 64px "Cormorant Garamond"'; g.fillText("Vote Deposera", w / 2, 190); g.font = '600 30px Inter'; g.fillText("Ask us how", w / 2, 250); });
+const voteTex = canvasTex(500, 300, (g, w, h) => { g.fillStyle = "#e2c792"; g.fillRect(0, 0, w, h); g.fillStyle = GREEN; g.textAlign = "center"; g.font = '700 40px Inter'; g.fillText("THANKS FOR VISITING", w / 2, 95); g.font = '700 64px "Cormorant Garamond"'; g.fillText("Deposera", w / 2, 190); g.font = '600 30px Inter'; g.fillText("Deposits held in trust", w / 2, 250); });
 const vs = new THREE.Mesh(new THREE.PlaneGeometry(0.15, 0.09), mat({ map: voteTex, side: THREE.DoubleSide })); vs.rotation.x = -0.35; add(vs, 1.34, TOP + 0.045, 0.82);
 
 /* ---------- 9. Leaderboard laptop on a tall plinth ---------- */
