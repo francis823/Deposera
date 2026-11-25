@@ -251,6 +251,7 @@ button {
 
 .pill {
   padding: 0.5rem 1rem;
+  white-space: nowrap;
   border-radius: 999px;
   background: rgba(244, 238, 225, 0.1);
   font-size: 1rem;
@@ -1247,9 +1248,71 @@ button {
     text-align: center;
   }
 
+  /* Phones: fit both photos and the timer on one screen */
+  .topbar {
+    padding: 0.6rem 1rem;
+  }
+
+  .brand {
+    font-size: 1.4rem;
+  }
+
+  .stage {
+    padding: 0.75rem;
+  }
+
+  .spot {
+    gap: 0.6rem;
+  }
+
+  .spot__title {
+    display: none;
+  }
+
   .spot__bar {
-    flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+  }
+
+  .spot__bar .eyebrow {
+    font-size: 0.68rem;
+  }
+
+  .timer {
+    width: 3.4rem;
+    height: 3.4rem;
+  }
+
+  .timer span {
+    width: 2.75rem;
+    height: 2.75rem;
+    font-size: 1.4rem;
+  }
+
+  .pill {
+    padding: 0.35rem 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  .photos {
+    gap: 0.5rem;
+  }
+
+  .photo {
+    width: min(100%, calc((100dvh - 200px) / 2 * 4 / 3));
+    margin-inline: auto;
+    border-width: 3px;
+    border-radius: 14px;
+  }
+
+  .photo__tag {
+    top: 0.4rem;
+    left: 0.4rem;
+    font-size: 0.68rem;
+  }
+
+  .found li {
+    padding: 0.3rem 0.7rem 0.3rem 0.3rem;
+    font-size: 0.78rem;
   }
 }
 

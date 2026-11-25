@@ -92,6 +92,13 @@ Open **https://francis823.github.io/Deposera/games/** on the tablet, then tap th
 - Fold each sheet in half along the dashed line, so it stands as a tent. The question faces the visitor, and the answer is on the back.
 - Put two jars next to them, labelled "Fair" and "Not fair", with tokens.
 
+## "Scan & play" printables
+
+- `scan-and-play-sign-A5.pdf`: a table sign showing the website and both games on a laptop and phones, with a big QR code to the games. Stand it next to the tablet, so visitors can also play on their own phone while they wait.
+- `scan-and-play-cards-A4.pdf`: 10 business-card-size cards per A4 sheet (85 × 55 mm). Cut along the dashed lines and hand them out, so people can play later and remember to vote.
+- Both QR codes open https://francis823.github.io/Deposera/games/
+- Scores on a visitor's phone stay on their phone. The booth leaderboard only shows games played on the tablet.
+
 ---
 
 ## End every visit with the vote
