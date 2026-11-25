@@ -8,7 +8,6 @@
   var toastEl = document.querySelector("[data-toast]");
   var QR = document.querySelector("[data-qr]").innerHTML;
 
-  var SPOT_SECONDS = 40;
   var IDLE_SECONDS = 60;
 
   function esc(text) {
@@ -105,7 +104,10 @@
     flame: '<path d="M12 3c1 3 5 5 5 10a5 5 0 0 1-10 0c0-3 2-4 2-7 1.5 1 2 2 2 3 1-2 1-4 1-6Z"/>',
     snow: '<path d="M12 2v20M4 6.5l16 11M4 17.5l16-11"/>',
     layers: '<path d="m12 3 9 5-9 5-9-5Z"/><path d="m3 13 9 5 9-5"/>',
-    wrench: '<path d="M14.5 6.5a4 4 0 0 0 5 5L13 18a2.1 2.1 0 0 1-3-3Z"/><path d="M14.5 6.5 17 4l3 3-2.5 2.5M10 15l-6 6"/>'
+    wrench: '<path d="M14.5 6.5a4 4 0 0 0 5 5L13 18a2.1 2.1 0 0 1-3-3Z"/><path d="M14.5 6.5 17 4l3 3-2.5 2.5M10 15l-6 6"/>',
+    key: '<circle cx="8" cy="15" r="4"/><path d="m11 12 9-9M17 6l2 2M15 8l2 2"/>',
+    euro: '<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5a4 4 0 1 0 0 7M7 10.5h6M7 13.5h6"/>',
+    vault: '<rect x="3" y="4" width="18" height="15" rx="2"/><circle cx="12" cy="11.5" r="3.5"/><path d="M12 8v1M12 14v1M8.5 11.5h1M14.5 11.5h1M6 19v2M18 19v2"/>'
   };
 
   function icon(name, cls) {
@@ -113,6 +115,8 @@
   }
 
   /* ---------- Rooms for "Spot the damage" (move-in vs move-out) ---------- */
+  /* Each room has 5 obvious differences (tier 1) and 5 subtle ones (tier 2).
+     draw(has) gets a function: has("id") is true when that difference shows. */
 
   function rect(x, y, w, h, fill, extra) {
     return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" fill="' + fill + '"' + (extra || "") + "/>";
@@ -128,117 +132,176 @@
     {
       id: "living",
       name: "Living room",
-      draw: function (after) {
+      draw: function (has) {
         var s = rect(0, 0, 400, 232, "#ebe2cf") + rect(0, 224, 400, 8, "#f6efe1") + woodFloor(232);
-        s += '<path d="M150 0v22" stroke="#7d5f30" stroke-width="2"/><path d="M130 22h40l9 18h-58z" fill="#cfaa6c"/>';
+        s += '<path d="M150 0v22" stroke="#7d5f30" stroke-width="2"/><path d="M130 22h40l9 18h-58z" fill="' + (has("lamp") ? "#a5834b" : "#cfaa6c") + '"/>';
         s += '<rect x="240" y="36" width="122" height="112" rx="3" fill="#f8f3e8"/>' + rect(248, 44, 106, 96, "#bfd8c8") + '<path d="M301 44v96M248 92h106" stroke="#f8f3e8" stroke-width="5"/><rect x="234" y="146" width="134" height="8" rx="2" fill="#f6efe1"/>';
-        s += '<path d="M290 146l3-16h18l3 16z" fill="#b98c5a"/><path d="M302 130c-8-12-2-24 4-30M302 130c6-10 14-14 18-22M302 130c-2-10-10-14-16-16" stroke="#4f7d63" stroke-width="3" fill="none" stroke-linecap="round"/>';
+        s += '<path d="M290 146l3-16h18l3 16z" fill="#b98c5a"/><path d="M302 130c-8-12-2-24 4-30M302 130c6-10 14-14 18-22" stroke="#4f7d63" stroke-width="3" fill="none" stroke-linecap="round"/>';
+        if (!has("leaf")) s += '<path d="M302 130c-2-10-10-14-16-16" stroke="#4f7d63" stroke-width="3" fill="none" stroke-linecap="round"/>';
         var frame = '<rect x="72" y="58" width="94" height="62" fill="#f8f3e8" stroke="#b8925a" stroke-width="4"/><path d="M80 112l22-24 16 14 12-10 28 20z" fill="#9fb7a6"/><circle cx="146" cy="76" r="6" fill="#e2c792"/>';
-        s += after ? '<g transform="rotate(-9 119 89)">' + frame + "</g>" : frame;
+        s += has("frame") ? '<g transform="rotate(-9 119 89)">' + frame + "</g>" : frame;
         s += '<ellipse cx="150" cy="266" rx="110" ry="22" fill="#d9cbad"/><ellipse cx="150" cy="266" rx="92" ry="16" fill="none" stroke="#c4b393" stroke-width="2"/>';
-        s += '<rect x="44" y="148" width="166" height="54" rx="14" fill="#2f6a50"/><rect x="36" y="186" width="182" height="36" rx="10" fill="#21503c"/><rect x="26" y="160" width="26" height="62" rx="11" fill="#21503c"/><rect x="202" y="160" width="26" height="62" rx="11" fill="#21503c"/><path d="M127 190v30" stroke="#173a2b" stroke-width="2"/>' + rect(44, 222, 8, 10, "#173a2b") + rect(202, 222, 8, 10, "#173a2b");
-        if (after) {
-          s += '<path d="M197 40l9 15-7 10 11 13-5 14 8 10" stroke="#5b4a35" stroke-width="2.2" fill="none" stroke-linejoin="round"/>';
-          s += '<ellipse cx="198" cy="268" rx="22" ry="8" fill="#7a5a35" opacity=".7"/><ellipse cx="212" cy="263" rx="9" ry="4" fill="#7a5a35" opacity=".55"/>';
-          s += '<path d="M318 52l9 16-7 8 12 14-6 10M327 68l14-6" stroke="#f8f3e8" stroke-width="2.2" fill="none"/>';
-          s += '<path d="M68 198c8-7 22-7 28 2-5 9-20 10-28-2z" fill="#e9dfca" stroke="#0b1d15" stroke-width="1.5"/>';
-        }
+        if (has("burn")) s += '<circle cx="98" cy="270" r="3.5" fill="#4a3824"/><circle cx="98" cy="270" r="6" fill="none" stroke="#8a6a3b" stroke-width="1.5" opacity=".7"/>';
+        s += '<rect x="44" y="148" width="166" height="54" rx="14" fill="#2f6a50"/><rect x="36" y="186" width="182" height="36" rx="10" fill="#21503c"/><rect x="26" y="160" width="26" height="62" rx="11" fill="#21503c"/><rect x="202" y="160" width="26" height="62" rx="11" fill="#21503c"/><path d="M127 190v30" stroke="#173a2b" stroke-width="2"/>' + rect(202, 222, 8, 10, "#173a2b");
+        if (!has("leg")) s += rect(44, 222, 8, 10, "#173a2b");
+        if (has("scuff")) s += '<path d="M318 228h20M322 226h10" stroke="#8a7a62" stroke-width="2" stroke-linecap="round"/>';
+        if (has("crack")) s += '<path d="M197 40l9 15-7 10 11 13-5 14 8 10" stroke="#5b4a35" stroke-width="2.2" fill="none" stroke-linejoin="round"/>';
+        if (has("stain")) s += '<ellipse cx="198" cy="268" rx="22" ry="8" fill="#7a5a35" opacity=".7"/><ellipse cx="212" cy="263" rx="9" ry="4" fill="#7a5a35" opacity=".55"/>';
+        if (has("window")) s += '<path d="M318 52l9 16-7 8 12 14-6 10M327 68l14-6" stroke="#f8f3e8" stroke-width="2.2" fill="none"/>';
+        if (has("sofa")) s += '<path d="M68 198c8-7 22-7 28 2-5 9-20 10-28-2z" fill="#e9dfca" stroke="#0b1d15" stroke-width="1.5"/>';
         return s;
       },
       diffs: [
-        { x: 203, y: 68, r: 30, label: "Crack in the wall" },
-        { x: 202, y: 267, r: 32, label: "Stain on the rug" },
-        { x: 119, y: 89, r: 44, label: "Picture hanging crooked" },
-        { x: 328, y: 76, r: 30, label: "Cracked window" },
-        { x: 82, y: 199, r: 28, label: "Tear in the sofa" }
+        { id: "crack", tier: 1, x: 203, y: 68, r: 30, label: "Crack in the wall" },
+        { id: "stain", tier: 1, x: 202, y: 267, r: 32, label: "Stain on the rug" },
+        { id: "frame", tier: 1, x: 119, y: 89, r: 44, label: "Picture hanging crooked" },
+        { id: "window", tier: 1, x: 328, y: 76, r: 30, label: "Cracked window" },
+        { id: "sofa", tier: 1, x: 82, y: 199, r: 28, label: "Tear in the sofa" },
+        { id: "lamp", tier: 2, x: 150, y: 31, r: 22, label: "Scorched lamp shade" },
+        { id: "leaf", tier: 2, x: 294, y: 121, r: 18, label: "Plant lost a leaf" },
+        { id: "scuff", tier: 2, x: 328, y: 228, r: 16, label: "Scuff on the skirting board" },
+        { id: "leg", tier: 2, x: 48, y: 227, r: 14, label: "Missing sofa leg" },
+        { id: "burn", tier: 2, x: 98, y: 270, r: 14, label: "Small burn on the rug" }
       ]
     },
     {
       id: "kitchen",
       name: "Kitchen",
-      draw: function (after) {
+      draw: function (has) {
         var s = rect(0, 0, 400, 300, "#ebe2cf");
-        s += '<rect x="262" y="22" width="112" height="62" rx="3" fill="#f8f3e8"/>' + rect(269, 29, 98, 48, "#bfd8c8") + '<path d="M318 29v48" stroke="#f8f3e8" stroke-width="5"/>';
+        s += '<rect x="262" y="22" width="112" height="62" rx="3" fill="#f8f3e8"/>' + rect(269, 29, 98, 48, "#bfd8c8");
+        if (!has("mullion")) s += '<path d="M318 29v48" stroke="#f8f3e8" stroke-width="5"/>';
         for (var ty = 92, row = 0; ty < 150; ty += 14, row++) {
           for (var tx = row % 2 ? -14 : 0; tx < 400; tx += 28) s += '<rect x="' + tx + '" y="' + ty + '" width="27" height="13" fill="#f6efe1" stroke="#ddd0b4"/>';
         }
-        s += '<rect x="20" y="18" width="96" height="70" rx="3" fill="#f3ecdc" stroke="#d9cbad" stroke-width="2"/>' + rect(103, 64, 4, 16, "#b8925a");
+        s += '<rect x="20" y="18" width="96" height="70" rx="3" fill="#f3ecdc" stroke="#d9cbad" stroke-width="2"/>';
+        if (!has("handle")) s += rect(103, 64, 4, 16, "#b8925a");
         var door = '<rect x="117" y="18" width="93" height="70" rx="3" fill="#f3ecdc" stroke="#d9cbad" stroke-width="2"/>';
-        s += after ? rect(117, 18, 93, 70, "#cfc2a4") + '<g transform="rotate(9 117 18)">' + door + "</g>" : door + rect(124, 64, 4, 16, "#b8925a");
-        s += rect(0, 150, 400, 10, "#3b4a42") + rect(0, 160, 400, 92, "#f3ecdc") + '<path d="M100 160v92M300 160v92" stroke="#d9cbad" stroke-width="2"/>' + rect(90, 196, 4, 18, "#b8925a") + rect(306, 196, 4, 18, "#b8925a");
+        s += has("door") ? rect(117, 18, 93, 70, "#cfc2a4") + '<g transform="rotate(9 117 18)">' + door + "</g>" : door + rect(124, 64, 4, 16, "#b8925a");
+        s += rect(0, 150, 400, 10, "#3b4a42");
+        if (has("chip")) s += '<path d="M74 150l6 6 6-6z" fill="#ebe2cf"/>';
+        s += rect(0, 160, 400, 92, "#f3ecdc") + '<path d="M100 160v92M300 160v92" stroke="#d9cbad" stroke-width="2"/>' + rect(90, 196, 4, 18, "#b8925a");
+        if (!has("handle2")) s += rect(306, 196, 4, 18, "#b8925a");
         s += '<rect x="146" y="166" width="108" height="80" rx="6" fill="#2a2f2c"/>' + rect(158, 174, 84, 5, "#8b918d") + '<rect x="158" y="186" width="84" height="50" rx="4" fill="#4b524e"/>';
         s += rect(312, 147, 60, 5, "#cfd5d2") + '<path d="M342 147v-22h14v7" stroke="#9aa3a0" stroke-width="4" fill="none" stroke-linecap="round"/>';
         s += rect(0, 252, 400, 48, "#d9cbad");
         for (var fx = 0; fx < 400; fx += 50) s += '<path d="M' + fx + ' 252v48" stroke="#c9b892"/>';
         s += '<path d="M0 276h400" stroke="#c9b892"/>';
-        if (after) {
-          s += '<ellipse cx="186" cy="206" rx="16" ry="9" fill="#8a6a3b" opacity=".85"/><ellipse cx="216" cy="220" rx="13" ry="7" fill="#8a6a3b" opacity=".75"/><ellipse cx="204" cy="198" rx="7" ry="4" fill="#a07c46" opacity=".8"/>';
-          s += '<path d="M46 106l9 7-4 7 10 7-3 8" stroke="#6e5a40" stroke-width="2" fill="none"/>';
-          s += '<path d="M30 196l34 14M34 214l28 10M40 188l18 30" stroke="#a8977a" stroke-width="2" stroke-linecap="round"/>';
-          s += '<ellipse cx="340" cy="274" rx="40" ry="9" fill="#8fb6c6" opacity=".75"/><path d="M349 132v10" stroke="#8fb6c6" stroke-width="3" stroke-linecap="round"/>';
-        }
+        if (has("floorcrack")) s += '<path d="M110 280l8 6-3 6 9 6" stroke="#9c8a68" stroke-width="1.6" fill="none"/>';
+        if (has("oven")) s += '<ellipse cx="186" cy="206" rx="16" ry="9" fill="#8a6a3b" opacity=".85"/><ellipse cx="216" cy="220" rx="13" ry="7" fill="#8a6a3b" opacity=".75"/><ellipse cx="204" cy="198" rx="7" ry="4" fill="#a07c46" opacity=".8"/>';
+        if (has("tile")) s += '<path d="M46 106l9 7-4 7 10 7-3 8" stroke="#6e5a40" stroke-width="2" fill="none"/>';
+        if (has("scratch")) s += '<path d="M30 196l34 14M34 214l28 10M40 188l18 30" stroke="#a8977a" stroke-width="2" stroke-linecap="round"/>';
+        if (has("leak")) s += '<ellipse cx="340" cy="274" rx="40" ry="9" fill="#8fb6c6" opacity=".75"/><path d="M349 132v10" stroke="#8fb6c6" stroke-width="3" stroke-linecap="round"/>';
         return s;
       },
       diffs: [
-        { x: 200, y: 210, r: 38, label: "Greasy oven" },
-        { x: 165, y: 58, r: 46, label: "Cupboard door hanging loose" },
-        { x: 56, y: 120, r: 28, label: "Cracked tile" },
-        { x: 48, y: 206, r: 32, label: "Scratched cupboard" },
-        { x: 340, y: 272, r: 36, label: "Water leak on the floor" }
+        { id: "oven", tier: 1, x: 200, y: 210, r: 38, label: "Greasy oven" },
+        { id: "door", tier: 1, x: 165, y: 58, r: 46, label: "Cupboard door hanging loose" },
+        { id: "tile", tier: 1, x: 56, y: 120, r: 28, label: "Cracked tile" },
+        { id: "scratch", tier: 1, x: 48, y: 206, r: 32, label: "Scratched cupboard" },
+        { id: "leak", tier: 1, x: 340, y: 272, r: 36, label: "Water leak on the floor" },
+        { id: "handle", tier: 2, x: 105, y: 72, r: 14, label: "Missing handle, top cupboard" },
+        { id: "handle2", tier: 2, x: 308, y: 205, r: 14, label: "Missing handle, bottom cupboard" },
+        { id: "chip", tier: 2, x: 80, y: 153, r: 13, label: "Chip in the worktop" },
+        { id: "mullion", tier: 2, x: 318, y: 53, r: 20, label: "Broken window frame" },
+        { id: "floorcrack", tier: 2, x: 117, y: 289, r: 15, label: "Cracked floor tile" }
       ]
     },
     {
       id: "bedroom",
       name: "Bedroom",
-      draw: function (after) {
+      draw: function (has) {
         var s = rect(0, 0, 400, 232, "#ebe2cf") + rect(0, 224, 400, 8, "#f6efe1") + rect(0, 232, 400, 68, "#b9a58a");
         for (var cx = 10; cx < 400; cx += 22) for (var cy = 242; cy < 300; cy += 16) s += '<circle cx="' + (cx + (cy % 32 ? 11 : 0)) + '" cy="' + cy + '" r="1.4" fill="#a8947a"/>';
+        if (has("thread")) s += '<path d="M292 266c6 4 10 8 18 8" stroke="#e7dcc3" stroke-width="2" fill="none" stroke-linecap="round"/>';
         s += '<rect x="246" y="34" width="116" height="116" rx="3" fill="#f8f3e8"/>' + rect(254, 42, 100, 100, "#bfd8c8");
         for (var sy = 44; sy < 136; sy += 8) {
-          if (after && sy === 92) s += '<path d="M254 92l46 10" stroke="#e7dcc3" stroke-width="6"/><path d="M308 96l46-4" stroke="#e7dcc3" stroke-width="6"/>';
+          if (has("blind") && sy === 92) s += '<path d="M254 92l46 10" stroke="#e7dcc3" stroke-width="6"/><path d="M308 96l46-4" stroke="#e7dcc3" stroke-width="6"/>';
           else s += rect(254, sy, 100, 6, "#efe6d2");
         }
-        s += '<path d="M346 44v92" stroke="#cdbb98" stroke-width="1.5"/><circle cx="346" cy="140" r="3" fill="#b8925a"/>';
-        s += '<circle cx="118" cy="66" r="24" fill="#cfe0da" stroke="#b8925a" stroke-width="4"/><path d="M106 58l10-6M106 68l18-10" stroke="#fff" stroke-width="3" opacity=".7"/>';
-        s += '<rect x="30" y="118" width="176" height="72" rx="12" fill="#21503c"/><rect x="18" y="176" width="200" height="26" rx="6" fill="#f8f3e8"/><ellipse cx="78" cy="174" rx="34" ry="11" fill="#fbf8f1"/><ellipse cx="156" cy="174" rx="34" ry="11" fill="#fbf8f1"/><rect x="18" y="190" width="200" height="40" rx="8" fill="#cfaa6c"/><path d="M18 206h200" stroke="#b8925a" stroke-width="2"/>' + rect(26, 228, 8, 10, "#173a2b") + rect(202, 228, 8, 10, "#173a2b");
+        s += '<path d="M346 44v92" stroke="#cdbb98" stroke-width="1.5"/>';
+        if (!has("cord")) s += '<circle cx="346" cy="140" r="3" fill="#b8925a"/>';
+        s += '<circle cx="118" cy="66" r="24" fill="#cfe0da" stroke="#b8925a" stroke-width="4"/>';
+        if (!has("mirror")) s += '<path d="M106 58l10-6M106 68l18-10" stroke="#fff" stroke-width="3" opacity=".7"/>';
+        s += '<rect x="30" y="118" width="176" height="72" rx="12" fill="#21503c"/><rect x="18" y="176" width="200" height="26" rx="6" fill="#f8f3e8"/><ellipse cx="78" cy="174" rx="34" ry="11" fill="#fbf8f1"/><ellipse cx="156" cy="174" rx="34" ry="11" fill="#fbf8f1"/>';
+        if (has("pillow")) s += '<ellipse cx="160" cy="173" rx="7" ry="3.5" fill="#b59a72" opacity=".8"/>';
+        s += '<rect x="18" y="190" width="200" height="40" rx="8" fill="#cfaa6c"/><path d="M18 206h200" stroke="#b8925a" stroke-width="2"/>' + rect(26, 228, 8, 10, "#173a2b");
+        if (!has("bedleg")) s += rect(202, 228, 8, 10, "#173a2b");
         s += '<rect x="224" y="176" width="34" height="56" rx="3" fill="#b98c5a"/><path d="M224 204h34" stroke="#9c7445" stroke-width="2"/><circle cx="241" cy="192" r="2.5" fill="#7d5f30"/><circle cx="241" cy="218" r="2.5" fill="#7d5f30"/>';
         s += rect(236, 160, 10, 16, "#7d5f30");
-        s += after ? '<g transform="rotate(14 241 150)"><path d="M228 140h26l6 20h-38z" fill="#f3ecdc"/><path d="M236 142l6 10 -4 6" stroke="#9c7445" stroke-width="2" fill="none"/></g>' : '<path d="M228 140h26l6 20h-38z" fill="#f3ecdc"/>';
-        if (after) {
-          s += '<ellipse cx="60" cy="96" rx="10" ry="8" fill="#5b4a35"/><path d="M50 90l-8-6M70 92l8-6M60 104l-2 8" stroke="#5b4a35" stroke-width="1.6"/>';
-          s += '<ellipse cx="132" cy="262" rx="26" ry="9" fill="#6e4f2e" opacity=".55"/>';
-          s += '<path d="M228 182l24 18M230 196l18 10" stroke="#f3e2c0" stroke-width="2" stroke-linecap="round"/>';
-        }
+        s += has("lamp") ? '<g transform="rotate(14 241 150)"><path d="M228 140h26l6 20h-38z" fill="#f3ecdc"/><path d="M236 142l6 10 -4 6" stroke="#9c7445" stroke-width="2" fill="none"/></g>' : '<path d="M228 140h26l6 20h-38z" fill="#f3ecdc"/>';
+        if (has("hole")) s += '<ellipse cx="60" cy="96" rx="10" ry="8" fill="#5b4a35"/><path d="M50 90l-8-6M70 92l8-6M60 104l-2 8" stroke="#5b4a35" stroke-width="1.6"/>';
+        if (has("carpet")) s += '<ellipse cx="132" cy="262" rx="26" ry="9" fill="#6e4f2e" opacity=".55"/>';
+        if (has("table")) s += '<path d="M228 182l24 18M230 196l18 10" stroke="#f3e2c0" stroke-width="2" stroke-linecap="round"/>';
         return s;
       },
       diffs: [
-        { x: 304, y: 96, r: 32, label: "Broken blind" },
-        { x: 60, y: 96, r: 28, label: "Hole in the wall" },
-        { x: 132, y: 262, r: 34, label: "Stain on the carpet" },
-        { x: 242, y: 150, r: 26, label: "Torn lamp shade" },
-        { x: 240, y: 192, r: 24, label: "Scratched bedside table" }
+        { id: "blind", tier: 1, x: 304, y: 96, r: 32, label: "Broken blind" },
+        { id: "hole", tier: 1, x: 60, y: 96, r: 28, label: "Hole in the wall" },
+        { id: "carpet", tier: 1, x: 132, y: 262, r: 34, label: "Stain on the carpet" },
+        { id: "lamp", tier: 1, x: 242, y: 150, r: 26, label: "Torn lamp shade" },
+        { id: "table", tier: 1, x: 240, y: 192, r: 24, label: "Scratched bedside table" },
+        { id: "mirror", tier: 2, x: 114, y: 62, r: 18, label: "Mirror lost its shine" },
+        { id: "pillow", tier: 2, x: 160, y: 173, r: 14, label: "Stain on the pillow" },
+        { id: "cord", tier: 2, x: 346, y: 140, r: 12, label: "Blind cord pull missing" },
+        { id: "bedleg", tier: 2, x: 206, y: 233, r: 12, label: "Missing bed leg" },
+        { id: "thread", tier: 2, x: 301, y: 270, r: 15, label: "Pulled carpet thread" }
       ]
     }
   ];
 
-  function roomSvg(room, after, marks) {
-    return '<svg class="photo__svg" viewBox="0 0 400 300" aria-hidden="true" focusable="false">' + room.draw(after) + (marks || "") + "</svg>";
+  var SPOT_LEVELS = {
+    1: { name: "Easy", obvious: 5, subtle: 0, seconds: 40, penalty: 2, pad: 8, mult: 1, text: "5 obvious differences · 40 seconds" },
+    2: { name: "Medium", obvious: 3, subtle: 3, seconds: 40, penalty: 3, pad: 4, mult: 2, text: "6 differences, some subtle · 40 seconds · double points" },
+    3: { name: "Hard", obvious: 2, subtle: 5, seconds: 35, penalty: 4, pad: 2, mult: 3, text: "7 differences, mostly subtle · 35 seconds · triple points" }
+  };
+
+  function roomSvg(room, after, active, marks) {
+    var has = function (id) {
+      return after && active.indexOf(id) !== -1;
+    };
+    return '<svg class="photo__svg" viewBox="0 0 400 300" aria-hidden="true" focusable="false">' + room.draw(has) + (marks || "") + "</svg>";
   }
 
   /* ---------- Situations for "Fair or not?" ---------- */
 
-  var SITUATIONS = [
-    { id: "carpet", icon: "layers", text: "The carpet is lightly worn after 2 years.", fair: false, why: "Normal wear from everyday living is not damage." },
-    { id: "oven", icon: "flame", text: "The oven was left greasy at move-out.", fair: true, why: "Fair, but only the real cleaning cost, backed by an invoice." },
-    { id: "crack", icon: "camera", text: "A crack in the wall that is already in the move-in photos.", fair: false, why: "It was there before the tenant moved in. Our photos prove it." },
-    { id: "blind", icon: "wrench", text: "A broken blind that is not in the move-in photos.", fair: true, why: "Fair. The tenant could have fixed it after the pre-inspection." },
-    { id: "cleaning", icon: "receipt", text: '"General cleaning: €300", with no invoice.', fair: false, why: "No proof, no deduction. Every cost needs an invoice." },
-    { id: "paint", icon: "paint", text: "The tenant painted a wall bright purple without permission.", fair: true, why: "Fair, but only the real cost of repainting it." },
-    { id: "fridge", icon: "snow", text: "A 15-year-old fridge stopped working.", fair: false, why: "Old age is wear, not damage caused by the tenant." },
-    { id: "late", icon: "calendar", text: "The landlord reports new damage 3 weeks after key return.", fair: false, why: "Too late. Landlords have 14 days after key return to report missed damage." },
-    { id: "curtains", icon: "sun", text: "Curtains faded by the sun after 4 years.", fair: false, why: "Sun fading is normal wear." },
-    { id: "door", icon: "door", text: "A hole in a door from a party, found at key return.", fair: true, why: "Fair. It is real damage, and only the repair cost comes out." }
-  ];
+  var SITUATIONS = {
+    1: [
+      { id: "carpet", icon: "layers", text: "The carpet is lightly worn after 2 years.", fair: false, why: "Normal wear from everyday living is not damage." },
+      { id: "oven", icon: "flame", text: "The oven was left greasy at move-out.", fair: true, why: "Fair, but only the real cleaning cost, backed by an invoice." },
+      { id: "crack", icon: "camera", text: "A crack in the wall that is already in the move-in photos.", fair: false, why: "It was there before the tenant moved in. Our photos prove it." },
+      { id: "blind", icon: "wrench", text: "A broken blind that is not in the move-in photos.", fair: true, why: "Fair. The tenant could have fixed it after the pre-inspection." },
+      { id: "cleaning", icon: "receipt", text: '"General cleaning: €300", with no invoice.', fair: false, why: "No proof, no deduction. Every cost needs an invoice." },
+      { id: "paint", icon: "paint", text: "The tenant painted a wall bright purple without permission.", fair: true, why: "Fair, but only the real cost of repainting it." },
+      { id: "fridge", icon: "snow", text: "A 15-year-old fridge stopped working.", fair: false, why: "Old age is wear, not damage caused by the tenant." },
+      { id: "late", icon: "calendar", text: "The landlord reports new damage 3 weeks after key return.", fair: false, why: "Too late. Landlords have 14 days after key return to report missed damage." },
+      { id: "curtains", icon: "sun", text: "Curtains faded by the sun after 4 years.", fair: false, why: "Sun fading is normal wear." },
+      { id: "door", icon: "door", text: "A hole in a door from a party, found at key return.", fair: true, why: "Fair. It is real damage, and only the repair cost comes out." }
+    ],
+    2: [
+      { id: "selffix", icon: "wrench", text: "The tenant repaired a hole in the wall before key return, and it looks good.", fair: false, why: "Fixed properly before key return means nothing is deducted." },
+      { id: "notes", icon: "camera", text: "A stained mattress that the tenant noted in the first 7 days.", fair: false, why: "It's in the move-in record, so it was already there." },
+      { id: "overcharge", icon: "receipt", text: "€200 deducted for the oven, but the cleaning invoice says €120.", fair: false, why: "Only the real cost on the invoice: €120, not €200." },
+      { id: "wine", icon: "layers", text: "A wine stain on the carpet, not in the move-in photos, with a cleaning invoice.", fair: true, why: "Fair. It is new damage, proven by our photos and an invoice." },
+      { id: "marks", icon: "home", text: "Light marks on the walls where furniture stood for 3 years.", fair: false, why: "That's normal wear from living in a home." },
+      { id: "keys", icon: "key", text: "The keys were never returned, so the landlord changed the lock (invoice €90).", fair: true, why: "Fair. It's a real cost caused by the tenant, backed by an invoice." },
+      { id: "fee", icon: "euro", text: "Deposera's service fee taken out of the tenant's deposit.", fair: false, why: "Never. Tenants don't pay us. The agency or landlord pays the fee." }
+    ],
+    3: [
+      { id: "day13", icon: "calendar", text: "The landlord reports missed damage on day 13 after key return, and our move-out photos show it.", fair: true, why: "Fair. It's within the 14 days, and our photos prove it." },
+      { id: "after", icon: "camera", text: "The landlord reports a broken window on day 10, but our move-out photos show it intact.", fair: false, why: "Our photos prove it was fine at key return." },
+      { id: "record", icon: "search", text: "The tenant says a blind was always broken, but it's not in the photos or the 7-day notes.", fair: true, why: "The move-in record is final after 7 days. If it's not there, it counts as new." },
+      { id: "oldcarpet", icon: "layers", text: "Paint spilled on a 10-year-old carpet. The landlord wants the full price of a new one.", fair: false, why: "The old carpet was nearly worn out anyway. Only a fair part of the cost can be deducted." },
+      { id: "hold", icon: "vault", text: "The tenant disputes one €60 item, so the landlord wants to hold the whole €1,500.", fair: false, why: "Only the amount in question stays on hold. The rest is paid on time." },
+      { id: "nofix", icon: "door", text: "The tenant left a damaged door unfixed after the pre-inspection. Repair invoice: €180.", fair: true, why: "Fair. The tenant had the chance to fix it first, and the cost is proven." }
+    ]
+  };
+
+  var FAIR_LEVELS = {
+    1: { name: "Easy", seconds: 0, text: "Clear cases · no timer" },
+    2: { name: "Medium", seconds: 15, text: "Trickier cases · 15 seconds each" },
+    3: { name: "Hard", seconds: 10, text: "Expert cases · 10 seconds each" }
+  };
 
   /* ---------- State ---------- */
 
@@ -249,10 +312,11 @@
     fair: null
   };
 
-  var timers = { spot: null, countdown: null };
+  var timers = { spot: null, countdown: null, fair: null };
 
   function clearTimers() {
     clearInterval(timers.spot);
+    clearInterval(timers.fair);
     clearTimeout(timers.countdown);
   }
 
@@ -272,6 +336,12 @@
     return '<div class="vote"><div class="vote__qr">' + QR + '</div><div class="vote__text"><p class="vote__kicker">' + (text || "Thanks for playing") + '</p><p class="vote__title">Like it? <em>Vote Deposera</em></p><p class="vote__url">Scan to visit our website<br>francis823.github.io/Deposera</p></div></div>';
   }
 
+  function stars(level) {
+    var s = "";
+    for (var i = 1; i <= 3; i++) s += '<span class="star' + (i <= level ? " is-on" : "") + '">★</span>';
+    return '<span class="stars" aria-label="Level ' + level + ' of 3">' + s + "</span>";
+  }
+
   /* ---------- Hub ---------- */
 
   function spotScores() {
@@ -284,12 +354,12 @@
     var top = spotScores()[0];
     show(
       '<section class="hub">' +
-        '<div class="hub__intro"><p class="eyebrow">Booth games</p><h1>Can you protect <em>a deposit?</em></h1><p class="lead">Play a game and win a gold coin.</p></div>' +
+        '<div class="hub__intro"><p class="eyebrow">Booth games</p><h1>Can you protect <em>a deposit?</em></h1><p class="lead">Play a game and win a gold coin. Three levels each.</p></div>' +
         '<div class="hub__games">' +
-          '<button class="game-card" type="button" data-start="spot"><span class="game-card__icon">' + icon("search") + '</span><span class="game-card__title">Spot the damage</span><span class="game-card__text">Find 5 differences between move-in and move-out in ' + SPOT_SECONDS + ' seconds.</span>' +
+          '<button class="game-card" type="button" data-pick="spot"><span class="game-card__icon">' + icon("search") + '</span><span class="game-card__title">Spot the damage</span><span class="game-card__text">Find the differences between move-in and move-out before time runs out.</span>' +
           (top ? '<span class="game-card__badge">' + icon("trophy", "i i--sm") + "Top score " + top.score + " by " + esc(top.name) + "</span>" : '<span class="game-card__badge">' + icon("trophy", "i i--sm") + "Be the first on the leaderboard</span>") +
           '<span class="game-card__play">' + icon("play", "i i--sm") + "Play</span></button>" +
-          '<button class="game-card game-card--light" type="button" data-start="fair"><span class="game-card__icon">' + icon("scales") + '</span><span class="game-card__title">Fair or not?</span><span class="game-card__text">5 real situations. Would you keep the money?</span><span class="game-card__badge">' + icon("check", "i i--sm") + "See how other visitors voted</span>" +
+          '<button class="game-card game-card--light" type="button" data-pick="fair"><span class="game-card__icon">' + icon("scales") + '</span><span class="game-card__title">Fair or not?</span><span class="game-card__text">Real situations. Would you keep the money?</span><span class="game-card__badge">' + icon("check", "i i--sm") + "See how other visitors voted</span>" +
           '<span class="game-card__play">' + icon("play", "i i--sm") + "Play</span></button>" +
         "</div>" +
         voteBlock("Deposera · Independent deposit holding") +
@@ -297,23 +367,56 @@
     );
   }
 
+  /* ---------- Level picker ---------- */
+
+  function renderPicker(game) {
+    clearTimers();
+    state.screen = "pick";
+    var levels = game === "spot" ? SPOT_LEVELS : FAIR_LEVELS;
+    var title = game === "spot" ? "Spot the damage" : "Fair or not?";
+    var html = '<section class="picker"><div class="picker__head"><p class="eyebrow">' + title + '</p><h2>Choose your level</h2></div><div class="levels">';
+    [1, 2, 3].forEach(function (n) {
+      html += '<button class="level level--' + n + '" type="button" data-start="' + game + '" data-level="' + n + '">' + stars(n) +
+        '<span class="level__name">Level ' + n + " · " + levels[n].name + '</span><span class="level__text">' + levels[n].text + "</span></button>";
+    });
+    html += '</div><button class="btn btn--ghost picker__back" type="button" data-home>' + icon("home", "i i--sm") + "Back to menu</button></section>";
+    show(html);
+  }
+
   /* ---------- Spot the damage ---------- */
 
-  function startSpot() {
+  function pickDiffs(room, cfg) {
+    var obvious = shuffle(room.diffs.filter(function (d) { return d.tier === 1; })).slice(0, cfg.obvious);
+    var subtle = shuffle(room.diffs.filter(function (d) { return d.tier === 2; })).slice(0, cfg.subtle);
+    return shuffle(obvious.concat(subtle));
+  }
+
+  function startSpot(level) {
     clearTimers();
+    var cfg = SPOT_LEVELS[level];
     var room = ROOMS[state.roomIndex % ROOMS.length];
     state.roomIndex = (state.roomIndex + 1) % ROOMS.length;
     save("deposera-room-index", state.roomIndex);
     state.screen = "spot";
-    state.spot = { room: room, found: [], left: SPOT_SECONDS, misses: [], done: false };
+    var diffs = pickDiffs(room, cfg);
+    state.spot = {
+      room: room,
+      level: level,
+      cfg: cfg,
+      diffs: diffs,
+      active: diffs.map(function (d) { return d.id; }),
+      found: [],
+      left: cfg.seconds,
+      misses: [],
+      done: false
+    };
 
-    // 3-2-1 countdown, then play.
     var n = 3;
     function tick() {
-      show('<section class="countdown"><p class="eyebrow">' + room.name + '</p><h2>Find 5 differences</h2><p class="countdown__num" aria-live="assertive">' + n + '</p><p class="lead">Tap the damage on either photo.</p></section>', n === 3);
+      show('<section class="countdown"><p class="eyebrow">' + room.name + " · Level " + level + " " + stars(level) + '</p><h2>Find ' + diffs.length + ' differences</h2><p class="countdown__num" aria-live="assertive">' + n + '</p><p class="lead">Tap the damage on either photo. Wrong taps cost ' + cfg.penalty + " seconds.</p></section>", n === 3);
       beep(440 + (3 - n) * 120, 0.12);
       n--;
-      if (n >= 0) timers.countdown = setTimeout(n === 0 ? playSpot : tick, n === 0 ? 900 : 900);
+      if (n >= 0) timers.countdown = setTimeout(n === 0 ? playSpot : tick, 900);
     }
     tick();
   }
@@ -322,12 +425,12 @@
     var sp = state.spot;
     var s = "";
     sp.found.forEach(function (i) {
-      var d = sp.room.diffs[i];
-      s += '<circle class="mark" cx="' + d.x + '" cy="' + d.y + '" r="' + d.r + '"/>';
+      var d = sp.diffs[i];
+      s += '<circle class="mark" cx="' + d.x + '" cy="' + d.y + '" r="' + Math.max(d.r, 16) + '"/>';
     });
     if (sp.done) {
-      sp.room.diffs.forEach(function (d, i) {
-        if (sp.found.indexOf(i) === -1) s += '<circle class="mark mark--missed" cx="' + d.x + '" cy="' + d.y + '" r="' + d.r + '"/>';
+      sp.diffs.forEach(function (d, i) {
+        if (sp.found.indexOf(i) === -1) s += '<circle class="mark mark--missed" cx="' + d.x + '" cy="' + d.y + '" r="' + Math.max(d.r, 16) + '"/>';
       });
     }
     if (after) {
@@ -341,14 +444,14 @@
   function spotBoard() {
     var sp = state.spot;
     return '<div class="photos">' +
-      '<figure class="photo" data-photo><span class="photo__tag">Move-in</span>' + roomSvg(sp.room, false, marksFor(false)) + "</figure>" +
-      '<figure class="photo" data-photo><span class="photo__tag photo__tag--out">Move-out</span>' + roomSvg(sp.room, true, marksFor(true)) + "</figure>" +
+      '<figure class="photo" data-photo><span class="photo__tag">Move-in</span>' + roomSvg(sp.room, false, sp.active, marksFor(false)) + "</figure>" +
+      '<figure class="photo" data-photo><span class="photo__tag photo__tag--out">Move-out</span>' + roomSvg(sp.room, true, sp.active, marksFor(true)) + "</figure>" +
       "</div>";
   }
 
   function spotList() {
     var sp = state.spot;
-    return '<ol class="found">' + sp.room.diffs.map(function (d, i) {
+    return '<ol class="found">' + sp.diffs.map(function (d, i) {
       var got = sp.found.indexOf(i) !== -1;
       var cls = got ? "is-found" : sp.done ? "is-missed" : "";
       return '<li class="' + cls + '"><span class="found__dot">' + (got ? icon("check", "i i--xs") : i + 1) + "</span><span>" + (got || sp.done ? d.label : "???") + "</span></li>";
@@ -357,11 +460,11 @@
 
   function renderSpotPlay() {
     var sp = state.spot;
-    var pct = (sp.left / SPOT_SECONDS) * 100;
+    var pct = (sp.left / sp.cfg.seconds) * 100;
     show(
       '<section class="spot">' +
-        '<div class="spot__bar"><div><p class="eyebrow">' + sp.room.name + '</p><h2 class="spot__title">Spot the damage</h2></div>' +
-        '<div class="spot__stats"><span class="pill" aria-live="polite"><strong>' + sp.found.length + "</strong>/5 found</span>" +
+        '<div class="spot__bar"><div><p class="eyebrow">' + sp.room.name + " · Level " + sp.level + " " + stars(sp.level) + '</p><h2 class="spot__title">Spot the damage</h2></div>' +
+        '<div class="spot__stats"><span class="pill" aria-live="polite"><strong>' + sp.found.length + "</strong>/" + sp.diffs.length + " found</span>" +
         '<span class="timer' + (sp.left <= 10 ? " is-low" : "") + '" style="--p:' + pct + '"><span>' + sp.left + "</span></span></div></div>" +
         spotBoard() + spotList() +
       "</section>",
@@ -378,7 +481,7 @@
       if (sp.left === 0) return endSpot();
       var timer = stage.querySelector(".timer");
       if (timer) {
-        timer.style.setProperty("--p", (sp.left / SPOT_SECONDS) * 100);
+        timer.style.setProperty("--p", (sp.left / sp.cfg.seconds) * 100);
         timer.classList.toggle("is-low", sp.left <= 10);
         timer.querySelector("span").textContent = sp.left;
       }
@@ -393,71 +496,78 @@
     var x = ((event.clientX - box.left) / box.width) * 400;
     var y = ((event.clientY - box.top) / box.height) * 300;
 
+    // Pick the closest unfound difference within reach.
     var hit = -1;
-    sp.room.diffs.forEach(function (d, i) {
-      if (sp.found.indexOf(i) !== -1 || hit !== -1) return;
-      if (Math.hypot(d.x - x, d.y - y) <= d.r + 8) hit = i;
+    var best = Infinity;
+    sp.diffs.forEach(function (d, i) {
+      if (sp.found.indexOf(i) !== -1) return;
+      var dist = Math.hypot(d.x - x, d.y - y);
+      if (dist <= d.r + sp.cfg.pad && dist < best) {
+        best = dist;
+        hit = i;
+      }
     });
 
     if (hit !== -1) {
       sp.found.push(hit);
       soundGood();
-      toast(sp.room.diffs[hit].label + "!");
-      if (sp.found.length === sp.room.diffs.length) return endSpot();
+      toast(sp.diffs[hit].label + "!");
+      if (sp.found.length === sp.diffs.length) return endSpot();
     } else {
       sp.misses.push({ x: x, y: y });
-      sp.left = Math.max(0, sp.left - 2);
+      sp.left = Math.max(0, sp.left - sp.cfg.penalty);
       soundBad();
-      toast("Not there: -2 seconds");
+      toast("Not there: -" + sp.cfg.penalty + " seconds");
       if (sp.left === 0) return endSpot();
     }
     renderSpotPlay();
-  }
-
-  function spotScore() {
-    var sp = state.spot;
-    return sp.found.length * 100 + (sp.found.length === 5 ? sp.left * 20 : 0);
   }
 
   function endSpot() {
     clearInterval(timers.spot);
     var sp = state.spot;
     sp.done = true;
-    sp.score = spotScore();
+    sp.all = sp.found.length === sp.diffs.length;
+    sp.score = (sp.found.length * 100 + (sp.all ? sp.left * 20 : 0)) * sp.cfg.mult;
     var scores = spotScores();
     sp.qualifies = sp.score > 0 && (scores.length < 5 || sp.score > scores[scores.length - 1].score);
-    var all = sp.found.length === 5;
-    if (all) soundWin();
+    if (sp.all) soundWin();
     renderSpotResult();
-    if (all) confetti();
+    if (sp.all) confetti();
   }
 
   function leaderboard(highlight) {
     var scores = spotScores();
     if (!scores.length) return '<p class="muted">No scores yet. Be the first!</p>';
     return '<ol class="board">' + scores.map(function (s, i) {
-      return '<li class="' + (highlight === i ? "is-you" : "") + '"><span class="board__rank">' + (i + 1) + '</span><span class="board__name">' + esc(s.name) + '</span><span class="board__score">' + s.score + "</span></li>";
+      return '<li class="' + (highlight === i ? "is-you" : "") + '"><span class="board__rank">' + (i + 1) + '</span><span class="board__name">' + esc(s.name) + (s.level ? ' <span class="board__level">L' + s.level + "</span>" : "") + '</span><span class="board__score">' + s.score + "</span></li>";
     }).join("") + "</ol>";
+  }
+
+  function nextLevelButton(game, level, earned) {
+    if (level >= 3 || !earned) return "";
+    return '<button class="btn" type="button" data-start="' + game + '" data-level="' + (level + 1) + '">' + stars(level + 1) + " Try level " + (level + 1) + "</button>";
   }
 
   function renderSpotResult(highlight) {
     var sp = state.spot;
-    var all = sp.found.length === 5;
-    var title = all ? "Every bit of damage found!" : sp.found.length >= 3 ? "Good eye!" : "Damage is easy to miss.";
+    var total = sp.diffs.length;
+    var title = sp.all ? (sp.level === 3 ? "Expert inspector!" : "Every bit of damage found!") : sp.found.length >= total - 2 ? "Good eye!" : "Damage is easy to miss.";
     var entry = sp.qualifies && highlight === undefined
       ? '<form class="entry" data-entry><label for="initials">You made the leaderboard! Your initials</label><div class="entry__row"><input id="initials" name="initials" maxlength="3" autocomplete="off" autocapitalize="characters" required placeholder="ABC"><button class="btn" type="submit">Save</button></div></form>'
       : "";
     show(
       '<section class="result">' +
         '<div class="result__main">' +
-          '<p class="eyebrow">' + sp.room.name + ' · Result</p><h2>' + title + "</h2>" +
-          '<p class="result__score"><span>' + sp.score + '</span> points</p>' +
-          '<p class="lead">You found ' + sp.found.length + " of 5" + (all ? " with " + sp.left + " seconds to spare." : ".") + ' That\'s why <strong>we take neutral photos at move-in and move-out</strong>: so nobody has to argue about what changed.</p>' +
+          '<p class="eyebrow">' + sp.room.name + " · Level " + sp.level + " " + stars(sp.level) + '</p><h2>' + title + "</h2>" +
+          '<p class="result__score"><span>' + sp.score + "</span> points" + (sp.cfg.mult > 1 ? " (×" + sp.cfg.mult + ")" : "") + "</p>" +
+          '<p class="lead">You found ' + sp.found.length + " of " + total + (sp.all ? " with " + sp.left + " seconds to spare." : ".") + ' That\'s why <strong>we take neutral photos at move-in and move-out</strong>: so nobody has to argue about what changed.</p>' +
           entry +
           spotBoard() + spotList() +
         "</div>" +
         '<aside class="result__side"><h3>' + icon("trophy", "i i--sm") + "Top 5 today</h3>" + leaderboard(highlight) +
-          '<div class="btn-row"><button class="btn" type="button" data-start="spot">' + icon("play", "i i--sm") + 'Play again</button><button class="btn btn--ghost" type="button" data-home>' + icon("home", "i i--sm") + "Menu</button></div>" +
+          '<div class="btn-row">' + nextLevelButton("spot", sp.level, sp.all) +
+          '<button class="btn' + (sp.all && sp.level < 3 ? " btn--ghost" : "") + '" type="button" data-start="spot" data-level="' + sp.level + '">' + icon("play", "i i--sm") + 'Play again</button><button class="btn btn--ghost" type="button" data-home>' + icon("home", "i i--sm") + "Menu</button></div>" +
           voteBlock() +
         "</aside>" +
       "</section>"
@@ -474,27 +584,52 @@
       return;
     }
     var scores = spotScores();
-    var entry = { name: name, score: sp.score, t: Date.now() };
+    var entry = { name: name, score: sp.score, level: sp.level, t: Date.now() };
     scores.push(entry);
     scores.sort(function (a, b) { return b.score - a.score || a.t - b.t; });
     scores = scores.slice(0, 5);
     save("deposera-spot-scores", scores);
     sp.qualifies = false;
-    renderSpotResult(scores.indexOf(scores.filter(function (s) { return s.t === entry.t; })[0]));
+    var index = -1;
+    scores.forEach(function (s, i) {
+      if (s.t === entry.t) index = i;
+    });
+    renderSpotResult(index);
     toast("Saved! You're on the leaderboard.");
   }
 
   /* ---------- Fair or not? ---------- */
 
-  function startFair() {
+  function startFair(level) {
     clearTimers();
     state.screen = "fair";
-    state.fair = { list: shuffle(SITUATIONS).slice(0, 5), index: 0, correct: 0, answer: null };
+    state.fair = { level: level, cfg: FAIR_LEVELS[level], list: shuffle(SITUATIONS[level]).slice(0, 5), index: 0, correct: 0, answer: null, left: 0 };
     renderFair();
   }
 
   function votes() {
     return load("deposera-fair-votes", {});
+  }
+
+  function startQuestionTimer() {
+    var f = state.fair;
+    clearInterval(timers.fair);
+    if (!f.cfg.seconds) return;
+    f.left = f.cfg.seconds;
+    timers.fair = setInterval(function () {
+      f.left--;
+      var el = stage.querySelector(".qtimer");
+      if (el) {
+        el.style.setProperty("--p", (f.left / f.cfg.seconds) * 100);
+        el.classList.toggle("is-low", f.left <= 3);
+        el.querySelector("span").textContent = f.left;
+      }
+      if (f.left <= 3 && f.left > 0) beep(880, 0.06);
+      if (f.left <= 0) {
+        clearInterval(timers.fair);
+        answerFair("timeout");
+      }
+    }, 1000);
   }
 
   function renderFair() {
@@ -507,21 +642,24 @@
     var reveal = "";
     if (f.answer !== null) {
       var right = f.answer === q.fair;
+      var timedOut = f.answer === "timeout";
       var v = votes()[q.id] || { fair: 0, not: 0 };
       var total = v.fair + v.not;
       var pct = total ? Math.round((v.fair / total) * 100) : 0;
       reveal =
         '<div class="reveal ' + (right ? "is-right" : "is-wrong") + '" role="status">' +
-          '<p class="reveal__verdict">' + icon(right ? "check" : "close", "i") + "<span>" + (right ? "Correct!" : "Not quite.") + " It's <strong>" + (q.fair ? "fair" : "not fair") + "</strong>.</span></p>" +
+          '<p class="reveal__verdict">' + icon(right ? "check" : timedOut ? "clock" : "close", "i") + "<span>" + (right ? "Correct!" : timedOut ? "Time's up!" : "Not quite.") + " It's <strong>" + (q.fair ? "fair" : "not fair") + "</strong>.</span></p>" +
           '<p class="reveal__why">' + esc(q.why) + "</p>" +
-          '<div class="poll"><p class="poll__label">How visitors voted</p><div class="poll__bar"><span style="width:' + pct + '%"></span></div><p class="poll__nums"><span>Fair ' + pct + "%</span><span>Not fair " + (100 - pct) + "%</span></p></div>" +
+          (total ? '<div class="poll"><p class="poll__label">How visitors voted</p><div class="poll__bar"><span style="width:' + pct + '%"></span></div><p class="poll__nums"><span>Fair ' + pct + "%</span><span>Not fair " + (100 - pct) + "%</span></p></div>" : "") +
           '<button class="btn btn--big" type="button" data-next>' + (f.index < f.list.length - 1 ? "Next situation" : "See my score") + "</button>" +
         "</div>";
     }
 
+    var timer = f.cfg.seconds && f.answer === null ? '<span class="timer qtimer" style="--p:100"><span>' + f.cfg.seconds + "</span></span>" : "";
+
     show(
       '<section class="fair">' +
-        '<div class="fair__head"><p class="eyebrow">Fair or not? · ' + (f.index + 1) + " of " + f.list.length + '</p><div class="dots" aria-hidden="true">' + dots + "</div></div>" +
+        '<div class="fair__head"><p class="eyebrow">Fair or not? · Level ' + f.level + " " + stars(f.level) + " · " + (f.index + 1) + " of " + f.list.length + '</p><div class="fair__right">' + timer + '<div class="dots" aria-hidden="true">' + dots + "</div></div></div>" +
         '<div class="situation"><span class="situation__icon">' + icon(q.icon) + '</span><h2 class="situation__text">' + esc(q.text) + '</h2><p class="muted">Should this come out of the deposit?</p></div>' +
         (f.answer === null
           ? '<div class="choices"><button class="choice choice--fair" type="button" data-answer="fair">' + icon("check") + 'Fair</button><button class="choice choice--not" type="button" data-answer="not">' + icon("close") + "Not fair</button></div>"
@@ -529,25 +667,32 @@
       "</section>",
       f.answer === null
     );
-    if (f.answer !== null) stage.querySelector("[data-next]").focus();
+    if (f.answer === null) startQuestionTimer();
+    else stage.querySelector("[data-next]").focus();
   }
 
   function answerFair(choice) {
     var f = state.fair;
     if (f.answer !== null) return;
+    clearInterval(timers.fair);
     var q = f.list[f.index];
-    f.answer = choice === "fair";
-    var all = votes();
-    var v = all[q.id] || { fair: 0, not: 0 };
-    if (f.answer) v.fair++;
-    else v.not++;
-    all[q.id] = v;
-    save("deposera-fair-votes", all);
-    if (f.answer === q.fair) {
-      f.correct++;
-      soundGood();
-    } else {
+    if (choice === "timeout") {
+      f.answer = "timeout";
       soundBad();
+    } else {
+      f.answer = choice === "fair";
+      var all = votes();
+      var v = all[q.id] || { fair: 0, not: 0 };
+      if (f.answer) v.fair++;
+      else v.not++;
+      all[q.id] = v;
+      save("deposera-fair-votes", all);
+      if (f.answer === q.fair) {
+        f.correct++;
+        soundGood();
+      } else {
+        soundBad();
+      }
     }
     renderFair();
   }
@@ -564,9 +709,10 @@
   }
 
   function renderFairResult() {
+    clearInterval(timers.fair);
     var f = state.fair;
     var c = f.correct;
-    var title = c === 5 ? "Perfect! You think like Deposera." : c >= 3 ? "Nice judgement!" : "Deposit rules can be tricky.";
+    var title = c === 5 ? (f.level === 3 ? "Deposit expert!" : "Perfect! You think like Deposera.") : c >= 3 ? "Nice judgement!" : "Deposit rules can be tricky.";
     if (c >= 4) {
       soundWin();
       setTimeout(confetti, 50);
@@ -574,9 +720,10 @@
     show(
       '<section class="result result--fair">' +
         '<div class="result__main">' +
-          '<p class="eyebrow">Fair or not? · Result</p><h2>' + title + '</h2><p class="result__score"><span>' + c + "/5</span> correct</p>" +
+          '<p class="eyebrow">Fair or not? · Level ' + f.level + " " + stars(f.level) + '</p><h2>' + title + '</h2><p class="result__score"><span>' + c + "/5</span> correct</p>" +
           '<p class="lead">At Deposera, <strong>a deposit is only kept for real, proven damage</strong>. We check every deduction against our photos and an invoice, and normal wear never counts.</p>' +
-          '<div class="btn-row"><button class="btn" type="button" data-start="fair">' + icon("play", "i i--sm") + 'Play again</button><button class="btn btn--ghost" type="button" data-start="spot">' + icon("search", "i i--sm") + 'Try Spot the damage</button></div>' +
+          '<div class="btn-row">' + nextLevelButton("fair", f.level, c >= 4) +
+          '<button class="btn' + (c >= 4 && f.level < 3 ? " btn--ghost" : "") + '" type="button" data-start="fair" data-level="' + f.level + '">' + icon("play", "i i--sm") + 'Play again</button><button class="btn btn--ghost" type="button" data-pick="spot">' + icon("search", "i i--sm") + "Try Spot the damage</button></div>" +
         "</div>" +
         '<aside class="result__side">' + voteBlock("Thanks for playing") + "</aside>" +
       "</section>"
@@ -609,8 +756,9 @@
     if (!el) return;
     var d = el.dataset;
     if (d.home !== undefined) return renderHub();
-    if (d.start === "spot") return startSpot();
-    if (d.start === "fair") return startFair();
+    if (d.pick) return renderPicker(d.pick);
+    if (d.start === "spot") return startSpot(Number(d.level) || 1);
+    if (d.start === "fair") return startFair(Number(d.level) || 1);
     if (d.answer) return answerFair(d.answer);
     if (d.next !== undefined) return nextFair();
     if (d.photo !== undefined && state.screen === "spot") return tapPhoto(event, el);

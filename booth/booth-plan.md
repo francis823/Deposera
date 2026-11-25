@@ -72,8 +72,15 @@ Our message in one line: **"A deposit should only be kept for real, proven damag
 
 Open **https://francis823.github.io/Deposera/games/** on the tablet, then tap the full-screen button (top right).
 
-- **Spot the damage:** compare a move-in and a move-out photo and find 5 differences in 40 seconds. A wrong tap costs 2 seconds. There are 3 rooms, which rotate each game. Top-5 scores are saved on the tablet, with initials.
-- **Fair or not?:** 5 random situations out of 10. Visitors tap Fair or Not fair, see the answer, and see how other visitors voted.
+- **Spot the damage:** compare a move-in and a move-out photo and find the differences before time runs out. There are 3 rooms, which rotate each game. Top-5 scores are saved on the tablet, with initials and level.
+  - Level 1, Easy: 5 obvious differences in 40 seconds. A wrong tap costs 2 seconds.
+  - Level 2, Medium: 6 differences in 40 seconds, some subtle. A wrong tap costs 3 seconds. Double points.
+  - Level 3, Hard: 7 differences in 35 seconds, mostly subtle. A wrong tap costs 4 seconds. Triple points.
+- **Fair or not?:** 5 situations per round. Visitors tap Fair or Not fair, see the answer, and see how other visitors voted.
+  - Level 1: clear cases, no timer.
+  - Level 2: trickier cases, 15 seconds per question.
+  - Level 3: expert cases, 10 seconds per question.
+- After a strong round, a "Try level 2" or "Try level 3" button appears. Tip: give a gold coin for finishing level 3.
 - Both games end with **"Like it? Vote Deposera"** and a QR code to the website. Hand out a gold coin.
 - If nobody touches the tablet for 1 minute, it goes back to the menu by itself.
 - Before the doors open, clear test scores by opening **games/index.html#reset** once.
