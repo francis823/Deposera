@@ -83,6 +83,8 @@ Open **https://francis823.github.io/Deposera/games/** on the tablet, then tap th
 - After a strong round, a "Try level 2" or "Try level 3" button appears. Tip: give a gold coin for finishing level 3.
 - Both games end with **"Like it? Vote Deposera"** and a QR code to the website. Hand out a gold coin.
 - If nobody touches the tablet for 1 minute, it goes back to the menu by itself.
+- At the end of every game, players can add their initials (or skip).
+- **Players list (staff only):** tap the Deposera logo 5 times quickly, or open **games/index.html#players**. It shows every game played on the tablet, with totals (games played, players, level 3 games, top score) and a "Download list (CSV)" button. Use the numbers when you talk to investors.
 - Before the doors open, clear test scores by opening **games/index.html#reset** once.
 - No Wi-Fi? Open `games/index.html` from the downloaded copy. It works offline.
 
@@ -95,7 +97,7 @@ Open **https://francis823.github.io/Deposera/games/** on the tablet, then tap th
 ## "Scan & play" printables
 
 - `scan-and-play-sign-A5.pdf`: a table sign showing the website and both games on a laptop and phones, with a big QR code to the games. Stand it next to the tablet, so visitors can also play on their own phone while they wait.
-- `scan-and-play-cards-A4.pdf`: 10 business-card-size cards per A4 sheet (85 × 55 mm). Cut along the dashed lines and hand them out, so people can play later and remember to vote.
+- `scan-and-play-cards-A4.pdf`: 10 business-card-size cards (85 × 55 mm). Page 1 is the front (Scan & play, with a QR code to the games) and page 2 is the back (Deposera, with a QR code to the website). Print double-sided, flip on long edge, then cut along the dashed lines.
 - Both QR codes open https://francis823.github.io/Deposera/games/
 - Scores on a visitor's phone stay on their phone. The booth leaderboard only shows games played on the tablet.
 

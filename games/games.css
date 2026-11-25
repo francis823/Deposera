@@ -1152,6 +1152,118 @@ button {
   font-size: 1.5rem;
 }
 
+/* ---------- Players list (staff) ---------- */
+
+.players {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.players__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.players__head h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 4vw, 3rem);
+  font-weight: 600;
+  color: var(--cream-50);
+}
+
+.players__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+  gap: 0.75rem;
+}
+
+.players__stats div {
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--line-light);
+  border-radius: 18px;
+  background: rgba(244, 238, 225, 0.05);
+  font-size: 0.85rem;
+  color: rgba(244, 238, 225, 0.7);
+}
+
+.players__stats span {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  font-weight: 700;
+  line-height: 1.05;
+  color: var(--brass-300);
+}
+
+.players__table {
+  overflow-x: auto;
+  border-radius: 18px;
+  background: var(--cream-50);
+  color: var(--ink);
+}
+
+.players__table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.players__table th,
+.players__table td {
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid rgba(23, 39, 31, 0.1);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.players__table th {
+  background: var(--cream-100);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.players__table .star {
+  color: rgba(23, 39, 31, 0.2);
+}
+
+.players__table .star.is-on {
+  color: var(--brass-500);
+}
+
+.players__table .muted {
+  color: var(--ink-soft);
+}
+
+.players__name {
+  font-weight: 700;
+  letter-spacing: 0.15em;
+}
+
+.players__num {
+  text-align: right !important;
+  font-weight: 700;
+}
+
+.link-btn {
+  justify-self: start;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: rgba(244, 238, 225, 0.6);
+  font-size: 0.85rem;
+  text-decoration: underline;
+}
+
+.btn[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* ---------- Toast and confetti ---------- */
 
 .toast {

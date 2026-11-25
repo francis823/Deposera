@@ -383,6 +383,97 @@
     show(html);
   }
 
+  /* ---------- Players list (every game played on this device) ---------- */
+
+  function plays() {
+    return load("deposera-plays", []);
+  }
+
+  function logPlay(record) {
+    var all = plays();
+    record.t = Date.now();
+    record.name = "";
+    all.push(record);
+    save("deposera-plays", all);
+    return record.t;
+  }
+
+  function namePlay(t, name) {
+    var all = plays();
+    all.forEach(function (p) {
+      if (p.t === t) p.name = name;
+    });
+    save("deposera-plays", all);
+  }
+
+  function cleanName(value) {
+    return value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 3);
+  }
+
+  function entryForm(label) {
+    return '<form class="entry" data-entry><label for="initials">' + label + '</label><div class="entry__row"><input id="initials" name="initials" maxlength="3" autocomplete="off" autocapitalize="characters" required placeholder="ABC"><button class="btn" type="submit">Save</button><button class="btn btn--ghost" type="button" data-skip>Skip</button></div></form>';
+  }
+
+  function timeOf(t) {
+    return new Date(t).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
+  }
+
+  function renderPlayers() {
+    clearTimers();
+    state.screen = "players";
+    var all = plays().slice().reverse();
+    var named = {};
+    var games = { "Spot the damage": 0, "Fair or not?": 0 };
+    var levels = { 1: 0, 2: 0, 3: 0 };
+    all.forEach(function (p) {
+      if (p.name) named[p.name] = true;
+      games[p.game] = (games[p.game] || 0) + 1;
+      levels[p.level] = (levels[p.level] || 0) + 1;
+    });
+    var best = spotScores()[0];
+    var rows = all.map(function (p) {
+      return "<tr><td>" + timeOf(p.t) + "</td><td class=\"players__name\">" + (p.name ? esc(p.name) : '<span class="muted">-</span>') + "</td><td>" + esc(p.game) + "</td><td>" + stars(p.level) + "</td><td>" + esc(p.result) + '</td><td class="players__num">' + p.score + "</td></tr>";
+    }).join("");
+    show(
+      '<section class="players">' +
+        '<div class="players__head"><div><p class="eyebrow">Staff only</p><h2>Everyone who played</h2><p class="muted">Games played on this device. Visitors\' own phones keep their own scores.</p></div>' +
+        '<div class="btn-row"><button class="btn" type="button" data-csv' + (all.length ? "" : " disabled") + '>Download list (CSV)</button><button class="btn btn--ghost" type="button" data-home>' + icon("home", "i i--sm") + "Back to games</button></div></div>" +
+        '<div class="players__stats">' +
+          '<div><span>' + all.length + "</span>games played</div>" +
+          "<div><span>" + Object.keys(named).length + "</span>players with initials</div>" +
+          "<div><span>" + games["Spot the damage"] + "</span>Spot the damage</div>" +
+          "<div><span>" + games["Fair or not?"] + "</span>Fair or not?</div>" +
+          "<div><span>" + levels[3] + "</span>level 3 games</div>" +
+          "<div><span>" + (best ? best.score : 0) + "</span>top score" + (best ? " (" + esc(best.name) + ")" : "") + "</div>" +
+        "</div>" +
+        (all.length
+          ? '<div class="players__table"><table><thead><tr><th>Time</th><th>Initials</th><th>Game</th><th>Level</th><th>Result</th><th class="players__num">Score</th></tr></thead><tbody>' + rows + "</tbody></table></div>"
+          : '<p class="muted">Nobody has played on this device yet.</p>') +
+        '<button class="link-btn" type="button" data-clear-players>Clear the list, leaderboard and votes</button>' +
+      "</section>"
+    );
+  }
+
+  function downloadCsv() {
+    var lines = [["Date", "Time", "Initials", "Game", "Level", "Result", "Score"]];
+    plays().forEach(function (p) {
+      var d = new Date(p.t);
+      lines.push([d.toISOString().slice(0, 10), timeOf(p.t), p.name, p.game, p.level, p.result, p.score]);
+    });
+    var csv = lines.map(function (row) {
+      return row.map(function (v) { return '"' + String(v).replace(/"/g, '""') + '"'; }).join(",");
+    }).join("\n");
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
+    a.download = "deposera-players-" + new Date().toISOString().slice(0, 10) + ".csv";
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () {
+      URL.revokeObjectURL(a.href);
+      a.remove();
+    }, 500);
+  }
+
   /* ---------- Spot the damage ---------- */
 
   function pickDiffs(room, cfg) {
@@ -531,6 +622,7 @@
     sp.score = (sp.found.length * 100 + (sp.all ? sp.left * 20 : 0)) * sp.cfg.mult;
     var scores = spotScores();
     sp.qualifies = sp.score > 0 && (scores.length < 5 || sp.score > scores[scores.length - 1].score);
+    sp.playId = logPlay({ game: "Spot the damage", level: sp.level, score: sp.score, result: sp.found.length + "/" + sp.diffs.length + " found (" + sp.room.name + ")" });
     if (sp.all) soundWin();
     renderSpotResult();
     if (sp.all) confetti();
@@ -553,9 +645,7 @@
     var sp = state.spot;
     var total = sp.diffs.length;
     var title = sp.all ? (sp.level === 3 ? "Expert inspector!" : "Every bit of damage found!") : sp.found.length >= total - 2 ? "Good eye!" : "Damage is easy to miss.";
-    var entry = sp.qualifies && highlight === undefined
-      ? '<form class="entry" data-entry><label for="initials">You made the leaderboard! Your initials</label><div class="entry__row"><input id="initials" name="initials" maxlength="3" autocomplete="off" autocapitalize="characters" required placeholder="ABC"><button class="btn" type="submit">Save</button></div></form>'
-      : "";
+    var entry = sp.named ? "" : entryForm(sp.qualifies ? "You made the top 5! Your initials" : "Add your initials to today's players");
     show(
       '<section class="result">' +
         '<div class="result__main">' +
@@ -578,9 +668,16 @@
 
   function saveInitials(form) {
     var sp = state.spot;
-    var name = form.initials.value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 3);
+    var name = cleanName(form.initials.value);
     if (!name) {
       form.initials.focus();
+      return;
+    }
+    namePlay(sp.playId, name);
+    sp.named = true;
+    if (!sp.qualifies) {
+      renderSpotResult();
+      toast("Saved! Thanks for playing, " + name + ".");
       return;
     }
     var scores = spotScores();
@@ -704,30 +801,52 @@
       f.answer = null;
       renderFair();
     } else {
-      renderFairResult();
+      finishFair();
     }
   }
 
-  function renderFairResult() {
+  function finishFair() {
     clearInterval(timers.fair);
     var f = state.fair;
-    var c = f.correct;
-    var title = c === 5 ? (f.level === 3 ? "Deposit expert!" : "Perfect! You think like Deposera.") : c >= 3 ? "Nice judgement!" : "Deposit rules can be tricky.";
-    if (c >= 4) {
+    f.playId = logPlay({ game: "Fair or not?", level: f.level, score: f.correct, result: f.correct + "/5 correct" });
+    if (f.correct >= 4) {
       soundWin();
       setTimeout(confetti, 50);
     }
+    renderFairResult();
+  }
+
+  function saveFairInitials(form) {
+    var f = state.fair;
+    var name = cleanName(form.initials.value);
+    if (!name) {
+      form.initials.focus();
+      return;
+    }
+    namePlay(f.playId, name);
+    f.named = true;
+    renderFairResult();
+    toast("Saved! Thanks for playing, " + name + ".");
+  }
+
+  function renderFairResult() {
+    var f = state.fair;
+    var c = f.correct;
+    var title = c === 5 ? (f.level === 3 ? "Deposit expert!" : "Perfect! You think like Deposera.") : c >= 3 ? "Nice judgement!" : "Deposit rules can be tricky.";
     show(
       '<section class="result result--fair">' +
         '<div class="result__main">' +
           '<p class="eyebrow">Fair or not? · Level ' + f.level + " " + stars(f.level) + '</p><h2>' + title + '</h2><p class="result__score"><span>' + c + "/5</span> correct</p>" +
           '<p class="lead">At Deposera, <strong>a deposit is only kept for real, proven damage</strong>. We check every deduction against our photos and an invoice, and normal wear never counts.</p>' +
+          (f.named ? "" : entryForm("Add your initials to today's players")) +
           '<div class="btn-row">' + nextLevelButton("fair", f.level, c >= 4) +
           '<button class="btn' + (c >= 4 && f.level < 3 ? " btn--ghost" : "") + '" type="button" data-start="fair" data-level="' + f.level + '">' + icon("play", "i i--sm") + 'Play again</button><button class="btn btn--ghost" type="button" data-pick="spot">' + icon("search", "i i--sm") + "Try Spot the damage</button></div>" +
         "</div>" +
         '<aside class="result__side">' + voteBlock("Thanks for playing") + "</aside>" +
       "</section>"
     );
+    var input = stage.querySelector("#initials");
+    if (input) input.focus();
   }
 
   /* ---------- Confetti ---------- */
@@ -755,12 +874,35 @@
     var el = event.target.closest("button, [data-photo]");
     if (!el) return;
     var d = el.dataset;
-    if (d.home !== undefined) return renderHub();
+    if (d.home !== undefined) {
+      if (location.hash) history.replaceState(null, "", location.pathname);
+      if (el.classList.contains("brand")) return brandTap();
+      return renderHub();
+    }
     if (d.pick) return renderPicker(d.pick);
     if (d.start === "spot") return startSpot(Number(d.level) || 1);
     if (d.start === "fair") return startFair(Number(d.level) || 1);
     if (d.answer) return answerFair(d.answer);
     if (d.next !== undefined) return nextFair();
+    if (d.skip !== undefined) {
+      if (state.screen === "spot") {
+        state.spot.named = true;
+        return renderSpotResult();
+      }
+      state.fair.named = true;
+      return renderFairResult();
+    }
+    if (d.csv !== undefined) return downloadCsv();
+    if (d.clearPlayers !== undefined) {
+      if (window.confirm("Clear the players list, the leaderboard and the visitor votes on this device?")) {
+        save("deposera-plays", []);
+        save("deposera-spot-scores", []);
+        save("deposera-fair-votes", {});
+        renderPlayers();
+        toast("Cleared.");
+      }
+      return;
+    }
     if (d.photo !== undefined && state.screen === "spot") return tapPhoto(event, el);
     if (d.fullscreen !== undefined) {
       var root = document.documentElement;
@@ -771,7 +913,10 @@
 
   document.addEventListener("submit", function (event) {
     event.preventDefault();
-    if (event.target.matches("[data-entry]")) saveInitials(event.target);
+    if (event.target.matches("[data-entry]")) {
+      if (state.screen === "spot") saveInitials(event.target);
+      else saveFairInitials(event.target);
+    }
   });
 
   // Back to the menu when nobody has touched the tablet for a while.
@@ -783,15 +928,35 @@
   });
   setInterval(function () {
     var playing = state.screen === "spot" && state.spot && !state.spot.done;
-    if (state.screen !== "hub" && !playing && Date.now() - lastActivity > IDLE_SECONDS * 1000) renderHub();
+    if (state.screen !== "hub" && state.screen !== "players" && !playing && Date.now() - lastActivity > IDLE_SECONDS * 1000) renderHub();
   }, 5000);
 
-  // Staff shortcut: open games/index.html#reset to clear the leaderboard and votes.
-  if (location.hash === "#reset" && window.confirm("Clear the leaderboard and the visitor votes on this device?")) {
+  // Staff: tap the Deposera logo 5 times quickly to open the players list.
+  var taps = [];
+  function brandTap() {
+    var now = Date.now();
+    taps = taps.filter(function (t) { return now - t < 2500; });
+    taps.push(now);
+    if (taps.length >= 5) {
+      taps = [];
+      return renderPlayers();
+    }
+    renderHub();
+  }
+
+  // Staff shortcuts: games/index.html#players opens the players list,
+  // games/index.html#reset clears the list, leaderboard and votes.
+  if (location.hash === "#reset" && window.confirm("Clear the players list, the leaderboard and the visitor votes on this device?")) {
+    save("deposera-plays", []);
     save("deposera-spot-scores", []);
     save("deposera-fair-votes", {});
     history.replaceState(null, "", location.pathname);
   }
 
-  renderHub();
+  window.addEventListener("hashchange", function () {
+    if (location.hash === "#players") renderPlayers();
+  });
+
+  if (location.hash === "#players") renderPlayers();
+  else renderHub();
 })();
