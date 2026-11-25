@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Deposera roll-up banner 85 x 200 cm</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Inter:wght@500;600;700&display=swap">
+<style>
+/* 1 unit = 1 mm. Page: 850 x 2000 mm roll-up. Keep text out of the bottom 150 mm (the stand base). */
+@page { size: 850mm 2000mm; margin: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 850mm; height: 2000mm; }
+body {
+  font-family: "Inter", system-ui, sans-serif;
+  color: #f4eee1;
+  background: #0b1d15;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  font-variant-numeric: lining-nums;
+}
+.banner {
+  position: relative; width: 850mm; height: 2000mm; overflow: hidden;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 78mm 70mm 0;
+  background:
+    radial-gradient(700mm 520mm at 100% 0%, rgba(207,170,108,.30), transparent 62%),
+    radial-gradient(760mm 640mm at 0% 100%, rgba(47,106,80,.70), transparent 62%),
+    #0b1d15;
+}
+.banner::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background-image: linear-gradient(rgba(244,238,225,.045) 1mm, transparent 1mm), linear-gradient(90deg, rgba(244,238,225,.045) 1mm, transparent 1mm);
+  background-size: 85mm 85mm;
+  -webkit-mask-image: radial-gradient(ellipse at 60% 30%, #000 10%, transparent 70%);
+  mask-image: radial-gradient(ellipse at 60% 30%, #000 10%, transparent 70%);
+}
+.brand { display: flex; align-items: center; gap: 22mm; }
+.brand svg { width: 96mm; height: 96mm; color: #cfaa6c; }
+.brand span { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 600; font-size: 118mm; letter-spacing: 1.5mm; line-height: 1; color: #fbf8f1; }
+.eyebrow { margin-top: 52mm; display: flex; align-items: center; gap: 16mm; font-weight: 600; font-size: 21mm; letter-spacing: 6mm; text-transform: uppercase; color: #cfaa6c; }
+.eyebrow::before, .eyebrow::after { content: ""; width: 50mm; height: 1.2mm; background: currentColor; }
+h1 { margin-top: 32mm; font-family: "Cormorant Garamond", Georgia, serif; font-weight: 600; font-size: 124mm; line-height: .98; text-align: center; letter-spacing: -1mm; color: #fbf8f1; }
+h1 em { display: block; margin-top: 14mm; font-size: 98mm; white-space: nowrap; font-style: italic; font-weight: 500; color: #e2c792; }
+.scene { position: relative; margin-top: 46mm; width: 710mm; height: 345mm; }
+.scene svg { position: absolute; }
+.scene__path { inset: 0; width: 100%; height: 100%; }
+.scene__house { left: 10mm; bottom: 40mm; width: 300mm; filter: drop-shadow(0 18mm 16mm rgba(0,0,0,.45)); }
+.scene__pocket { right: 25mm; bottom: 40mm; width: 215mm; filter: drop-shadow(0 16mm 16mm rgba(0,0,0,.45)); }
+.scene__ground { position: absolute; left: 0; right: 0; bottom: 40mm; height: 1.5mm; background: linear-gradient(90deg, transparent, rgba(244,238,225,.35), transparent); }
+.coin { position: absolute; left: 385mm; top: 0; width: 112mm; height: 112mm; border-radius: 50%;
+  background: radial-gradient(circle at 32% 28%, #fbeac4 0%, #e2c792 22%, #c29a5c 55%, #8f6b35 100%);
+  box-shadow: inset 0 0 0 3mm rgba(255,244,214,.55), inset 0 -9mm 14mm rgba(80,55,20,.35), 0 20mm 30mm -8mm rgba(0,0,0,.6);
+  display: grid; place-items: center; font-family: "Cormorant Garamond", Georgia, serif; font-weight: 700; font-size: 74mm; color: #6b4d22; }
+.coin::before { content: ""; position: absolute; inset: 13%; border-radius: 50%; border: 2.4mm dashed rgba(107,77,34,.45); }
+.coin span { position: relative; top: -2mm; }
+.scene__label { position: absolute; bottom: 8mm; font-weight: 600; font-size: 15mm; letter-spacing: 3.5mm; text-transform: uppercase; color: rgba(244,238,225,.6); transform: translateX(-50%); white-space: nowrap; }
+.points { margin-top: 50mm; width: 100%; display: grid; gap: 22mm; }
+.point { display: flex; align-items: center; gap: 30mm; }
+.point__icon { flex: none; display: grid; place-items: center; width: 100mm; height: 100mm; border-radius: 28mm; background: linear-gradient(180deg, #e2c792, #b8925a); color: #0b1d15; box-shadow: 0 14mm 26mm -10mm rgba(0,0,0,.6); }
+.point__icon svg { width: 60mm; height: 60mm; }
+.point p { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 600; font-size: 60mm; line-height: 1.02; color: #fbf8f1; }
+.point small { display: block; margin-top: 5mm; font-family: "Inter", sans-serif; font-weight: 500; font-size: 22mm; line-height: 1.3; color: rgba(244,238,225,.75); }
+.cta { margin-top: 52mm; width: 100%; display: flex; align-items: center; gap: 38mm; padding: 30mm; border-radius: 40mm; background: #fbf8f1; color: #17271f; box-shadow: 0 30mm 60mm -24mm rgba(0,0,0,.7); }
+.qr { flex: none; padding: 12mm; border-radius: 18mm; background: #fff; border: 2mm solid #e9dfca; }
+.qr__code { display: block; width: 205mm; height: 205mm; }
+.cta__text .kicker { font-weight: 700; font-size: 19mm; letter-spacing: 4.5mm; text-transform: uppercase; color: #7d5f30; }
+.cta__text h2 { margin-top: 8mm; font-family: "Cormorant Garamond", Georgia, serif; font-weight: 600; font-size: 72mm; line-height: 1; }
+.cta__text h2 em { font-style: italic; font-weight: 500; color: #7d5f30; }
+.cta__text p { margin-top: 12mm; font-weight: 600; font-size: 19mm; color: #21503c; word-break: break-all; }
+.bottom-safe { position: absolute; left: 0; right: 0; bottom: 0; height: 150mm; }
+</style>
+</head>
+<body>
+<div class="banner">
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M6 18.5 20 7l14 11.5V32a2.5 2.5 0 0 1-2.5 2.5h-23A2.5 2.5 0 0 1 6 32Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="20" cy="24" r="6.2" fill="currentColor"/><circle cx="20" cy="24" r="3.7" fill="none" stroke="#0b1d15" stroke-width="1.1" opacity=".5"/></svg>
+    <span>Deposera</span>
+  </div>
+
+  <p class="eyebrow">Independent deposit holding</p>
+
+  <h1>Your deposit,<br>held in trust.<em>Returned on time.</em></h1>
+
+  <div class="scene" aria-hidden="true">
+    <svg class="scene__path" viewBox="0 0 710 400" preserveAspectRatio="none"><path d="M165 150 C 230 40, 330 30, 390 60 M 510 70 C 560 90, 590 130, 600 180" fill="none" stroke="#e2c792" stroke-opacity=".7" stroke-width="4" stroke-dasharray="3 14" stroke-linecap="round"/><path d="M588 166l12 18 10-20" fill="none" stroke="#e2c792" stroke-opacity=".8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <svg class="scene__house" viewBox="0 0 200 170" fill="none">
+      <rect x="130" y="30" width="16" height="40" rx="2" fill="#173a2b" stroke="#cfaa6c" stroke-width="2"/>
+      <path d="M38 86 100 34l62 52Z" fill="#21503c"/>
+      <path d="M38 84v80h124V84" fill="#173a2b" stroke="#e9dfca" stroke-opacity=".55" stroke-width="2"/>
+      <path d="M22 94 100 28l78 66" stroke="#cfaa6c" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="100" cy="64" r="8" stroke="#cfaa6c" stroke-width="2"/>
+      <rect x="52" y="98" width="26" height="24" rx="3" fill="#e2c792" fill-opacity=".9"/>
+      <rect x="122" y="98" width="26" height="24" rx="3" fill="#e2c792" fill-opacity=".9"/>
+      <path d="M65 98v24M52 110h26M135 98v24M122 110h26" stroke="#173a2b" stroke-width="2"/>
+      <path d="M86 164v-32a14 14 0 0 1 28 0v32" fill="#0b1d15" stroke="#cfaa6c" stroke-width="2"/>
+      <circle cx="108" cy="150" r="2" fill="#cfaa6c"/>
+    </svg>
+    <svg class="scene__pocket" viewBox="0 0 160 170" fill="none">
+      <path d="M8 10h144v96c0 26-36 46-72 58C44 152 8 132 8 106Z" fill="#e9dfca"/>
+      <path d="M8 10h144v20H8Z" fill="#d9cbad"/>
+      <path d="M14 22h132" stroke="#9b7540" stroke-width="1.3" stroke-dasharray="4 4"/>
+      <path d="M20 42v62c0 20 30 37 60 47 30-10 60-27 60-47V42" stroke="#9b7540" stroke-width="1.5" stroke-dasharray="5 5" stroke-linecap="round"/>
+      <circle cx="17" cy="16" r="4" fill="#b8925a"/><circle cx="143" cy="16" r="4" fill="#b8925a"/>
+      <path d="M68 78h24v16a12 12 0 0 1-24 0Z" fill="#cfaa6c" fill-opacity=".35"/>
+      <path d="M74 86l4 4 8-8" stroke="#7d5f30" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div class="coin"><span>€</span></div>
+    <div class="scene__ground"></div>
+    <span class="scene__label" style="left:165mm">The home</span>
+    <span class="scene__label" style="left:575mm">Tenant's pocket</span>
+  </div>
+
+  <div class="points">
+    <div class="point"><span class="point__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5a4 4 0 1 0 0 7M7 10.5h6M7 13.5h6"/></svg></span><p>Free for tenants<small>Nothing comes out of the deposit for our service.</small></p></div>
+    <div class="point"><span class="point__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8a2 2 0 0 1 2-2h2l1.5-2h7L17 6h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><circle cx="12" cy="13" r="3.5"/></svg></span><p>Photos by us<small>Neutral proof at move-in and move-out.</small></p></div>
+    <div class="point"><span class="point__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><p>Back within 14 days<small>Or 30 days if repairs are needed.</small></p></div>
+  </div>
+
+  <div class="cta">
+    <div class="qr"><svg class="qr__code" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 33 33" shape-rendering="crispEdges"><path d="M0 0h7v1h-7zM10 0h1v1h-1zM13 0h1v1h-1zM16 0h2v1h-2zM19 0h3v1h-3zM23 0h1v1h-1zM26 0h7v1h-7zM0 1h1v1h-1zM6 1h1v1h-1zM8 1h1v1h-1zM11 1h1v1h-1zM13 1h1v1h-1zM15 1h2v1h-2zM18 1h1v1h-1zM23 1h2v1h-2zM26 1h1v1h-1zM32 1h1v1h-1zM0 2h1v1h-1zM2 2h3v1h-3zM6 2h1v1h-1zM8 2h2v1h-2zM12 2h1v1h-1zM14 2h1v1h-1zM17 2h1v1h-1zM19 2h1v1h-1zM23 2h1v1h-1zM26 2h1v1h-1zM28 2h3v1h-3zM32 2h1v1h-1zM0 3h1v1h-1zM2 3h3v1h-3zM6 3h1v1h-1zM11 3h1v1h-1zM15 3h1v1h-1zM19 3h2v1h-2zM24 3h1v1h-1zM26 3h1v1h-1zM28 3h3v1h-3zM32 3h1v1h-1zM0 4h1v1h-1zM2 4h3v1h-3zM6 4h1v1h-1zM9 4h2v1h-2zM14 4h2v1h-2zM17 4h1v1h-1zM20 4h2v1h-2zM24 4h1v1h-1zM26 4h1v1h-1zM28 4h3v1h-3zM32 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM9 5h4v1h-4zM18 5h3v1h-3zM22 5h1v1h-1zM26 5h1v1h-1zM32 5h1v1h-1zM0 6h7v1h-7zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h1v1h-1zM24 6h1v1h-1zM26 6h7v1h-7zM10 7h2v1h-2zM15 7h3v1h-3zM20 7h1v1h-1zM22 7h1v1h-1zM1 8h3v1h-3zM5 8h2v1h-2zM10 8h5v1h-5zM16 8h4v1h-4zM21 8h1v1h-1zM30 8h2v1h-2zM1 9h1v1h-1zM3 9h3v1h-3zM7 9h1v1h-1zM9 9h1v1h-1zM13 9h4v1h-4zM18 9h3v1h-3zM22 9h2v1h-2zM26 9h2v1h-2zM29 9h2v1h-2zM32 9h1v1h-1zM4 10h1v1h-1zM6 10h6v1h-6zM13 10h1v1h-1zM17 10h1v1h-1zM21 10h3v1h-3zM25 10h5v1h-5zM32 10h1v1h-1zM0 11h1v1h-1zM3 11h2v1h-2zM7 11h1v1h-1zM9 11h1v1h-1zM14 11h1v1h-1zM16 11h1v1h-1zM18 11h1v1h-1zM20 11h1v1h-1zM23 11h2v1h-2zM27 11h1v1h-1zM29 11h1v1h-1zM31 11h2v1h-2zM0 12h1v1h-1zM2 12h1v1h-1zM4 12h3v1h-3zM9 12h1v1h-1zM11 12h2v1h-2zM15 12h2v1h-2zM18 12h1v1h-1zM22 12h2v1h-2zM25 12h1v1h-1zM27 12h3v1h-3zM2 13h2v1h-2zM8 13h1v1h-1zM11 13h1v1h-1zM14 13h2v1h-2zM17 13h2v1h-2zM24 13h2v1h-2zM27 13h1v1h-1zM30 13h2v1h-2zM0 14h1v1h-1zM3 14h1v1h-1zM5 14h3v1h-3zM9 14h1v1h-1zM11 14h1v1h-1zM14 14h1v1h-1zM17 14h1v1h-1zM21 14h2v1h-2zM24 14h1v1h-1zM26 14h1v1h-1zM28 14h1v1h-1zM30 14h1v1h-1zM2 15h1v1h-1zM5 15h1v1h-1zM9 15h1v1h-1zM11 15h2v1h-2zM14 15h3v1h-3zM19 15h4v1h-4zM25 15h2v1h-2zM29 15h2v1h-2zM0 16h1v1h-1zM5 16h4v1h-4zM10 16h2v1h-2zM13 16h1v1h-1zM16 16h1v1h-1zM19 16h3v1h-3zM23 16h1v1h-1zM25 16h2v1h-2zM28 16h3v1h-3zM1 17h2v1h-2zM5 17h1v1h-1zM8 17h1v1h-1zM11 17h2v1h-2zM15 17h1v1h-1zM17 17h1v1h-1zM20 17h1v1h-1zM23 17h4v1h-4zM28 17h2v1h-2zM31 17h2v1h-2zM2 18h6v1h-6zM9 18h1v1h-1zM12 18h1v1h-1zM18 18h1v1h-1zM21 18h1v1h-1zM27 18h2v1h-2zM30 18h2v1h-2zM1 19h2v1h-2zM8 19h4v1h-4zM13 19h2v1h-2zM16 19h1v1h-1zM18 19h2v1h-2zM22 19h2v1h-2zM26 19h1v1h-1zM28 19h1v1h-1zM31 19h2v1h-2zM1 20h2v1h-2zM6 20h1v1h-1zM9 20h4v1h-4zM15 20h1v1h-1zM21 20h1v1h-1zM28 20h3v1h-3zM0 21h2v1h-2zM3 21h1v1h-1zM7 21h4v1h-4zM12 21h2v1h-2zM15 21h1v1h-1zM22 21h2v1h-2zM26 21h1v1h-1zM32 21h1v1h-1zM2 22h6v1h-6zM9 22h6v1h-6zM16 22h1v1h-1zM18 22h1v1h-1zM23 22h6v1h-6zM31 22h2v1h-2zM1 23h4v1h-4zM7 23h1v1h-1zM9 23h2v1h-2zM13 23h3v1h-3zM20 23h1v1h-1zM22 23h2v1h-2zM25 23h3v1h-3zM29 23h1v1h-1zM31 23h2v1h-2zM0 24h1v1h-1zM2 24h1v1h-1zM4 24h1v1h-1zM6 24h1v1h-1zM8 24h6v1h-6zM15 24h5v1h-5zM24 24h5v1h-5zM32 24h1v1h-1zM8 25h4v1h-4zM14 25h2v1h-2zM17 25h1v1h-1zM19 25h2v1h-2zM22 25h3v1h-3zM28 25h2v1h-2zM31 25h1v1h-1zM0 26h7v1h-7zM9 26h1v1h-1zM11 26h1v1h-1zM13 26h2v1h-2zM16 26h5v1h-5zM22 26h3v1h-3zM26 26h1v1h-1zM28 26h1v1h-1zM0 27h1v1h-1zM6 27h1v1h-1zM8 27h5v1h-5zM15 27h1v1h-1zM17 27h1v1h-1zM19 27h1v1h-1zM21 27h1v1h-1zM23 27h2v1h-2zM28 27h3v1h-3zM0 28h1v1h-1zM2 28h3v1h-3zM6 28h1v1h-1zM9 28h1v1h-1zM13 28h2v1h-2zM18 28h1v1h-1zM20 28h9v1h-9zM30 28h1v1h-1zM0 29h1v1h-1zM2 29h3v1h-3zM6 29h1v1h-1zM8 29h1v1h-1zM10 29h1v1h-1zM12 29h3v1h-3zM16 29h1v1h-1zM18 29h1v1h-1zM24 29h1v1h-1zM27 29h1v1h-1zM29 29h4v1h-4zM0 30h1v1h-1zM2 30h3v1h-3zM6 30h1v1h-1zM8 30h1v1h-1zM10 30h2v1h-2zM14 30h1v1h-1zM17 30h2v1h-2zM24 30h4v1h-4zM29 30h1v1h-1zM0 31h1v1h-1zM6 31h1v1h-1zM8 31h1v1h-1zM12 31h4v1h-4zM17 31h2v1h-2zM20 31h1v1h-1zM24 31h2v1h-2zM27 31h3v1h-3zM32 31h1v1h-1zM0 32h7v1h-7zM9 32h1v1h-1zM11 32h1v1h-1zM13 32h1v1h-1zM15 32h1v1h-1zM19 32h5v1h-5zM26 32h1v1h-1zM28 32h1v1h-1zM30 32h1v1h-1z" fill="#0b1d15"/></svg></div>
+    <div class="cta__text">
+      <p class="kicker">Scan me</p>
+      <h2>Try our <em>app</em></h2>
+      <p>francis823.github.io/Deposera</p>
+    </div>
+  </div>
+
+  <div class="bottom-safe"></div>
+</div>
+</body>
+</html>
