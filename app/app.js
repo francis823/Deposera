@@ -100,7 +100,7 @@
   /* ---------- Data (all made up) ---------- */
 
   var DEPOSIT = 1500;
-  var ADDRESS = "Tulpstraat 12, Utrecht";
+  var ADDRESS = "Tulpstraat 12, Eindhoven";
   var DATES = {
     received: "28 Aug 2025",
     movein: "1 Sep 2025",
@@ -249,7 +249,7 @@
   function depositCard() {
     var m = money();
     var payout = state.stage === "payout";
-    var line = "In a separate account · €0 fees for you";
+    var line = "Held at OPP, our licensed partner · €0 fees for you";
     if (state.stage === "preinspection") line = "Estimated back to you: <strong>" + eur(m.back) + "</strong>";
     if (payout) line = "Back to you: <strong>" + eur(m.back) + "</strong> by " + m.date;
     return '<section class="deposit" aria-label="Your deposit"><div class="deposit__top"><span class="deposit__label">Your deposit</span>' +
@@ -431,7 +431,7 @@
   function renderRecords() {
     var m = money();
     var events = [
-      { date: DATES.received, title: "Deposit received", text: eur(DEPOSIT) + " in a separate account", icon: "vault", show: true },
+      { date: DATES.received, title: "Deposit received", text: eur(DEPOSIT) + " into escrow at OPP", icon: "vault", show: true },
       { date: DATES.movein, title: "Move-in inspection", text: totalPhotos() + " photos taken by Deposera", icon: "camera", show: true },
       { date: "3 Sep 2025", title: "You added notes", text: yourNotes() + (yourNotes() === 1 ? " note" : " notes") + " on the photos", icon: "pin", show: yourNotes() > 0 },
       { date: DATES.notesClose, title: "Notes window closed", text: "The move-in record is final", icon: "check", show: true, future: !reached("tenancy") },
@@ -478,7 +478,7 @@
 
   function profileSheet() {
     return '<div class="profile"><span class="avatar avatar--large" aria-hidden="true">SV</span><div><h3 id="sheet-title">Sam de Vries</h3><p class="muted">Tenant · ' + esc(ADDRESS) + '</p></div></div>' +
-      '<ul class="rows"><li><div class="row row--static"><span class="row__icon">' + icon("user") + '</span><span class="row__text"><span class="row__title">Landlord</span><span class="row__meta">J. Bakker, via Utrecht Lettings</span></span></div></li>' +
+      '<ul class="rows"><li><div class="row row--static"><span class="row__icon">' + icon("user") + '</span><span class="row__text"><span class="row__title">Landlord</span><span class="row__meta">J. Bakker, via Eindhoven Lettings</span></span></div></li>' +
       '<li><div class="row row--static"><span class="row__icon">' + icon("euro") + '</span><span class="row__text"><span class="row__title">Your fees</span><span class="row__meta">€0. The landlord\'s agency pays our fee.</span></span></div></li>' +
       '<li><button class="row" type="button" data-toast="Settings will be in the full app."><span class="row__icon">' + icon("bell") + '</span><span class="row__text"><span class="row__title">Reminders</span><span class="row__meta">Push and email</span></span>' + icon("chevron", "i i--muted") + "</button></li></ul>" +
       '<a class="btn btn--ghost" href="../index.html">Log out</a>';

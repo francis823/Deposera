@@ -4,12 +4,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Deposera | Deposits held in trust</title>
-  <meta name="description" content="Deposera holds rental deposits, inspects the home at move-in and move-out, and makes sure a deposit is only kept for real damage. Free for tenants.">
+  <meta name="description" content="Deposera inspects rental homes at move-in and move-out and, with a licensed partner, holds the deposit, so it's only kept for real damage. One fixed price per home.">
   <meta name="theme-color" content="#0b1d15">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Deposera">
   <meta property="og:title" content="Deposera | Deposits held in trust">
-  <meta property="og:description" content="Deposera holds rental deposits, inspects the home at move-in and move-out, and makes sure a deposit is only kept for real damage. Free for tenants.">
+  <meta property="og:description" content="Deposera inspects rental homes at move-in and move-out and, with a licensed partner, holds the deposit, so it's only kept for real damage. One fixed price per home.">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -55,13 +55,13 @@
         <div class="hero__copy">
           <p class="eyebrow">Independent deposit holding</p>
           <h1>Your deposit, held in trust. <em>Returned on time.</em></h1>
-          <p class="lead">We hold the deposit and photograph the home at move-in and move-out, so it's only ever kept for real damage.</p>
+          <p class="lead">A licensed partner holds the deposit and we photograph the home at move-in and move-out, so it's only ever kept for real damage.</p>
           <div class="actions">
             <a class="button" href="register.html">Get started</a>
             <a class="button button--ghost" href="how-it-works.html">How it works</a>
           </div>
           <ul class="hero__facts" aria-label="Key facts">
-            <li>Free for tenants</li>
+            <li>Neutral by design</li>
             <li>Photos by us</li>
             <li>Back within 14 days</li>
           </ul>
@@ -121,7 +121,7 @@
           </div>
 
           <dl class="coin-game__ledger">
-            <div><dt>Held by us</dt><dd data-coin-held>€1,500</dd></div>
+            <div><dt>Held in escrow</dt><dd data-coin-held>€1,500</dd></div>
             <div><dt>Deductions</dt><dd>€0</dd></div>
             <div class="is-highlight"><dt>Back to tenant</dt><dd data-coin-returned>€0</dd></div>
           </dl>
@@ -149,7 +149,7 @@
           <li>
             <span class="journey__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="15" rx="2"/><circle cx="12" cy="11.5" r="3.5"/><path d="M12 8v1M12 14v1M8.5 11.5h1M14.5 11.5h1M6 19v2M18 19v2"/></svg></span>
             <h3>Held safely</h3>
-            <p>The deposit sits in a separate account all tenancy.</p>
+            <p>The deposit sits in a locked account at our licensed partner.</p>
           </li>
           <li>
             <span class="journey__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5M8.5 11l2 2 3.5-3.5"/></svg></span>
@@ -185,14 +185,74 @@
           <div class="compare__col compare__col--with reveal">
             <p class="compare__label">With Deposera</p>
             <ul class="list">
-              <li>Held in a separate account</li>
+              <li>Held by a licensed partner, not the landlord</li>
               <li>Neutral photos, taken by us</li>
               <li>Every deduction needs an invoice</li>
               <li>Damage list before you leave</li>
             </ul>
           </div>
         </div>
-        <p class="compare__note center reveal">Tenants pay nothing, and our fee never depends on what happens at move-out.</p>
+        <p class="compare__note center reveal">One fixed price per home, whatever happens at move-out. Renting through an agency? Then you pay nothing.</p>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="launch-title">
+      <div class="container">
+        <div class="section-head section-head--center stack reveal">
+          <p class="eyebrow">Starting in the Eindhoven region</p>
+          <h2 id="launch-title">Be one of the <em>first tenancies</em></h2>
+          <p class="lead">We start with a free pilot of 5–10 tenancies with one letting agency, then open to everyone in South-East North Brabant.</p>
+        </div>
+        <div class="signup-grid">
+          <form class="card form reveal" data-simple-form="waitlist" novalidate>
+            <div class="stack">
+              <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 1 1 12 0v5l2 2H4Z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg></span>
+              <h3 class="signup-grid__title">Join the waitlist</h3>
+              <p class="muted">We'll email you as soon as Deposera opens near you.</p>
+            </div>
+            <div class="field">
+              <label for="wl-email">Email address</label>
+              <input id="wl-email" name="email" type="email" autocomplete="off" data-check="email">
+              <p class="field__error" id="wl-email-error" hidden></p>
+            </div>
+            <div class="field">
+              <label for="wl-role">I am a</label>
+              <select id="wl-role" name="role" data-check="required">
+                <option value="">Choose one</option>
+                <option>Tenant</option>
+                <option>Landlord</option>
+                <option>Letting agency</option>
+              </select>
+              <p class="field__error" id="wl-role-error" hidden></p>
+            </div>
+            <div class="actions">
+              <button class="button" type="submit">Join the waitlist</button>
+            </div>
+            <p class="form-status" data-form-status tabindex="-1" role="status" hidden></p>
+          </form>
+          <form class="card form reveal" data-simple-form="invite" novalidate>
+            <div class="stack">
+              <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21V5l8-2v18M12 8h8v13M2 21h20M7 8h2M7 12h2M7 16h2M15 12h2M15 16h2"/></svg></span>
+              <h3 class="signup-grid__title">Invite my agency</h3>
+              <p class="muted">Renting through an agency? Tell us which one and we'll ask them to use Deposera. With an agency, you pay nothing.</p>
+            </div>
+            <div class="field">
+              <label for="inv-agency">Agency name</label>
+              <input id="inv-agency" name="agency" type="text" autocomplete="off" data-check="required">
+              <p class="field__error" id="inv-agency-error" hidden></p>
+            </div>
+            <div class="field">
+              <label for="inv-email">Agency email</label>
+              <input id="inv-email" name="email" type="email" autocomplete="off" data-check="email">
+              <p class="field__error" id="inv-email-error" hidden></p>
+            </div>
+            <div class="actions">
+              <button class="button" type="submit">Invite my agency</button>
+            </div>
+            <p class="form-status" data-form-status tabindex="-1" role="status" hidden></p>
+          </form>
+        </div>
+        <p class="center muted small reveal">Demo only: nothing is sent or saved.</p>
       </div>
     </section>
 

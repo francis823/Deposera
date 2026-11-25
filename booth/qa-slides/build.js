@@ -65,12 +65,11 @@ const OUT = process.argv[2] || "Deposera-QA-slides.pptx";
     tb(s, who, { x: x + 0.14, y: yC + 1.62, w: colW - 0.28, h: 0.26, fontSize: 7.5, bold: true, color: H.goldDark, align: "center", valign: "middle", objectName: `Step ${i + 1} who` });
   });
   const opts = [
-    [H.dark, "AGENCY TENANT", "€0", "The agency pays our fee. It never comes out of the deposit."],
     [H.white, "AGENCIES  ·  FIXED PRICE", "from €70", "€70–€150 per home: photo reports at move-in and move-out, and the damage list."],
-    [H.white, "PRIVATE LANDLORD + TENANT", "from €85", "+€15: deposit held at OPP. €85–€165, paid together."],
+    [H.dark, "PRIVATE LANDLORD + TENANT", "from €85", "+€15: deposit held at OPP. €85–€165, paid together."],
   ];
   opts.forEach(([fill, label, val, txt], i) => {
-    const x = 0.5 + i * 3.05, y = 3.78, w = 2.9, h = 1.12, dark = fill === H.dark;
+    const x = 0.5 + i * 4.6, y = 3.78, w = 4.4, h = 1.12, dark = i === 1;
     card(s, x, y, w, h, fill, `Price card ${i + 1}`);
     tb(s, label, { x: x + 0.2, y: y + 0.14, w: w - 0.4, h: 0.2, fontSize: 7.5, bold: true, charSpacing: 1.2, color: dark ? H.gold : H.goldDark, objectName: `Price label ${i + 1}` });
     tb(s, val, { x: x + 0.2, y: y + 0.36, w: w - 0.4, h: 0.4, fontFace: BODY, fontSize: 20, bold: true, color: dark ? H.goldLight : H.green, objectName: `Price value ${i + 1}` });

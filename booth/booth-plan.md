@@ -116,20 +116,21 @@ Open **https://francis823.github.io/Deposera/games/** on the tablet, then tap th
 ## 30-second pitch
 
 > "Have you ever lost a deposit without a real reason? Deposera fixes that.
-> We hold the deposit in a separate account, and we take the photos ourselves at move-in and move-out, so the record is neutral.
+> A licensed payment partner holds the deposit, and our own inspectors take the photos at move-in and move-out, so the record is neutral.
 > Before move-out we do a pre-inspection, so tenants can fix things themselves first.
 > The money comes back within 14 days, or 30 if repairs are needed, and every deduction needs proof.
-> Tenants pay nothing. The landlord's letting agency pays a one-off 5% fee.
+> Agencies pay one fixed price per home, from €70, so their tenants pay nothing. A private landlord and tenant can book us together, from €85.
 > Scan the QR code to see our website and app, and if you like it, vote Deposera!"
 
 ---
 
 ## Investor questions: short answers
 
-- **How do you make money?** A one-off fee of 5% of the deposit per tenancy, paid by the letting agency, or by the landlord if they rent without one. On a €1,500 deposit, that's €75.
+- **How do you make money?** A fixed price per tenancy, paid upfront. Agencies pay €70–€150 depending on the home; a private landlord and tenant pay €85–€165 together, which includes holding the deposit. On average that's €104.75, of which €67.09 (64%) is margin.
 - **Why would agencies pay?** We do the inspections, photos and payouts for them, and there are fewer disputes on their desk.
-- **If the landlord's side pays, aren't you biased?** No. Our fee is the same whatever happens at move-out, we take the photos ourselves, and an independent reviewer has the final say in disputes.
-- **Why don't tenants pay?** Dutch rules stop landlords and their agents from charging tenants extra fees. It also keeps our service free for the people with the most to lose.
+- **If the landlord's side pays, aren't you biased?** No. Our fee is the same whatever happens at move-out, we take the photos ourselves, and an independent reviewer decides disputed items.
+- **Do tenants pay?** Not when an agency books us: Dutch rules stop agents from charging tenants extra fees. If a private landlord and tenant book us themselves, they share one price.
+- **Are you profitable?** Yes, from year 1: €7,071 net profit, then €26,171 in year 2. Break-even is 16 tenancies a quarter. We raise €4,000 for 10%.
 - **Why 14 and 30 days?** They match the Dutch rules for returning a deposit.
 - **What's next?** The app. You can try the prototype right now.
 

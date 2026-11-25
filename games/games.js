@@ -285,7 +285,7 @@
       { id: "wine", icon: "layers", text: "A wine stain on the carpet, not in the move-in photos, with a cleaning invoice.", fair: true, why: "Fair. It is new damage, proven by our photos and an invoice." },
       { id: "marks", icon: "home", text: "Light marks on the walls where furniture stood for 3 years.", fair: false, why: "That's normal wear from living in a home." },
       { id: "keys", icon: "key", text: "The keys were never returned, so the landlord changed the lock (invoice €90).", fair: true, why: "Fair. It's a real cost caused by the tenant, backed by an invoice." },
-      { id: "fee", icon: "euro", text: "Deposera's service fee taken out of the tenant's deposit.", fair: false, why: "Never. Tenants don't pay us. The agency or landlord pays the fee." }
+      { id: "fee", icon: "euro", text: "Deposera's service fee taken out of the tenant's deposit.", fair: false, why: "Never. Our fee is paid upfront at booking and never comes out of the deposit." }
     ],
     3: [
       { id: "day13", icon: "calendar", text: "The landlord reports missed damage on day 13 after key return, and our move-out photos show it.", fair: true, why: "Fair. It's within the 14 days, and our photos prove it." },

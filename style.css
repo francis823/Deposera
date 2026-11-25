@@ -1294,6 +1294,7 @@ h2 em {
 .team > div {
   display: grid;
   justify-items: center;
+  align-content: start;
   gap: 0.3rem;
   text-align: center;
 }
@@ -2966,4 +2967,158 @@ textarea {
   .faq__answer {
     padding-right: 0;
   }
+}
+
+/* ---------- Pricing plans ---------- */
+
+.plans {
+  display: grid;
+  gap: 1.5rem;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+@media (min-width: 860px) {
+  .plans {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.plan {
+  display: grid;
+  align-content: start;
+  gap: 1.5rem;
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.plan__head {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.plan__head h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  line-height: 1.15;
+}
+
+.plan__who {
+  margin: 0.2rem 0 0;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+
+.plan__icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 14px;
+  background: linear-gradient(160deg, var(--green-700), var(--green-900));
+  color: var(--brass-300);
+}
+
+.plan__icon svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.plan__prices {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.plan__prices > div {
+  display: grid;
+  gap: 0.1rem;
+  padding: 0.75rem 0.5rem;
+  border-radius: 12px;
+  background: var(--cream-100);
+  text-align: center;
+}
+
+.plan__prices dt {
+  color: var(--ink-soft);
+  font-size: 0.8rem;
+}
+
+.plan__prices dd {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--green-700);
+}
+
+.plan__list {
+  font-size: 0.95rem;
+}
+
+.plan--featured {
+  border-color: transparent;
+  background: var(--green-950);
+  color: var(--cream-100);
+  box-shadow: var(--shadow-lg);
+}
+
+.plan--featured .plan__who {
+  color: rgba(244, 238, 225, 0.72);
+}
+
+.plan--featured .plan__icon {
+  background: var(--brass-400);
+  color: var(--green-950);
+}
+
+.plan--featured .plan__prices > div {
+  background: rgba(244, 238, 225, 0.08);
+}
+
+.plan--featured .plan__prices dt {
+  color: rgba(244, 238, 225, 0.7);
+}
+
+.plan--featured .plan__prices dd {
+  color: var(--brass-300);
+}
+
+@media (max-width: 420px) {
+  .plan__prices {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ---------- Waitlist and invite forms ---------- */
+
+.signup-grid {
+  display: grid;
+  gap: 1.5rem;
+  max-width: 980px;
+  margin: 0 auto 1.25rem;
+}
+
+@media (min-width: 860px) {
+  .signup-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.signup-grid .icon {
+  margin-bottom: 0.4rem;
+}
+
+.signup-grid__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
 }

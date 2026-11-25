@@ -6,7 +6,7 @@ A website for Deposera, a fictional deposit-holding company in the Netherlands, 
 
 - `index.html`: home page, with the drag-the-coin game in the hero
 - `how-it-works.html`: steps for tenants and landlords, plus a timeline
-- `pricing.html`: what's included, and who pays (letting agencies or independent landlords; free for tenants)
+- `pricing.html`: the two prices: a fixed price per home for letting agencies (tenants pay nothing), or one shared price for a private landlord and tenant, deposit holding included
 - `disputes.html`: damage, repairs and disputes, with an interactive repair checklist
 - `faq.html`: frequently asked questions
 - `about.html`: the problem, the mission and the team

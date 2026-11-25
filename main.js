@@ -672,4 +672,59 @@
   }
 
   document.querySelectorAll("[data-contact-form]").forEach(initContactForm);
+  /* ---------- Waitlist and "Invite my agency" (demo only: nothing is sent) ---------- */
+
+  function initSimpleForm(form) {
+    var kind = form.dataset.simpleForm;
+    var status = form.querySelector("[data-form-status]");
+    var fields = form.querySelectorAll("[data-check]");
+
+    function check(field) {
+      var value = (field.value || "").trim();
+      if (field.dataset.check === "email") {
+        if (!value) return "Enter an email address.";
+        return EMAIL.test(value) ? "" : "Enter an email address like name@example.com.";
+      }
+      return value ? "" : "This field is required.";
+    }
+
+    function validate(field) {
+      var message = check(field);
+      showError(field, document.getElementById(field.id + "-error"), message);
+      return !message;
+    }
+
+    fields.forEach(function (field) {
+      ["input", "change", "blur"].forEach(function (name) {
+        field.addEventListener(name, function () {
+          if (field.getAttribute("aria-invalid") === "true" || (name === "blur" && field.value)) validate(field);
+        });
+      });
+    });
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      var firstInvalid = null;
+      fields.forEach(function (field) {
+        if (!validate(field) && !firstInvalid) firstInvalid = field;
+      });
+      if (firstInvalid) {
+        status.hidden = true;
+        firstInvalid.focus();
+        return;
+      }
+      status.textContent = kind === "invite"
+        ? "Thanks! We'd now invite " + form.elements.agency.value.trim() + " to use Deposera. This is a demo, so nothing was sent."
+        : "Thanks, you're on the waitlist. We'd email you when Deposera opens near you. This is a demo, so nothing was saved.";
+      status.classList.remove("is-error");
+      status.hidden = false;
+      status.focus();
+      form.reset();
+      fields.forEach(function (field) {
+        field.removeAttribute("aria-invalid");
+      });
+    });
+  }
+
+  document.querySelectorAll("[data-simple-form]").forEach(initSimpleForm);
 })();
