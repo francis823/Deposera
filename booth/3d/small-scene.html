@@ -1,0 +1,158 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>html,body{margin:0;background:#ddd}canvas{display:block}</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Inter:wght@500;600;700&display=swap">
+<script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js","three/addons/":"./node_modules/three/examples/jsm/"}}</script>
+</head>
+<body>
+<script type="module">
+import * as THREE from "three";
+import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+
+const params = new URLSearchParams(location.search);
+const W = Number(params.get("w") || 2400), H = Number(params.get("h") || 1500);
+const VIEW = params.get("view") || "front";
+await document.fonts.load('700 40px "Cormorant Garamond"');
+await document.fonts.load('600 40px Inter');
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1); renderer.setSize(W, H);
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color("#d8d6d1");
+scene.fog = new THREE.Fog("#d8d6d1", 7, 18);
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+
+const loader = new THREE.TextureLoader();
+const tex = (url) => new Promise((res) => loader.load(url, (t) => { t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; res(t); }));
+function canvasTex(w, h, draw) { const c = document.createElement("canvas"); c.width = w; c.height = h; draw(c.getContext("2d"), w, h); const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; return t; }
+const mat = (o) => new THREE.MeshStandardMaterial(o);
+function add(mesh, x, y, z, { cast = true, receive = true } = {}) { mesh.position.set(x, y, z); mesh.castShadow = cast; mesh.receiveShadow = receive; scene.add(mesh); return mesh; }
+function box(w, h, d, m, x, y, z, r = 0.004) { const g = r > 0 ? new RoundedBoxGeometry(w, h, d, 3, Math.min(r, w / 2, h / 2, d / 2)) : new THREE.BoxGeometry(w, h, d); return add(new THREE.Mesh(g, m), x, y, z); }
+
+const names = ["banner", "tablet", "sign", "card", "p-scan", "p-board", "p-poll", "desk-sign", "vote-tent"];
+const T = Object.fromEntries(await Promise.all(names.map(async (n) => [n, await tex("tex/" + n + ".png")])));
+const GREEN = "#0b1d15", GREEN2 = "#173a2b", BRASS = "#cfaa6c";
+
+/* Hall floor */
+const carpet = canvasTex(512, 512, (g, w, h) => { g.fillStyle = "#80858a"; g.fillRect(0, 0, w, h); for (let i = 0; i < 18000; i++) { g.fillStyle = `rgba(${Math.random() < .5 ? 255 : 0},${Math.random() < .5 ? 255 : 0},${Math.random() < .5 ? 255 : 0},0.05)`; g.fillRect(Math.random() * w, Math.random() * h, 2, 2); } });
+carpet.wrapS = carpet.wrapT = THREE.RepeatWrapping; carpet.repeat.set(30, 30);
+const floor = new THREE.Mesh(new THREE.PlaneGeometry(60, 60), mat({ map: carpet, roughness: 0.95 })); floor.rotation.x = -Math.PI / 2; add(floor, 0, 0, 0, { cast: false });
+
+const aluM = mat({ color: "#c9cbcd", metalness: 0.8, roughness: 0.35 });
+const blackM = mat({ color: "#2a2c2e", metalness: 0.6, roughness: 0.4 });
+
+/* Backdrop board behind the desk (freestanding display board) */
+const BZ = -0.95;
+box(1.6, 1.9, 0.03, mat({ color: "#f4f3ef", roughness: 0.9 }), 0, 1.07, BZ, 0.005);
+for (const x of [-0.81, 0.81]) { box(0.03, 2.0, 0.04, aluM, x, 1.0, BZ, 0.006); box(0.05, 0.03, 0.5, aluM, x, 0.015, BZ, 0.006); }
+box(1.65, 0.03, 0.04, aluM, 0, 2.02, BZ, 0.006);
+function poster(t, x, y, w, h, extra) {
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), mat({ map: t, roughness: 0.55 }));
+  m.position.set(x, y, BZ + 0.018); m.rotation.z = extra || 0; m.castShadow = true; m.receiveShadow = true; scene.add(m);
+  for (const dx of [-w / 2 + 0.025, w / 2 - 0.025]) { const c = new THREE.Mesh(new THREE.BoxGeometry(0.025, 0.012, 0.008), blackM); c.position.set(x + dx * Math.cos(extra || 0), y + h / 2 - 0.004, BZ + 0.024); scene.add(c); }
+}
+// Poll poster with stickers drawn on it
+const pollWithDots = canvasTex(1123, 1587, (g, w, h) => {
+  g.drawImage(T["p-poll"].image, 0, 0, w, h);
+  const dot = (cx, cy, col) => { g.fillStyle = col; g.beginPath(); g.arc(cx, cy, 26, 0, 7); g.fill(); };
+  for (let i = 0; i < 23; i++) dot(150 + (i % 5) * 68 + Math.random() * 10, 760 + Math.floor(i / 5) * 70 + Math.random() * 10, "#2f6a50");
+  for (let i = 0; i < 7; i++) dot(650 + (i % 5) * 68 + Math.random() * 10, 760 + Math.floor(i / 5) * 70 + Math.random() * 10, "#b5503f");
+});
+poster(T["p-scan"], -0.5, 1.45, 0.297, 0.42, 0.0);
+poster(T["p-board"], 0, 1.45, 0.297, 0.42, 0.0);
+poster(pollWithDots, 0.5, 1.45, 0.297, 0.42, 0.0);
+
+/* Roll-up banner (you already have it) beside the desk */
+const banner = new THREE.Group();
+const face = new THREE.Mesh(new THREE.PlaneGeometry(0.85, 2.0), mat({ map: T.banner, roughness: 0.55 })); face.position.y = 1.08; face.castShadow = true; banner.add(face);
+const back = new THREE.Mesh(new THREE.PlaneGeometry(0.85, 2.0), mat({ color: "#e8e8e6", side: THREE.BackSide })); back.position.y = 1.08; banner.add(back);
+const base = new THREE.Mesh(new RoundedBoxGeometry(0.9, 0.08, 0.22, 3, 0.03), aluM); base.position.set(0, 0.04, 0.02); base.castShadow = true; banner.add(base);
+const bar = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.87, 12), aluM); bar.rotation.z = Math.PI / 2; bar.position.set(0, 2.08, 0.005); banner.add(bar);
+banner.position.set(-1.35, 0, -0.45); banner.rotation.y = 0.3; scene.add(banner);
+
+/* Desk 1.2 x 0.6 m with the A3 sign taped to the front */
+const DX = 0.05, DZ = 0.1, DW = 1.2, DD = 0.6, TOP = 0.75;
+box(DW, 0.03, DD, mat({ color: "#efece6", roughness: 0.6 }), DX, TOP - 0.015, DZ, 0.006);
+for (const sx of [-1, 1]) for (const sz of [-1, 1]) box(0.04, TOP - 0.03, 0.04, blackM, DX + sx * (DW / 2 - 0.05), (TOP - 0.03) / 2, DZ + sz * (DD / 2 - 0.05), 0.008);
+box(DW - 0.1, 0.06, 0.02, blackM, DX, TOP - 0.06, DZ + DD / 2 - 0.05, 0.004);
+const deskSign = new THREE.Mesh(new THREE.PlaneGeometry(0.42, 0.297), mat({ map: T["desk-sign"], roughness: 0.6 }));
+deskSign.rotation.x = 0.03; add(deskSign, DX, TOP - 0.03 - 0.1485, DZ + DD / 2 + 0.004);
+for (const dx of [-0.17, 0.17]) { const tp = new THREE.Mesh(new THREE.PlaneGeometry(0.05, 0.03), mat({ color: "#f4f1e8", transparent: true, opacity: 0.7 })); add(tp, DX + dx, TOP - 0.035, DZ + DD / 2 + 0.006, { cast: false }); }
+
+/* Chair behind the desk */
+const chairM = mat({ color: "#2b2f31", roughness: 0.7 });
+box(0.44, 0.05, 0.42, chairM, DX + 0.1, 0.46, -0.45, 0.02);
+box(0.44, 0.45, 0.04, chairM, DX + 0.1, 0.72, -0.66, 0.02);
+for (const sx of [-1, 1]) for (const sz of [-1, 1]) box(0.025, 0.44, 0.025, blackM, DX + 0.1 + sx * 0.19, 0.22, -0.45 + sz * 0.18, 0.006);
+
+/* On the desk */
+// Tablet on stand (centre)
+const tablet = new THREE.Group();
+tablet.add(new THREE.Mesh(new RoundedBoxGeometry(0.27, 0.18, 0.012, 3, 0.006), mat({ color: "#16181a", roughness: 0.3, metalness: 0.4 })));
+const ts = new THREE.Mesh(new THREE.PlaneGeometry(0.25, 0.156), new THREE.MeshBasicMaterial({ map: T.tablet, toneMapped: false })); ts.position.z = 0.0065; tablet.add(ts);
+tablet.position.set(DX + 0.05, TOP + 0.12, DZ + 0.12); tablet.rotation.x = -0.32; tablet.traverse((o) => (o.castShadow = true)); scene.add(tablet);
+add(new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.12, 0.08), aluM), DX + 0.05, TOP + 0.05, DZ + 0.07);
+// Scan & play A5 sign (left)
+const sign = new THREE.Group();
+sign.add(new THREE.Mesh(new THREE.BoxGeometry(0.158, 0.22, 0.004), mat({ color: "#111" })));
+const sf = new THREE.Mesh(new THREE.PlaneGeometry(0.148, 0.21), mat({ map: T.sign, roughness: 0.4 })); sf.position.z = 0.0025; sign.add(sf);
+sign.position.set(DX - 0.47, TOP + 0.11, DZ + 0.02); sign.rotation.set(-0.2, 0.2, 0); sign.traverse((o) => (o.castShadow = true)); scene.add(sign);
+add(new THREE.Mesh(new THREE.BoxGeometry(0.17, 0.02, 0.06), mat({ color: "#c9c2b0", transparent: true, opacity: 0.6 })), DX - 0.47, TOP + 0.01, DZ + 0.02);
+// Handout cards
+const cardM = () => [mat({ color: "#e9dfca" }), mat({ color: "#e9dfca" }), mat({ map: T.card }), mat({ color: "#e9dfca" }), mat({ color: "#e9dfca" }), mat({ color: "#e9dfca" })];
+for (let i = 0; i < 14; i++) { const c = new THREE.Mesh(new THREE.BoxGeometry(0.085, 0.0012, 0.055), cardM()); c.rotation.y = 0.12; add(c, DX - 0.42, TOP + 0.001 + i * 0.0013, DZ + 0.2); }
+for (let i = 0; i < 3; i++) { const c = new THREE.Mesh(new THREE.BoxGeometry(0.085, 0.0012, 0.055), cardM()); c.rotation.y = -0.4 + i * 0.35; add(c, DX - 0.3 + i * 0.03, TOP + 0.001, DZ + 0.24 - i * 0.01); }
+// Bowl of gold coins
+const bowl = new THREE.Mesh(new THREE.SphereGeometry(0.08, 32, 16, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2), mat({ color: "#f6f3ec", roughness: 0.3, side: THREE.DoubleSide }));
+add(bowl, DX - 0.2, TOP + 0.08, DZ + 0.15);
+for (let i = 0; i < 18; i++) { const c = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.005, 24), mat({ color: "#d8b46a", metalness: 0.95, roughness: 0.25 })); c.rotation.set(Math.random() * 0.8, 0, Math.random() * 0.8); add(c, DX - 0.2 + (Math.random() - 0.5) * 0.1, TOP + 0.04 + Math.random() * 0.03, DZ + 0.15 + (Math.random() - 0.5) * 0.1); }
+// Fair or not tent card + 2 small jars (right)
+const tentTex = canvasTex(600, 420, (g, w, h) => { g.fillStyle = GREEN; g.fillRect(0, 0, w, h); g.fillStyle = "#b8925a"; g.font = '700 30px Inter'; g.textAlign = "center"; g.fillText("FAIR OR NOT?", w / 2, 90); g.fillStyle = "#fbf8f1"; g.font = '700 56px "Cormorant Garamond"'; g.fillText("The carpet is lightly", w / 2, 190); g.fillText("worn after 2 years.", w / 2, 250); g.fillStyle = "#2f6a50"; g.fillRect(150, 310, 130, 50); g.fillStyle = "#b5503f"; g.fillRect(320, 310, 130, 50); });
+function tent(t, x, z, ry, w = 0.2, L = 0.148) {
+  const th = 0.42, g = new THREE.Group();
+  const f = new THREE.Mesh(new THREE.PlaneGeometry(w, L), mat({ map: t, side: THREE.DoubleSide })); f.rotation.x = -th; f.position.set(0, (L / 2) * Math.cos(th), (L / 2) * Math.sin(th)); f.castShadow = true; g.add(f);
+  const b = new THREE.Mesh(new THREE.PlaneGeometry(w, L), mat({ color: GREEN2, side: THREE.DoubleSide })); b.rotation.x = th; b.position.set(0, (L / 2) * Math.cos(th), -(L / 2) * Math.sin(th)); b.castShadow = true; g.add(b);
+  g.position.set(x, TOP, z); g.rotation.y = ry; scene.add(g);
+}
+tent(tentTex, DX + 0.3, DZ - 0.02, -0.1);
+const jarLabel = (txt, col) => canvasTex(400, 160, (g, w, h) => { g.fillStyle = col; g.fillRect(0, 0, w, h); g.fillStyle = "#fbf8f1"; g.font = '700 70px Inter'; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText(txt, w / 2, h / 2); });
+for (const [x, label, col, tok] of [[DX + 0.48, "Fair", "#2f6a50", 12], [DX + 0.48, "Not fair", "#b5503f", 7]].map((a, i) => [a[0], a[1], a[2], a[3], i])) {}
+[[DX + 0.5, DZ - 0.17, "Fair", "#2f6a50", 12], [DX + 0.5, DZ - 0.03, "Not fair", "#b5503f", 7]].forEach(([x, z, label, col, tok]) => {
+  const glass = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.045, 0.13, 40, 1, true), new THREE.MeshPhysicalMaterial({ color: "#fff", transmission: 0.9, roughness: 0.05, transparent: true, opacity: 0.35, side: THREE.DoubleSide }));
+  add(glass, x, TOP + 0.065, z, { cast: false });
+  add(new THREE.Mesh(new THREE.CylinderGeometry(0.047, 0.047, 0.012, 40), aluM), x, TOP + 0.135, z);
+  add(new THREE.Mesh(new THREE.CylinderGeometry(0.0462, 0.0462, 0.035, 40, 1, true, -0.9, 1.8), mat({ map: jarLabel(label, col), side: THREE.DoubleSide })), x, TOP + 0.065, z, { cast: false });
+  for (let i = 0; i < tok; i++) { const t = new THREE.Mesh(new THREE.CylinderGeometry(0.011, 0.011, 0.005, 16), mat({ color: i % 2 ? "#e2c792" : "#fff" })); t.rotation.set(Math.random(), 0, Math.random()); add(t, x + (Math.random() - 0.5) * 0.05, TOP + 0.006 + Math.floor(i / 5) * 0.01, z + (Math.random() - 0.5) * 0.05); }
+});
+// Vote tent card (front-right corner)
+const vt = T["vote-tent"].clone(); vt.needsUpdate = true; vt.repeat.set(1, 0.5); vt.offset.set(0, 0);
+tent(vt, DX + 0.44, DZ + 0.22, -0.25, 0.15, 0.106);
+
+/* Hint of neighbouring desks */
+for (const x of [-4.2, 4.2]) { box(1.2, 0.03, 0.6, mat({ color: "#efece6" }), x, 0.735, 0.1, 0.006); box(1.6, 1.9, 0.03, mat({ color: "#eeeeea" }), x, 1.07, -0.95, 0.005); }
+
+/* Lights: hall ceiling light */
+scene.add(new THREE.HemisphereLight("#ffffff", "#9a9a96", 0.7));
+const sun = new THREE.DirectionalLight("#fff6ea", 1.7); sun.position.set(2.5, 8, 6); sun.castShadow = true;
+sun.shadow.mapSize.set(4096, 4096); Object.assign(sun.shadow.camera, { left: -3, right: 3, top: 3, bottom: -3 }); sun.shadow.bias = -0.0004; sun.shadow.radius = 6; scene.add(sun);
+const fill = new THREE.SpotLight("#fff1dc", 6, 7, 0.6, 0.7, 1.2); fill.position.set(0.3, 3.4, 1.6); fill.target.position.set(0, 1.0, -0.5); fill.castShadow = true; fill.shadow.mapSize.set(2048, 2048); scene.add(fill); scene.add(fill.target);
+
+/* Camera */
+const camera = new THREE.PerspectiveCamera(42, W / H, 0.05, 100);
+if (VIEW === "front") { camera.position.set(0.55, 1.6, 3.5); camera.lookAt(-0.1, 1.0, -0.3); }
+else if (VIEW === "table") { camera.fov = 34; camera.updateProjectionMatrix(); camera.position.set(0.2, 1.4, 1.5); camera.lookAt(0.05, 0.82, 0.1); }
+else if (VIEW === "side") { camera.fov = 40; camera.updateProjectionMatrix(); camera.position.set(2.3, 1.75, 2.6); camera.lookAt(-0.2, 0.95, -0.3); }
+renderer.render(scene, camera);
+window.__done = true;
+</script>
+</body>
+</html>
