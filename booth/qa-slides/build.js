@@ -65,8 +65,8 @@ const OUT = process.argv[2] || "Deposera-QA-slides.pptx";
     tb(s, who, { x: x + 0.14, y: yC + 1.62, w: colW - 0.28, h: 0.26, fontSize: 7.5, bold: true, color: H.goldDark, align: "center", valign: "middle", objectName: `Step ${i + 1} who` });
   });
   const opts = [
-    [H.white, "AGENCIES  ·  FIXED PRICE", "from €70", "€70–€150 per home: photo reports at move-in and move-out, and the damage list."],
-    [H.dark, "PRIVATE LANDLORD + TENANT", "from €85", "+€15: deposit held at OPP. €85–€165, paid together."],
+    [H.white, "AGENCIES  ·  FIXED PRICE", "from €70", "€70–€150 per home, all included: inspections, damage list and the deposit held at OPP."],
+    [H.dark, "PRIVATE LANDLORD + TENANT", "from €85", "€85–€165, paid together. The same full service, deposit held at OPP included."],
   ];
   opts.forEach(([fill, label, val, txt], i) => {
     const x = 0.5 + i * 4.6, y = 3.78, w = 4.4, h = 1.12, dark = i === 1;
@@ -123,7 +123,7 @@ const OUT = process.argv[2] || "Deposera-QA-slides.pptx";
     { text: "Who pays: ", options: { bold: true, color: H.green } },
     { text: "agencies pay a fixed price per home. A private landlord and tenant who book on their own pay together. 100% upfront.", options: { color: H.ink, breakLine: true } },
     { text: "Landlord + tenant ", options: { bold: true, color: H.green } },
-    { text: "price adds €15 for holding the deposit (escrow, ID checks, payout). Expected for 75% of tenancies.", options: { color: H.ink, breakLine: true } },
+    { text: "price is €15 more per home. Both prices include the inspections and holding the deposit at OPP.", options: { color: H.ink, breakLine: true } },
     { text: "Same fee ", options: { bold: true, color: H.green } },
     { text: "whatever happens at move-out, so we gain nothing from deductions.", options: { color: H.ink } },
   ], { x: 0.7, y: 3.83, w: 4.7, h: 1.0, fontSize: 8.5, valign: "middle", paraSpaceAfter: 3, objectName: "Price notes" });

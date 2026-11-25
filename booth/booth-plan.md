@@ -126,7 +126,7 @@ Open **https://francis823.github.io/Deposera/games/** on the tablet, then tap th
 
 ## Investor questions: short answers
 
-- **How do you make money?** A fixed price per tenancy, paid upfront. Agencies pay €70–€150 depending on the home; a private landlord and tenant pay €85–€165 together, which includes holding the deposit. On average that's €104.75, of which €67.09 (64%) is margin.
+- **How do you make money?** A fixed price per tenancy, paid upfront. Agencies pay €70–€150 depending on the home; a private landlord and tenant pay €85–€165 together. Both prices include the inspections and holding the deposit. On average that's €104.75, of which €67.09 (64%) is margin.
 - **Why would agencies pay?** We do the inspections, photos and payouts for them, and there are fewer disputes on their desk.
 - **If the landlord's side pays, aren't you biased?** No. Our fee is the same whatever happens at move-out, we take the photos ourselves, and an independent reviewer decides disputed items.
 - **Do tenants pay?** Not when an agency books us: Dutch rules stop agents from charging tenants extra fees. If a private landlord and tenant book us themselves, they share one price.
