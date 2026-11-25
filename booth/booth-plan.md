@@ -68,6 +68,25 @@ Our message in one line: **"A deposit should only be kept for real, proven damag
 
 ---
 
+## Tablet games (ready to use)
+
+Open **https://francis823.github.io/Deposera/games/** on the tablet, then tap the full-screen button (top right).
+
+- **Spot the damage:** compare a move-in and a move-out photo and find 5 differences in 40 seconds. A wrong tap costs 2 seconds. There are 3 rooms, which rotate each game. Top-5 scores are saved on the tablet, with initials.
+- **Fair or not?:** 5 random situations out of 10. Visitors tap Fair or Not fair, see the answer, and see how other visitors voted.
+- Both games end with **"Like it? Vote Deposera"** and a QR code to the website. Hand out a gold coin.
+- If nobody touches the tablet for 1 minute, it goes back to the menu by itself.
+- Before the doors open, clear test scores by opening **games/index.html#reset** once.
+- No Wi-Fi? Open `games/index.html` from the downloaded copy. It works offline.
+
+## Printed "Fair or not?" cards
+
+- File: `fair-or-not-cards-A4.pdf`, with 10 cards, one per A4 sheet.
+- Fold each sheet in half along the dashed line, so it stands as a tent. The question faces the visitor, and the answer is on the back.
+- Put two jars next to them, labelled "Fair" and "Not fair", with tokens.
+
+---
+
 ## End every visit with the vote
 
 - Say the same line every time: *"If you liked it, vote Deposera!"*

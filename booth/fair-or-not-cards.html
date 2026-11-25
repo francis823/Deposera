@@ -1,0 +1,187 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Fair or not? tent cards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,500&family=Inter:wght@500;600;700&display=swap">
+<style>
+@page { size: A4; margin: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Inter, sans-serif; color: #17271f; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.page { width: 210mm; height: 297mm; display: grid; grid-template-rows: 1fr 0mm 1fr; page-break-after: always; break-after: page; overflow: hidden; }
+.half { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7mm; padding: 14mm 16mm; text-align: center; }
+.half--question { background: #0b1d15; color: #fbf8f1; background-image: radial-gradient(120mm 80mm at 100% 0%, rgba(207,170,108,.25), transparent 60%), radial-gradient(120mm 90mm at 0% 100%, rgba(47,106,80,.6), transparent 60%); }
+.half--answer { transform: rotate(180deg); background: #fbf8f1; }
+.kicker { font-size: 3.4mm; font-weight: 700; letter-spacing: 1.2mm; text-transform: uppercase; color: #b8925a; }
+.q { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 600; font-size: 13mm; line-height: 1.1; max-width: 170mm; }
+.ask { font-size: 4.6mm; color: rgba(244,238,225,.75); }
+.jars { display: flex; gap: 6mm; }
+.jar { padding: 3mm 8mm; border-radius: 20mm; font-weight: 700; font-size: 5mm; }
+.jar--fair { background: #2f6a50; color: #fbf8f1; }
+.jar--not { background: #b5503f; color: #fbf8f1; }
+.verdict { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 700; font-size: 26mm; line-height: 1; }
+.verdict--fair { color: #21503c; }
+.verdict--not { color: #9b3f2c; }
+.why { font-size: 6.4mm; line-height: 1.35; max-width: 160mm; font-weight: 500; }
+.foot { position: absolute; bottom: 9mm; left: 16mm; right: 16mm; display: flex; justify-content: center; align-items: center; gap: 3mm; font-size: 3.4mm; opacity: .75; }
+.brand { display: inline-flex; align-items: center; gap: 1.5mm; font-family: "Cormorant Garamond", Georgia, serif; font-weight: 700; font-size: 5mm; color: #b8925a; }
+.brand svg { width: 5mm; height: 5mm; color: #b8925a; }
+.fold { position: relative; border-top: .4mm dashed #b8925a; }
+.fold span { position: absolute; right: 8mm; top: -2.6mm; padding: 0 2mm; background: #fbf8f1; font-size: 2.8mm; font-weight: 600; color: #7d5f30; }
+</style></head><body><section class="page">
+  <div class="half half--answer">
+    <p class="kicker">Answer · Card 1</p>
+    <p class="verdict verdict--not">Not fair</p>
+    <p class="why">Normal wear from everyday living is not damage.</p>
+    <p class="foot"><span class="brand"><svg viewBox="0 0 40 40"><path d="M6 18.5 20 7l14 11.5V32a2.5 2.5 0 0 1-2.5 2.5h-23A2.5 2.5 0 0 1 6 32Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="20" cy="24" r="6.2" fill="currentColor"/><circle cx="20" cy="24" r="3.7" fill="none" stroke="#0b1d15" stroke-width="1.1" opacity=".5"/></svg>Deposera</span> A deposit is only kept for real, proven damage.</p>
+  </div>
+  <div class="fold"><span>Fold here</span></div>
+  <div class="half half--question">
+    <p class="kicker">Fair or not? · Card 1</p>
+    <p class="q">The carpet is lightly worn after 2 years.</p>
+    <p class="ask">Should this come out of the deposit?</p>
+    <div class="jars"><span class="jar jar--fair">Fair</span><span class="jar jar--not">Not fair</span></div>
+    <p class="foot"><span class="brand"><svg viewBox="0 0 40 40"><path d="M6 18.5 20 7l14 11.5V32a2.5 2.5 0 0 1-2.5 2.5h-23A2.5 2.5 0 0 1 6 32Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="20" cy="24" r="6.2" fill="currentColor"/><circle cx="20" cy="24" r="3.7" fill="none" stroke="#0b1d15" stroke-width="1.1" opacity=".5"/></svg>Deposera</span> Drop a token in a jar, then turn the card.</p>
+  </div>
+</section>
+<section class="page">
+  <div class="half half--answer">
+    <p class="kicker">Answer · Card 2</p>
+    <p class="verdict verdict--fair">Fair</p>
+    <p class="why">Fair, but only the real cleaning cost, backed by an invoice.</p>
+    <p class="foot"><span class="brand"><svg viewBox="0 0 40 40"><path d="M6 18.5 20 7l14 11.5V32a2.5 2.5 0 0 1-2.5 2.5h-23A2.5 2.5 0 0 1 6 32Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="20" cy="24" r="6.2" fill="currentColor"/><circle cx="20" cy="24" r="3.7" fill="none" stroke="#0b1d15" stroke-width="1.1" opacity=".5"/></svg>Deposera</span> A deposit is only kept for real, proven damage.</p>
+  </div>
+  <div class="fold"><span>Fold here</span></div>
+  <div class="half half--question">
+    <p class="kicker">Fair or not? · Card 2</p>
+    <p class="q">The oven was left greasy at move-out.</p>
+    <p class="ask">Should this come out of the deposit?</p>
+    <div class="jars"><span class="jar jar--fair">Fair</span><span class="jar jar--not">Not fair</span></div>
+    <p class="foot"><span class="brand"><svg viewBox="0 0 40 40"><path d="M6 18.5 20 7l14 11.5V32a2.5 2.5 0 0 1-2.5 2.5h-23A2.5 2.5 0 0 1 6 32Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="20" cy="24" r="6.2" fill="currentColor"/><circle cx="20" cy="24" r="3.7" fill="none" stroke="#0b1d15" stroke-width="1.1" opacity=".5"/></svg>Deposera</span> Drop a token in a jar, then turn the card.</p>
+  </div>
+</section>
+<section class="page">
+  <div class="half half--answer">
+    <p class="kicker">Answer · Card 3</p>
+    <p class="verdict verdict--not">Not fair</p>
+    <p class="why">It was there before the tenant moved in. Our photos prove it.</p>
+    <p class="foot"><span class="brand"><svg viewBox="0 0 40 40"><path d="M6 18.5 20 7l14 11.5V32a2.5 2.5 0 0 1-2.5 2.5h-23A2.5 2.5 0 0 1 6 32Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="20" cy="24" r="6.2" fill="currentColor"/><circle cx="20" cy="24" r="3.7" fill="none" stroke="#0b1d15" stroke-width="1.1" opacity=".5"/></svg>Deposera</span> A deposit is only kept for real, proven damage.</p>
+  </div>
+  <div class="fold"><span>Fold here</span></div>
+  <div class="half half--question">
+    <p class="kicker">Fair or not? · Card 3</p>
+    <p class="q">A crack in the wall that is already in the move-in photos.</p>
+    <p class="ask">Should this come out of the deposit?</p>
+    <div class="jars"><span class="jar jar--fair">Fair</span><span class="jar jar--not">Not fair</span></div>
+    <p class="foot"><span class="brand"><svg viewBox="0 0 40 40"><path d="M6 18.5 20 7l14 11.5V32a2.5 2.5 0 0 1-2.5 2.5h-23A2.5 2.5 0 0 1 6 32Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="20" cy="24" r="6.2" fill="currentColor"/><circle cx="20" cy="24" r="3.7" fill="none" stroke="#0b1d15" stroke-width="1.1" opacity=".5"/></svg>Deposera</span> Drop a token in a jar, then turn the card.</p>
+  </div>
+</section>
+<section class="page">
+  <div class="half half--answer">
+    <p class="kicker">Answer · Card 4</p>
+    <p class="verdict verdict--fair">Fair</p>
+    <p class="why">Fair. The tenant could have fixed it after the pre-inspection.</p>
+    <p class="foot"><span class="brand"><svg viewBox="0 0 40 40"><path d="M6 18.5 20 7l14 11.5V32a2.5 2.5 0 0 1-2.5 2.5h-23A2.5 2.5 0 0 1 6 32Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="20" cy="24" r="6.2" fill="currentColor"/><circle cx="20" cy="24" r="3.7" fill="none" stroke="#0b1d15" stroke-width="1.1" opacity=".5"/></svg>Deposera</span> A deposit is only kept for real, proven damage.</p>
+  </div>
+  <div class="fold"><span>Fold here</span></div>
+  <div class="half half--question">
+    <p class="kicker">Fair or not? · Card 4</p>
+    <p class="q">A broken blind that is not in the move-in photos.</p>
+    <p class="ask">Should this come out of the deposit?</p>
+    <div class="jars"><span class="jar jar--fair">Fair</span><span class="jar jar--not">Not fair</span></div>
+    <p class="foot"><span class="brand"><svg viewBox="0 0 40 40"><path d="M6 18.5 20 7l14 11.5V32a2.5 2.5 0 0 1-2.5 2.5h-23A2.5 2.5 0 0 1 6 32Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="20" cy="24" r="6.2" fill="currentColor"/><circle cx="20" cy="24" r="3.7" fill="none" stroke="#0b1d15" stroke-width="1.1" opacity=".5"/></svg>Deposera</span> Drop a token in a jar, then turn the card.</p>
+  </div>
+</section>
+<section class="page">
+  <div class="half half--answer">
+    <p class="kicker">Answer · Card 5</p>
+    <p class="verdict verdict--not">Not fair</p>
+    <p class="why">No proof, no deduction. Every cost needs an invoice.</p>
+    <p class="foot"><span class="brand"><svg viewBox="0 0 40 40"><path d="M6 18.5 20 7l14 11.5V32a2.5 2.5 0 0 1-2.5 2.5h-23A2.5 2.5 0 0 1 6 32Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="20" cy="24" r="6.2" fill="currentColor"/><circle cx="20" cy="24" r="3.7" fill="none" stroke="#0b1d15" stroke-width="1.1" opacity=".5"/></svg>Deposera</span> A deposit is only kept for real, proven damage.</p>
+  </div>
+  <div class="fold"><span>Fold here</span></div>
+  <div class="half half--question">
+    <p class="kicker">Fair or not? · Card 5</p>
+    <p class="q">“General cleaning: €300”, with no invoice.</p>
+    <p class="ask">Should this come out of the deposit?</p>
+    <div class="jars"><span class="jar jar--fair">Fair</span><span class="jar jar--not">Not fair</span></div>
+    <p class="foot"><span class="brand"><svg viewBox="0 0 40 40"><path d="M6 18.5 20 7l14 11.5V32a2.5 2.5 0 0 1-2.5 2.5h-23A2.5 2.5 0 0 1 6 32Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="20" cy="24" r="6.2" fill="currentColor"/><circle cx="20" cy="24" r="3.7" fill="none" stroke="#0b1d15" stroke-width="1.1" opacity=".5"/></svg>Deposera</span> Drop a token in a jar, then turn the card.</p>
+  </div>
+</section>
+<section class="page">
+  <div class="half half--answer">
+    <p class="kicker">Answer · Card 6</p>
+    <p class="verdict verdict--fair">Fair</p>
+    <p class="why">Fair, but only the real cost of repainting it.</p>
+    <p class="foot"><span class="brand"><svg viewBox="0 0 40 40"><path d="M6 18.5 20 7l14 11.5V32a2.5 2.5 0 0 1-2.5 2.5h-23A2.5 2.5 0 0 1 6 32Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="20" cy="24" r="6.2" fill="currentColor"/><circle cx="20" cy="24" r="3.7" fill="none" stroke="#0b1d15" stroke-width="1.1" opacity=".5"/></svg>Deposera</span> A deposit is only kept for real, proven damage.</p>
+  </div>
+  <div class="fold"><span>Fold here</span></div>
+  <div class="half half--question">
+    <p class="kicker">Fair or not? · Card 6</p>
+    <p class="q">The tenant painted a wall bright purple without permission.</p>
+    <p class="ask">Should this come out of the deposit?</p>
+    <div class="jars"><span class="jar jar--fair">Fair</span><span class="jar jar--not">Not fair</span></div>
+    <p class="foot"><span class="brand"><svg viewBox="0 0 40 40"><path d="M6 18.5 20 7l14 11.5V32a2.5 2.5 0 0 1-2.5 2.5h-23A2.5 2.5 0 0 1 6 32Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="20" cy="24" r="6.2" fill="currentColor"/><circle cx="20" cy="24" r="3.7" fill="none" stroke="#0b1d15" stroke-width="1.1" opacity=".5"/></svg>Deposera</span> Drop a token in a jar, then turn the card.</p>
+  </div>
+</section>
+<section class="page">
+  <div class="half half--answer">
+    <p class="kicker">Answer · Card 7</p>
+    <p class="verdict verdict--not">Not fair</p>
+    <p class="why">Old age is wear, not damage caused by the tenant.</p>
+    <p class="foot"><span class="brand"><svg viewBox="0 0 40 40"><path d="M6 18.5 20 7l14 11.5V32a2.5 2.5 0 0 1-2.5 2.5h-23A2.5 2.5 0 0 1 6 32Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="20" cy="24" r="6.2" fill="currentColor"/><circle cx="20" cy="24" r="3.7" fill="none" stroke="#0b1d15" stroke-width="1.1" opacity=".5"/></svg>Deposera</span> A deposit is only kept for real, proven damage.</p>
+  </div>
+  <div class="fold"><span>Fold here</span></div>
+  <div class="half half--question">
+    <p class="kicker">Fair or not? · Card 7</p>
+    <p class="q">A 15-year-old fridge stopped working.</p>
+    <p class="ask">Should this come out of the deposit?</p>
+    <div class="jars"><span class="jar jar--fair">Fair</span><span class="jar jar--not">Not fair</span></div>
+    <p class="foot"><span class="brand"><svg viewBox="0 0 40 40"><path d="M6 18.5 20 7l14 11.5V32a2.5 2.5 0 0 1-2.5 2.5h-23A2.5 2.5 0 0 1 6 32Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="20" cy="24" r="6.2" fill="currentColor"/><circle cx="20" cy="24" r="3.7" fill="none" stroke="#0b1d15" stroke-width="1.1" opacity=".5"/></svg>Deposera</span> Drop a token in a jar, then turn the card.</p>
+  </div>
+</section>
+<section class="page">
+  <div class="half half--answer">
+    <p class="kicker">Answer · Card 8</p>
+    <p class="verdict verdict--not">Not fair</p>
+    <p class="why">Too late. Landlords have 14 days after key return to report missed damage.</p>
+    <p class="foot"><span class="brand"><svg viewBox="0 0 40 40"><path d="M6 18.5 20 7l14 11.5V32a2.5 2.5 0 0 1-2.5 2.5h-23A2.5 2.5 0 0 1 6 32Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="20" cy="24" r="6.2" fill="currentColor"/><circle cx="20" cy="24" r="3.7" fill="none" stroke="#0b1d15" stroke-width="1.1" opacity=".5"/></svg>Deposera</span> A deposit is only kept for real, proven damage.</p>
+  </div>
+  <div class="fold"><span>Fold here</span></div>
+  <div class="half half--question">
+    <p class="kicker">Fair or not? · Card 8</p>
+    <p class="q">The landlord reports new damage 3 weeks after key return.</p>
+    <p class="ask">Should this come out of the deposit?</p>
+    <div class="jars"><span class="jar jar--fair">Fair</span><span class="jar jar--not">Not fair</span></div>
+    <p class="foot"><span class="brand"><svg viewBox="0 0 40 40"><path d="M6 18.5 20 7l14 11.5V32a2.5 2.5 0 0 1-2.5 2.5h-23A2.5 2.5 0 0 1 6 32Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="20" cy="24" r="6.2" fill="currentColor"/><circle cx="20" cy="24" r="3.7" fill="none" stroke="#0b1d15" stroke-width="1.1" opacity=".5"/></svg>Deposera</span> Drop a token in a jar, then turn the card.</p>
+  </div>
+</section>
+<section class="page">
+  <div class="half half--answer">
+    <p class="kicker">Answer · Card 9</p>
+    <p class="verdict verdict--not">Not fair</p>
+    <p class="why">Sun fading is normal wear.</p>
+    <p class="foot"><span class="brand"><svg viewBox="0 0 40 40"><path d="M6 18.5 20 7l14 11.5V32a2.5 2.5 0 0 1-2.5 2.5h-23A2.5 2.5 0 0 1 6 32Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="20" cy="24" r="6.2" fill="currentColor"/><circle cx="20" cy="24" r="3.7" fill="none" stroke="#0b1d15" stroke-width="1.1" opacity=".5"/></svg>Deposera</span> A deposit is only kept for real, proven damage.</p>
+  </div>
+  <div class="fold"><span>Fold here</span></div>
+  <div class="half half--question">
+    <p class="kicker">Fair or not? · Card 9</p>
+    <p class="q">Curtains faded by the sun after 4 years.</p>
+    <p class="ask">Should this come out of the deposit?</p>
+    <div class="jars"><span class="jar jar--fair">Fair</span><span class="jar jar--not">Not fair</span></div>
+    <p class="foot"><span class="brand"><svg viewBox="0 0 40 40"><path d="M6 18.5 20 7l14 11.5V32a2.5 2.5 0 0 1-2.5 2.5h-23A2.5 2.5 0 0 1 6 32Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="20" cy="24" r="6.2" fill="currentColor"/><circle cx="20" cy="24" r="3.7" fill="none" stroke="#0b1d15" stroke-width="1.1" opacity=".5"/></svg>Deposera</span> Drop a token in a jar, then turn the card.</p>
+  </div>
+</section>
+<section class="page">
+  <div class="half half--answer">
+    <p class="kicker">Answer · Card 10</p>
+    <p class="verdict verdict--fair">Fair</p>
+    <p class="why">Fair. It is real damage, and only the repair cost comes out.</p>
+    <p class="foot"><span class="brand"><svg viewBox="0 0 40 40"><path d="M6 18.5 20 7l14 11.5V32a2.5 2.5 0 0 1-2.5 2.5h-23A2.5 2.5 0 0 1 6 32Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="20" cy="24" r="6.2" fill="currentColor"/><circle cx="20" cy="24" r="3.7" fill="none" stroke="#0b1d15" stroke-width="1.1" opacity=".5"/></svg>Deposera</span> A deposit is only kept for real, proven damage.</p>
+  </div>
+  <div class="fold"><span>Fold here</span></div>
+  <div class="half half--question">
+    <p class="kicker">Fair or not? · Card 10</p>
+    <p class="q">A hole in a door from a party, found at key return.</p>
+    <p class="ask">Should this come out of the deposit?</p>
+    <div class="jars"><span class="jar jar--fair">Fair</span><span class="jar jar--not">Not fair</span></div>
+    <p class="foot"><span class="brand"><svg viewBox="0 0 40 40"><path d="M6 18.5 20 7l14 11.5V32a2.5 2.5 0 0 1-2.5 2.5h-23A2.5 2.5 0 0 1 6 32Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="20" cy="24" r="6.2" fill="currentColor"/><circle cx="20" cy="24" r="3.7" fill="none" stroke="#0b1d15" stroke-width="1.1" opacity=".5"/></svg>Deposera</span> Drop a token in a jar, then turn the card.</p>
+  </div>
+</section></body></html>
