@@ -9,7 +9,7 @@ Our message in one line: **"A deposit should only be kept for real, proven damag
 ## The banner
 
 - File: `deposera-rollup-banner-85x200cm.pdf` (roll-up banner, 85 × 200 cm).
-- The QR code opens the app prototype: https://francis823.github.io/Deposera/app/
+- The QR code opens the website front page: https://francis823.github.io/Deposera/ (the "Try the prototype" button there opens the app).
 - The bottom 15 cm has no text, because the stand's base covers it.
 - Ask the print shop for a roll-up with stand, and to check the dark green prints well (ask for a proof if there's time).
 
@@ -83,7 +83,7 @@ Our message in one line: **"A deposit should only be kept for real, proven damag
 > Before move-out we do a pre-inspection, so tenants can fix things themselves first.
 > The money comes back within 14 days, or 30 if repairs are needed, and every deduction needs proof.
 > Tenants pay nothing. The landlord's letting agency pays a one-off 5% fee.
-> Try our app with the QR code, and if you like it, vote Deposera!"
+> Scan the QR code to see our website and app, and if you like it, vote Deposera!"
 
 ---
 
