@@ -1,0 +1,25 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Deposera name sign A4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&display=swap">
+<style>
+@page { size: 297mm 210mm; margin: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 297mm; height: 210mm; }
+body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.sign {
+  position: relative; width: 297mm; height: 210mm; overflow: hidden;
+  display: flex; align-items: center; justify-content: center; gap: 10mm;
+  background:
+    radial-gradient(170mm 120mm at 100% 0%, rgba(207,170,108,.22), transparent 60%),
+    radial-gradient(170mm 130mm at 0% 100%, rgba(47,106,80,.6), transparent 60%),
+    #0b1d15;
+}
+.sign::after { content: ""; position: absolute; inset: 8mm; border: .35mm solid rgba(207,170,108,.45); border-radius: 6mm; pointer-events: none; }
+.mark { width: 48mm; height: 48mm; color: #cfaa6c; flex: none; }
+.name { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 700; font-size: 44mm; line-height: 1; letter-spacing: -.4mm; color: #fbf8f1; transform: translateY(-2mm); }
+</style></head><body>
+<div class="sign">
+  <svg class="mark" viewBox="4 4 32 33" aria-hidden="true"><path d="M6 18.5 20 7l14 11.5V32a2.5 2.5 0 0 1-2.5 2.5h-23A2.5 2.5 0 0 1 6 32Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="20" cy="24" r="6.2" fill="currentColor"/><circle cx="20" cy="24" r="3.7" fill="none" stroke="#0b1d15" stroke-width="1.1" opacity=".5"/></svg>
+  <div class="name">Deposera</div>
+</div>
+</body></html>
